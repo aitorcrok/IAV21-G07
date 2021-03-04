@@ -170,7 +170,7 @@ MonoBehaviour:
   combinarPorPeso: 0
   comnbinarPorPrioridad: 0
   umbralPrioridad: 0.2
-  velocidadMax: 8
+  velocidadMax: 100
   aceleracionMax: 15
   rotacionMax: 0
   aceleracionAngularMax: 0
@@ -209,6 +209,7 @@ MonoBehaviour:
   objetivo: {fileID: 1021455439}
   tiempoAObjetivo: 0.25
   margen: 0.1
+  radioExt: 3
   velMaxima: 8
 --- !u!1 &149594257
 GameObject:
