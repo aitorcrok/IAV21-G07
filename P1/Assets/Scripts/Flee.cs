@@ -3,11 +3,7 @@
 
     using UnityEngine;
 
-
-    /// <summary>
-    /// Clase para modelar el comportamiento de LLEGAR a otro agente
-    /// </summary>
-    public class Llegada : ComportamientoAgente
+    public class Flee : ComportamientoAgente
     {
         public float tiempoAObjetivo = 0.1f;
         public float margen = 0.3f;
@@ -15,26 +11,28 @@
         public float velMaxima = 8;
         float velObjetivo;
         float distancia;
-  
+
         public override Direccion GetDireccion()
         {
             Direccion direccion = new Direccion();
-            direccion.lineal = objetivo.transform.position - transform.position;
+            direccion.lineal =  transform.position - objetivo.transform.position;
             distancia = direccion.lineal.magnitude;
-            direccion.lineal.Normalize();
+            
 
+            float reduccion = 0;
             if (distancia > radioExt)
             {
-                velObjetivo = agente.aceleracionMax;
+                return direccion;
             }
             else if (distancia < margen)
             {
-                    velObjetivo = 0;
+                reduccion = 0f;
             }
             else
             {
-                velObjetivo = agente.aceleracionMax * distancia / radioExt;
+                reduccion = distancia / agente.aceleracionMax * radioExt;
             }
+            velObjetivo = agente.velocidadMax - reduccion;
             direccion.lineal = direccion.lineal * velObjetivo;
             direccion.lineal = direccion.lineal - agente.velocidad;
             direccion.lineal /= tiempoAObjetivo;
