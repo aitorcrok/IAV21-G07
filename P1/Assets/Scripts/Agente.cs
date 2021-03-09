@@ -123,6 +123,7 @@ namespace UCM.IAV.Movimiento {
         /// </summary>
         public virtual void Update()
         {
+
             if (cuerpoRigido != null)
                 return;
             // ... código previo
