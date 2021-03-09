@@ -12,7 +12,7 @@
         public float tiempoAObjetivo = 0.1f;
         public float margen = 0.3f;
         public float radioExt = 3.0f;
-        public float velMaxima = 8;
+
         float velObjetivo;
         float distancia;
   

@@ -195,7 +195,6 @@ MonoBehaviour:
   tiempoAObjetivo: 0.25
   margen: 0.1
   radioExt: 3
-  velMaxima: 8
 --- !u!114 &78873675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,9 +211,7 @@ MonoBehaviour:
   prioridad: 1
   objetivo: {fileID: 1021455439}
   tiempoAObjetivo: 0.1
-  margen: 0.3
-  radioExt: 3
-  velMaxima: 8
+  radioExt: 5.31
 --- !u!1 &149594257
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,7 +655,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1649510674}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 0}
+  m_LocalPosition: {x: 2.04, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 78873673}
