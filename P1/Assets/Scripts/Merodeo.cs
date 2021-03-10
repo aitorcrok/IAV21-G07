@@ -23,7 +23,7 @@ namespace UCM.IAV.Movimiento
             float rand1 = Random.Range(-1.0f, 1.0f);
             float rand2 = Random.Range(-1.0f, 1.0f);
             Vector3 vec = new Vector3(rand1, 0, rand2);
-            Debug.DrawRay(transform.position, vec);
+            //Debug.DrawRay(transform.position, vec);
             Vector3 posObj = transform.position + (vec * radio);
             //el del objetivo delante
             //float oriMer = Random.Range(-1.0f, 1.0f) * rate;
