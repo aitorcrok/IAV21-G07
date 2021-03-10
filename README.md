@@ -8,3 +8,9 @@ Este repositorio funcionará como punto de enlace entre todas las prácticas del
 * Tomás López Antón
 
 ### Práctica 1: El flautista de Hamelín
+Para realizar esta práctica hemos integrado los componentes blablablabla
+
+
+#### Bibliografía
+* Millington, I.: Artificial Intelligence for Games. CRC Press, 3rd Edition(2019)
+* Palacios, J.: Unity 2018 Artificial Intelligence Cookbook. Packt Publishing, 2nd Revised edition (2018)
