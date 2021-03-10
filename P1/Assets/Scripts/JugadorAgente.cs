@@ -21,6 +21,7 @@ namespace UCM.IAV.Movimiento
     /// </summary>
     public class JugadorAgente : Agente
     {
+        public GameObject Perro;
         /// <summary>
         /// El componente de cuerpo rígido
         /// </summary>
@@ -30,12 +31,24 @@ namespace UCM.IAV.Movimiento
         /// </summary>
         private Vector3 _dir;
 
+        private Flee f;
+        private Llegada l;
+        private Merodeo m;
+        private Llegada rl;
+
+        GameObject[] targets;
         /// <summary>
         /// Al despertar, establecer el cuerpo rígido
         /// </summary>
         private void Awake()
         {
             _cuerpoRigido = GetComponent<Rigidbody>();
+            f = Perro.GetComponent<Flee>();
+            f.enabled = false;
+            l = Perro.GetComponent<Llegada>();
+            l.enabled = true;
+
+            targets = GameObject.FindGameObjectsWithTag("Rata");
         }
 
         /// <summary>
@@ -45,7 +58,22 @@ namespace UCM.IAV.Movimiento
         {
             velocidad.x = Input.GetAxis("Horizontal");
             velocidad.z = Input.GetAxis("Vertical");
-            velocidad *= velocidadMax; 
+            velocidad *= velocidadMax;
+
+
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyUp(KeyCode.Space))
+            {
+                f.enabled = !f.enabled;
+                l.enabled = !l.enabled;
+                foreach (GameObject t in targets)
+                {
+                    m = t.GetComponent<Merodeo>();
+                    rl = t.GetComponent<Llegada>();
+
+                    m.enabled = !m.enabled;
+                    rl.enabled = !rl.enabled;
+                }
+            }            
         }
 
         /// <summary>
