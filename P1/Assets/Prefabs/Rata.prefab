@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 8507654702045328496}
   - component: {fileID: 8507654702045328499}
   - component: {fileID: 8507654702045328396}
+  - component: {fileID: 8807376455188629975}
+  - component: {fileID: 518286416201361936}
   m_Layer: 0
   m_Name: Rata
-  m_TagString: Untagged
+  m_TagString: Rata
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   combinarPorPeso: 0
-  comnbinarPorPrioridad: 0
+  comnbinarPorPrioridad: 1
   umbralPrioridad: 0.2
   velocidadMax: 100
   aceleracionMax: 15
@@ -68,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peso: 1
-  prioridad: 1
+  prioridad: 2
   objetivo: {fileID: 0}
   radioObj: 10
   radioS: 1
@@ -76,6 +78,40 @@ MonoBehaviour:
   offset: 1
   radio: 2
   rate: 2
+--- !u!114 &8807376455188629975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8507654702045328399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f835a71a13b7da45a4a2d9a2e32ce73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peso: 1
+  prioridad: 1
+  objetivo: {fileID: 0}
+  collisionRadius: 1
+--- !u!114 &518286416201361936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8507654702045328399}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a46b15d5cbe1ad549b3f304468b9382d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peso: 1
+  prioridad: 2
+  objetivo: {fileID: 0}
+  tiempoAObjetivo: 0.1
+  margen: 0.3
+  radioExt: 3
 --- !u!1 &8507654702050101907
 GameObject:
   m_ObjectHideFlags: 0
