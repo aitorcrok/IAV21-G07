@@ -37,7 +37,7 @@
             }
             direccion.lineal = direccion.lineal * velObjetivo;
             direccion.lineal = direccion.lineal - agente.velocidad;
-            direccion.lineal /= tiempoAObjetivo;
+            //direccion.lineal /= tiempoAObjetivo;
             return direccion;
         }
     }

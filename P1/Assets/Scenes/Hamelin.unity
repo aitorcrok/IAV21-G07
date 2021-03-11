@@ -155,7 +155,7 @@ MonoBehaviour:
   combinarPorPeso: 0
   comnbinarPorPrioridad: 0
   umbralPrioridad: 0.2
-  velocidadMax: 100
+  velocidadMax: 8
   aceleracionMax: 15
   rotacionMax: 0
   aceleracionAngularMax: 0
@@ -193,7 +193,7 @@ MonoBehaviour:
   prioridad: 1
   objetivo: {fileID: 1021455439}
   tiempoAObjetivo: 0.25
-  margen: 0.1
+  margen: 0.25
   radioExt: 3
 --- !u!114 &78873675
 MonoBehaviour:
