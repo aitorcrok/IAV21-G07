@@ -48,7 +48,7 @@ namespace UCM.IAV.Movimiento
             }
             if (flauta)
             {
-                Suelo.GetComponent<Renderer>().material.color = Color.green;
+                Suelo.GetComponent<Renderer>().material.color = Color.grey;
             }
             else
             {
