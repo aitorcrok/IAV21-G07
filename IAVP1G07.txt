@@ -1,0 +1,12 @@
+Integrantes del grupo 07: 
+- Jorge Bello Martín
+- Aitor García Casamayor
+- David Godoy Ruiz
+- Tomás López Antón
+- Eva Lucas Leiro
+
+Hemos integrado todos los apartados a excepción de los obstáculos. Los objetos hacen el comportamiento
+deseado pero sin colisiones ni esquivar muros.
+
+Enlace al repositorio:
+https://github.com/aitorcrok/IAV21-G07
