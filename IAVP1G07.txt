@@ -5,8 +5,8 @@ Integrantes del grupo 07:
 - Tomás López Antón
 - Eva Lucas Leiro
 
-Hemos integrado todos los apartados a excepción de los obstáculos. Los objetos hacen el comportamiento
-deseado pero sin colisiones ni esquivar muros.
+Hemos integrado todos los apartados. Los objetos hacen el comportamiento
+deseado pero sin esquivar muros.
 
 Enlace al repositorio:
 https://github.com/aitorcrok/IAV21-G07
