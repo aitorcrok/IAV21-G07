@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace UCM.IAV.Movimiento
 {
+    /// Gestiona los comportamientos de las ratas y el perro
     public class Manager : MonoBehaviour
     {
         private static Manager _instance;
-        GameObject Jugador;
         GameObject Perro;
         GameObject Suelo;
         GameObject[] Ratas;
         bool flauta = false;
         Agente a;
-
+        /// Codigo singleton
         public static Manager Instance
         {
             get
@@ -25,18 +25,17 @@ namespace UCM.IAV.Movimiento
                 return _instance;
             }
         }
-
+        /// Busca los gameobjects de las ratas, el perro y el suelo
         void Awake()
         {
             DontDestroyOnLoad(this.gameObject);
-            Jugador = GameObject.FindGameObjectWithTag("jugador");
             Perro = GameObject.FindGameObjectWithTag("perro");
             Ratas = GameObject.FindGameObjectsWithTag("rata");
             Suelo = GameObject.FindGameObjectWithTag("suelo");
             Suelo.GetComponent<Renderer>().material.color = Color.black;
 
         }
-
+        /// Activa la flauta, cambiando los componentes de las ratas y el perro, y el color del suelo para señalizarlo
         public void Flauta()
         {
             flauta = !flauta;

@@ -9,7 +9,7 @@ namespace UCM.IAV.Movimiento
         public float radioObj;
         public float radioS;
         public float tiempoAObjetivo = 0.1f;
-
+        // Obtiene la direccion
         public override Direccion GetDireccion()
         {
             Direccion dir = new Direccion();

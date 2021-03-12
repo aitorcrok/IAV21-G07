@@ -9,13 +9,14 @@ namespace UCM.IAV.Movimiento
         public float offset;
         public float radio;
         public float rate;
+        //Crea el gameobject objetivo
         public override void Awake()
         {
             objetivo = new GameObject();
             objetivo.transform.position = transform.position;
             base.Awake(); 
         }
-
+        // Obtiene la direccion
         public override Direccion GetDireccion()
         {
             Direccion dir = new Direccion();

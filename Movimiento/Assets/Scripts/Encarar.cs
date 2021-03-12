@@ -7,6 +7,7 @@ namespace UCM.IAV.Movimiento
     public class Encarar : Alinear
     {
         protected GameObject objAux;
+        //Crea el gameobject objetivo
 
         public override void Awake()
         {
@@ -19,6 +20,7 @@ namespace UCM.IAV.Movimiento
         {
             Destroy(objetivo);
         }
+        // Obtiene la direccion
         public override Direccion GetDireccion()
         {
             Vector3 dir = objAux.transform.position - transform.position;

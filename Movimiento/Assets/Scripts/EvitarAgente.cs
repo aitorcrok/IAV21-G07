@@ -10,13 +10,13 @@
         public float collisionRadius = 0.4f;
         GameObject[] targets;
 
-        // Start is called before the first frame update
+        // Busca al resto de ratas
         void Start()
         {
             targets = GameObject.FindGameObjectsWithTag("rata");
         }
 
-              
+        //Obtiene la direccion
         public override Direccion GetDireccion()
         {
             Direccion dir = new Direccion();

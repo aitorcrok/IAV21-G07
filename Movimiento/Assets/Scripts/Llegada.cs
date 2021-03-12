@@ -16,12 +16,14 @@
         float velObjetivo;
         float distancia;
 
+        /// Obtiene el gameobject del jugador
         public override void Awake()
         {
             base.Awake();
             objetivo = GameObject.FindGameObjectWithTag("jugador");
         }
 
+        /// Obtiene la dirección
         public override Direccion GetDireccion()
         {
             Direccion direccion = new Direccion();

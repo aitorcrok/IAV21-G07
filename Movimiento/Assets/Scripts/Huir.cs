@@ -18,16 +18,17 @@ namespace UCM.IAV.Movimiento
     /// </summary>
     public class Huir : ComportamientoAgente
     {
-        /// <summary>
-        /// Obtiene la dirección
-        /// </summary>
-        /// <returns></returns>
+        /// Busca el gameobject del jugador
         public override void Awake()
         {
             base.Awake();
             objetivo = GameObject.FindGameObjectWithTag("jugador");
         }
-    public override Direccion GetDireccion()
+        /// <summary>
+        /// Obtiene la dirección
+        /// </summary>
+        /// <returns></returns>
+        public override Direccion GetDireccion()
         {
             // Si fuese un comportamiento de dirección dinámico en el que buscásemos alcanzar cierta velocidad en el agente, se tendría en cuenta la velocidad actual del agente y se aplicaría sólo la aceleración necesaria
             // Vector3 deltaV = targetVelocity - body.velocity;

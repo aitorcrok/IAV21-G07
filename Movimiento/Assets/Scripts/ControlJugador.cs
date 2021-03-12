@@ -28,7 +28,10 @@ namespace UCM.IAV.Movimiento
             Direccion direccion = new Direccion();
             direccion.lineal.x = Input.GetAxis("Horizontal");
             direccion.lineal.z = Input.GetAxis("Vertical");
+
+            // Comprueba el input de teclado para llamar al manager
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyUp(KeyCode.Space)) Manager.Instance.Flauta();
+
             direccion.lineal.Normalize();
             direccion.lineal *= agente.aceleracionMax;
 
