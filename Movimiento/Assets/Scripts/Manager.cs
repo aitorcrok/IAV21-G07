@@ -11,6 +11,7 @@ namespace UCM.IAV.Movimiento
         GameObject Suelo;
         GameObject[] Ratas;
         bool flauta = false;
+        Agente a;
 
         public static Manager Instance
         {
@@ -45,6 +46,9 @@ namespace UCM.IAV.Movimiento
             {
                 t.GetComponent<Merodeo>().enabled = !flauta;
                 t.GetComponent<Llegada>().enabled = flauta;
+                a = t.GetComponent<Agente>();
+                if (flauta) a.aceleracionMax = 10;
+                else a.aceleracionMax = 100;
             }
             if (flauta)
             {
