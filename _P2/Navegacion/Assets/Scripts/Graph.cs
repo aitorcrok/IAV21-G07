@@ -57,7 +57,14 @@ namespace UCM.IAV.Navegacion
         {
             return null;
         }
-
+        public virtual Vertex GetVertexObj(int id)
+        {
+            if (ReferenceEquals(vertices, null) || vertices.Count == 0)
+                return null;
+            if (id < 0 || id >= vertices.Count)
+                return null;
+            return vertices[id];
+        }
 
         public virtual Vertex[] GetNeighbours(Vertex v)
         {
@@ -163,9 +170,58 @@ namespace UCM.IAV.Navegacion
             return new List<Vertex>();
         }
 
-        public List<Vertex> GetPathAstar(GameObject srcO, GameObject dstO, Heuristic h = null)
+        public List<Vertex> GetPathAstar(GameObject srcObj, GameObject dstObj, Heuristic h = null)
         {
-            // IMPLEMENTACIÓN DEL ALGORITMO A*
+            if (srcObj == null || dstObj == null)
+                return new List<Vertex>();
+            if (ReferenceEquals(h, null))
+                h = EuclidDist;
+            Vertex src = GetNearestVertex(srcObj.transform.position);
+            Vertex dst = GetNearestVertex(dstObj.transform.position);
+            GPWiki.BinaryHeap<Edge> frontier = new GPWiki.BinaryHeap<Edge>();
+            Edge[] edges;
+            Edge node, child;
+            int size = vertices.Count;
+            float[] distValue = new float[size];
+            int[] previous = new int[size];
+            node = new Edge(src, 0);
+            frontier.Add(node);
+            distValue[src.id] = 0;
+            previous[src.id] = src.id;
+            for (int i = 0; i < size; i++)
+            {
+                if (i == src.id)
+                    continue;
+                distValue[i] = Mathf.Infinity;
+                previous[i] = -1;
+            }
+            while (frontier.Count != 0)
+            {
+                node = frontier.Remove();
+                int nodeId = node.vertex.id;
+                if (ReferenceEquals(node.vertex, dst))
+                {
+                    return BuildPath(src.id, node.vertex.id, ref previous);
+                }
+                edges = GetEdges(node.vertex);
+                foreach (Edge e in edges)
+                {
+                    int eId = e.vertex.id;
+                    if (previous[eId] != -1)
+                        continue;
+                    float cost = distValue[nodeId] + e.cost;
+                    // key point
+                    cost += h(node.vertex, e.vertex);
+                    if (cost < distValue[e.vertex.id])
+                    {
+                        distValue[eId] = cost;
+                        previous[eId] = nodeId;
+                        frontier.Remove(e);
+                        child = new Edge(e.vertex, cost);
+                        frontier.Add(child);
+                    }
+                }
+            }
             return new List<Vertex>();
         }
 

@@ -30,10 +30,10 @@ namespace UCM.IAV.Navegacion
         /// <summary>
         /// Vecinos del vértice
         /// </summary>
-        public List<Edge> vecinos;
+        public List<Edge> neighbours;
 
         // Vértice previo
         [HideInInspector]
-        public Vertice prev;
+        public Vertex prev;
     }
 }
