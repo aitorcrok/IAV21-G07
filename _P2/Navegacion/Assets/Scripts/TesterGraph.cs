@@ -38,6 +38,7 @@ namespace UCM.IAV.Navegacion
         public float pathNodeRadius = .3f;
 
         Camera mainCamera;
+        [SerializeField]
         GameObject srcObj;
         GameObject dstObj;
         List<Vertex> path; // La variable con el camino calculado

@@ -34,7 +34,12 @@ namespace UCM.IAV.Navegacion
 
         //// this is for informed search like A*
         public delegate float Heuristic(Vertex a, Vertex b);
-
+        //public float Heuristic(Vertex a, Vertex b)
+        //{
+        //    float estimation = 0f;
+        //    // your logic here
+        //    return estimation;
+        //}
         // Used for getting path in frames
         public List<Vertex> path;
         public bool isFinished;
@@ -292,5 +297,6 @@ namespace UCM.IAV.Navegacion
             Vector3 posB = b.transform.position;
             return Mathf.Abs(posA.x - posB.x) + Mathf.Abs(posA.y - posB.y);
         }
+
     }
 }
