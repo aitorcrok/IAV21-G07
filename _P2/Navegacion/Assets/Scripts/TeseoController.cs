@@ -6,12 +6,14 @@ namespace UCM.IAV.Navegacion
     public class TeseoController : MonoBehaviour
     {
         UCM.IAV.Movimiento.ControlJugador contJug;
-        bool smooth = false;
+        public bool smooth = false;
         bool state = false;
         List<Vertex> path;
         public Graph graph;
-
+        public GameObject lineContainer;
+        public GameObject line;
         GameObject exit;
+        float t;
 
         // Start is called before the first frame update
         void Start()
@@ -24,7 +26,7 @@ namespace UCM.IAV.Navegacion
         {
             // Comprueba el input de teclado para llamar al manager
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyUp(KeyCode.Space)) hiloAriadna();
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyUp(KeyCode.S)) smooth = !smooth;
+            if (Input.GetKeyDown(KeyCode.S)) smooth = !smooth;
 
             if (state)
             {
@@ -36,25 +38,19 @@ namespace UCM.IAV.Navegacion
                 if (smooth)
                     path = graph.Smooth(path); // Suavizar el camino, una vez calculado
 
-                //idk
-                //for(int i = 0; i < path.Count - 1; i++)
-                //{
-                //    LineRenderer lr = new LineRenderer();
-                //    lr.SetPosition(0, path[i].transform.position);
-                //    lr.SetPosition(1, path[i+1].transform.position);
-                //    lr.SetColors(Color.red, Color.white);
-                //}
-                //idk
-
-
-                foreach (Vertex v in path)
+                foreach(Transform child in lineContainer.transform)
                 {
-                    //dibujar linea
-
-
-
-                    Renderer r = v.GetComponent<Renderer>();
-                    r.material.color = Color.red;
+                    Destroy(child.gameObject);
+                }
+                GameObject l;
+                LineRenderer lr;
+                int i;
+                for (i = 0; i < path.Count - 1; i++)
+                {
+                    l = Instantiate(line, lineContainer.transform);
+                    lr = l.GetComponent<LineRenderer>();
+                    lr.SetPosition(0, new Vector3(path[i].transform.position.x, path[i].transform.position.z, -0.1f));
+                    lr.SetPosition(1, new Vector3(path[i + 1].transform.position.x, path[i + 1].transform.position.z, -0.1f));
                 }
             }
         }
@@ -65,6 +61,7 @@ namespace UCM.IAV.Navegacion
             state = !state;
             if (state)
             {
+
                 Ray ray = new Ray(Vector3.up, -Vector3.up);
                 RaycastHit[] hits;
                 hits = Physics.RaycastAll(ray, 1);

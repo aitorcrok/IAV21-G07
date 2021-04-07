@@ -3,10 +3,10 @@ height 30
 width 30
 map
 ..TTTTTTTTTTTTTTTTTTTTTTTTTTTT
-....T.T......................T
-T.TTT.TTTTTTTTTTTTT.TTTTTTTTTT
-T.T...T...T.T.........T......T
-T.TTT.TTT.T.T.TTTTTTTTTTT.T.TT
+......T......................T
+T.....TTTTTTTTTTTTT.TTTTTTTTTT
+T.T.......T.T.........T......T
+T.TTT.....T.T.TTTTTTTTTTT.T.TT
 T...T.........T.T...T...T.T..T
 T.TTTTTTT.TTTTT.T.T.T.T.T.T.TT
 T...T.T.T.........T.T.T...T.TT
