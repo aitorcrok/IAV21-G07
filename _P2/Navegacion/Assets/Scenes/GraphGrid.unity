@@ -176,10 +176,10 @@ MonoBehaviour:
   combinarPorPeso: 0
   combinarPorPrioridad: 0
   umbralPrioridad: 0.2
-  velocidadMax: 25
-  rotacionMax: 10
-  aceleracionMax: 15
-  aceleracionAngularMax: 10
+  velocidadMax: 10
+  rotacionMax: 8
+  aceleracionMax: 10
+  aceleracionAngularMax: 8
   velocidad: {x: 0, y: 0, z: 0}
   rotacion: 0
   orientacion: 0

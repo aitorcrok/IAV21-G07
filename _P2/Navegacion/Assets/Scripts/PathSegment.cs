@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class PathSegment : MonoBehaviour
+    public class PathSegment
     {
         public Vector3 a;
         public Vector3 b;
