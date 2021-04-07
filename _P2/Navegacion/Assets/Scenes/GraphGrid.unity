@@ -137,6 +137,8 @@ GameObject:
   - component: {fileID: 463895064}
   - component: {fileID: 463895063}
   - component: {fileID: 463895070}
+  - component: {fileID: 463895072}
+  - component: {fileID: 463895071}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -195,7 +197,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!135 &463895066
 SphereCollider:
@@ -283,9 +285,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b5d3cd316879154db125ddc1a82ac94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  smooth: 0
   graph: {fileID: 1574568752}
   lineContainer: {fileID: 1716256219}
   line: {fileID: 8225685189511236582, guid: eff8092f2769f2641bc6e43a64cfb9b9, type: 3}
+--- !u!114 &463895071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463895062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: decb6c212977a1d43b16f607c8e3b714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodes: []
+--- !u!114 &463895072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463895062}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c72b7e00b72fa5247955e4532b1e512d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peso: 1
+  prioridad: 1
+  objetivo: {fileID: 0}
+  path: {fileID: 463895071}
+  pathOffset: 0
 --- !u!1 &478290962
 GameObject:
   m_ObjectHideFlags: 0

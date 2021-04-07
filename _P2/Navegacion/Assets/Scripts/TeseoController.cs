@@ -6,6 +6,8 @@ namespace UCM.IAV.Navegacion
     public class TeseoController : MonoBehaviour
     {
         UCM.IAV.Movimiento.ControlJugador contJug;
+        PathFollower pathFollower;
+        Path p;
         public bool smooth = false;
         bool state = false;
         List<Vertex> path;
@@ -13,12 +15,13 @@ namespace UCM.IAV.Navegacion
         public GameObject lineContainer;
         public GameObject line;
         GameObject exit;
-        float t;
 
         // Start is called before the first frame update
         void Start()
         {
             contJug = GetComponent<UCM.IAV.Movimiento.ControlJugador>();
+            pathFollower = GetComponent<PathFollower>();
+            p = GetComponent<Path>();
         }
 
         // Update is called once per frame
@@ -37,6 +40,10 @@ namespace UCM.IAV.Navegacion
                 path = graph.GetPathAstar(srcObj, exit, null); // Se pasa la heurística
                 if (smooth)
                     path = graph.Smooth(path); // Suavizar el camino, una vez calculado
+
+                List<Vertex> aux = path;
+                aux.Reverse();
+                p.SetNodes(aux);
 
                 foreach(Transform child in lineContainer.transform)
                 {
@@ -58,6 +65,7 @@ namespace UCM.IAV.Navegacion
         void hiloAriadna()
         {
             contJug.enabled = !contJug.enabled;
+            pathFollower.enabled = !pathFollower.enabled;
             state = !state;
             if (state)
             {
@@ -66,6 +74,14 @@ namespace UCM.IAV.Navegacion
                 RaycastHit[] hits;
                 hits = Physics.RaycastAll(ray, 1);
                 exit = hits[0].collider.gameObject;
+            }
+
+            else 
+            {
+                foreach (Transform child in lineContainer.transform)
+                {
+                    Destroy(child.gameObject);
+                }
             }
         }
     }
