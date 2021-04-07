@@ -43,7 +43,7 @@ namespace UCM.IAV.Navegacion
         // Used for getting path in frames
         public List<Vertex> path;
         public bool isFinished;
-
+        public float time;
         public virtual void Start()
         {
             Load();
@@ -177,6 +177,7 @@ namespace UCM.IAV.Navegacion
 
         public List<Vertex> GetPathAstar(GameObject srcObj, GameObject dstObj, Heuristic h = null)
         {
+            time = Time.realtimeSinceStartup;
             if (srcObj == null || dstObj == null)
                 return new List<Vertex>();
             if (ReferenceEquals(h, null))
@@ -206,6 +207,8 @@ namespace UCM.IAV.Navegacion
                 int nodeId = node.vertex.id;
                 if (ReferenceEquals(node.vertex, dst))
                 {
+                    time = (Time.realtimeSinceStartup - time)*1000;
+                    Debug.Log(time + "ms");
                     return BuildPath(src.id, node.vertex.id, ref previous);
                 }
                 edges = GetEdges(node.vertex);
@@ -227,6 +230,8 @@ namespace UCM.IAV.Navegacion
                     }
                 }
             }
+            time = (Time.realtimeSinceStartup - time) * 1000;
+            Debug.Log(time + "ms");
             return new List<Vertex>();
         }
 
