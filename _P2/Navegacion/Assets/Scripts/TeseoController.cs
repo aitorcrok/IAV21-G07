@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 namespace UCM.IAV.Navegacion
 {
     public class TeseoController : MonoBehaviour
@@ -16,6 +17,7 @@ namespace UCM.IAV.Navegacion
         public GameObject line;
         GameObject exit;
 
+        public Text suavizadoText;
         // Start is called before the first frame update
         void Start()
         {
@@ -29,7 +31,7 @@ namespace UCM.IAV.Navegacion
         {
             // Comprueba el input de teclado para llamar al manager
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyUp(KeyCode.Space)) hiloAriadna();
-            if (Input.GetKeyDown(KeyCode.S)) smooth = !smooth;
+            if (Input.GetKeyDown(KeyCode.S)) Suavizado();
 
             if (state)
             {
@@ -64,7 +66,11 @@ namespace UCM.IAV.Navegacion
                 }
             }
         }
-
+        void Suavizado()
+        {
+            smooth = !smooth;
+            suavizadoText.text = "Suavizado:\n" + smooth;
+        }
         void hiloAriadna()
         {
             contJug.enabled = !contJug.enabled;
