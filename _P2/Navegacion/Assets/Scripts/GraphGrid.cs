@@ -43,7 +43,7 @@ namespace UCM.IAV.Navegacion
 
         public void UpdateTimeText(float time)
         {
-            tekusuto.text = "Time: " + time*1000 + " ms";
+            tekusuto.text = "Tiempo: " + time*1000 + " ms";
         }
 
         private int GridToId(int x, int y)

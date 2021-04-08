@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 namespace UCM.IAV.Navegacion
 {
     public class Minotauro : MonoBehaviour
@@ -20,6 +20,7 @@ namespace UCM.IAV.Navegacion
         bool completedPath = true;
         bool waiting = false;
 
+        public Text stateText;
         Rigidbody rb;
         private void Start()
         {
@@ -55,6 +56,7 @@ namespace UCM.IAV.Navegacion
                 path = graph.GetPathAstar(srcObj, obj, out t, null); // Se pasa la heurística ( a mirar !)
                 path.Reverse();
                 p.SetNodes(path);
+                stateText.text = "Minotaur State:\nMerodeando";
             }
             else if (Vector3.Distance(obj.transform.position, transform.position) < 1)
             {
@@ -64,6 +66,7 @@ namespace UCM.IAV.Navegacion
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
                 Debug.Log("I am waiting");
+                stateText.text = "Minotaur State:\nDescansando";
                 StartCoroutine("waitingABit");
             }
             else
@@ -76,6 +79,7 @@ namespace UCM.IAV.Navegacion
         }
         public void EmpiezaPerseguir()
         {
+            stateText.text = "Minotaur State:\nPersiguiendo";
             following = true;
             completedPath = true;
         }
