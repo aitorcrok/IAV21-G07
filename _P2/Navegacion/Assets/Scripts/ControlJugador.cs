@@ -19,6 +19,14 @@ namespace UCM.IAV.Movimiento
 
     public class ControlJugador: ComportamientoAgente
     {
+        Animator animator;
+        bool moving = false;
+
+        private void Start()
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
+
         /// <summary>
         /// Obtiene la dirección
         /// </summary>
@@ -29,6 +37,8 @@ namespace UCM.IAV.Movimiento
             direccion.lineal.x = Input.GetAxis("Horizontal");
             direccion.lineal.z = Input.GetAxis("Vertical");
 
+            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) animator.SetBool("Moving", true);
+            else animator.SetBool("Moving", false);
 
             direccion.lineal.Normalize();
             direccion.lineal *= agente.aceleracionMax;

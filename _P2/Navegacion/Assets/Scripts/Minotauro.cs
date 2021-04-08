@@ -6,6 +6,7 @@ namespace UCM.IAV.Navegacion
 {
     public class Minotauro : MonoBehaviour
     {
+        Animator animator;
         Path p;
         PathFollower pathFollower;
         UCM.IAV.Movimiento.Agente ag;
@@ -16,9 +17,9 @@ namespace UCM.IAV.Navegacion
         public GameObject player;
         public GameObject obj;
 
-        bool following = false;
-        bool completedPath = true;
-        bool waiting = false;
+        public bool following = false;
+        public bool completedPath = true;
+        public bool waiting = false;
 
         public Text stateText;
         Rigidbody rb;
@@ -29,6 +30,7 @@ namespace UCM.IAV.Navegacion
             rb = GetComponent<Rigidbody>();
             ag = GetComponent<UCM.IAV.Movimiento.Agente>();
             enc = GetComponent<UCM.IAV.Movimiento.Encarar>();
+            animator = GetComponentInChildren<Animator>();
         }
         private void Update()
         {
@@ -36,8 +38,11 @@ namespace UCM.IAV.Navegacion
             RaycastHit[] hits;
             hits = Physics.RaycastAll(ray, 1);
             GameObject srcObj = hits[0].collider.gameObject;
-            if (waiting)
+            if (waiting) 
+            {
                 waiting = true;
+                animator.SetBool("Waiting", true);
+            }
             else if (following)
             {
                 float t;
@@ -61,6 +66,7 @@ namespace UCM.IAV.Navegacion
             else if (Vector3.Distance(obj.transform.position, transform.position) < 1)
             {
                 waiting = true;
+                animator.SetBool("Waiting", true);
                 pathFollower.enabled = false;
                 ag.enabled = false;
                 rb.velocity = Vector3.zero;
@@ -82,17 +88,20 @@ namespace UCM.IAV.Navegacion
             stateText.text = "Minotaur State:\nPersiguiendo";
             following = true;
             completedPath = true;
+            animator.SetBool("Following", true);
         }
 
         public void ParaPerseguir()
         {
             following = false;
+            animator.SetBool("Following", false);
         }
         IEnumerator waitingABit()
         {
 
             yield return new WaitForSeconds(2f);
             waiting = false;
+            animator.SetBool("Waiting", false);
             completedPath = true;
             ag.enabled = true;
             pathFollower.enabled = true;
