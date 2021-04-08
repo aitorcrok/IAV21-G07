@@ -37,9 +37,12 @@ namespace UCM.IAV.Navegacion
                 RaycastHit[] hits;
                 hits = Physics.RaycastAll(ray, 1);
                 GameObject srcObj = hits[0].collider.gameObject;
-                path = graph.GetPathAstar(srcObj, exit, null); // Se pasa la heurística
+                float t;
+                path = graph.GetPathAstar(srcObj, exit, out t, null); // Se pasa la heurística
                 if (smooth)
                     path = graph.Smooth(path); // Suavizar el camino, una vez calculado
+                GraphGrid g = (GraphGrid)graph;
+                g.UpdateTimeText(t);
 
                 List<Vertex> aux = path;
                 aux.Reverse();

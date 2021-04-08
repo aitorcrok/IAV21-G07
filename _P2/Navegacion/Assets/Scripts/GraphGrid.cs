@@ -20,6 +20,7 @@ namespace UCM.IAV.Navegacion
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using UnityEngine.UI;
 
     public class GraphGrid : Graph
     {
@@ -37,6 +38,13 @@ namespace UCM.IAV.Navegacion
         int numRows;
         GameObject[] vertexObjs;
         bool[,] mapVertices;
+
+        public Text tekusuto;
+
+        public void UpdateTimeText(float time)
+        {
+            tekusuto.text = "Time: " + time*1000 + " ms";
+        }
 
         private int GridToId(int x, int y)
         {
@@ -216,5 +224,7 @@ namespace UCM.IAV.Navegacion
             return null;
         }
 
+        public int GetCols() { return numCols; }
+        public int GetRows() { return numRows; }
     }
 }

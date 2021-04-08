@@ -19,7 +19,6 @@ namespace UCM.IAV.Navegacion
     using UnityEngine;
     using System.Collections;
     using System.Collections.Generic;
-    using UnityEngine.UI;
 
     /// <summary>
     /// Abstract class for graphs
@@ -45,7 +44,6 @@ namespace UCM.IAV.Navegacion
         public List<Vertex> path;
         public bool isFinished;
         public float time;
-        public Text tekusuto;
         public virtual void Start()
         {
             Load();
@@ -177,7 +175,7 @@ namespace UCM.IAV.Navegacion
             return new List<Vertex>();
         }
 
-        public List<Vertex> GetPathAstar(GameObject srcObj, GameObject dstObj, Heuristic h = null)
+        public List<Vertex> GetPathAstar(GameObject srcObj, GameObject dstObj, out float time, Heuristic h = null)
         {
             time = Time.realtimeSinceStartup;
             if (srcObj == null || dstObj == null)
@@ -209,9 +207,7 @@ namespace UCM.IAV.Navegacion
                 int nodeId = node.vertex.id;
                 if (ReferenceEquals(node.vertex, dst))
                 {
-                    time = (Time.realtimeSinceStartup - time)*1000;
-                    Debug.Log(time + "ms");
-                    tekusuto.text = "Time: " + time + " ms";
+                    time = (Time.realtimeSinceStartup - time);
                     return BuildPath(src.id, node.vertex.id, ref previous);
                 }
                 edges = GetEdges(node.vertex);
@@ -233,9 +229,7 @@ namespace UCM.IAV.Navegacion
                     }
                 }
             }
-            time = (Time.realtimeSinceStartup - time) * 1000;
-            Debug.Log(time + "ms");
-            tekusuto.text = "Time: " + time + " ms";
+            time = (Time.realtimeSinceStartup - time);
             return new List<Vertex>();
         }
 
