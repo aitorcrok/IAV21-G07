@@ -20,15 +20,21 @@ que se mantengan separadas entre sí.
 
 Para gestionar el uso de la flauta hemos hecho un gestor para la escena (Manager.cs) que, gracias a la estructura singleton, es llamado por el jugador (desde ControlJugador.cs) para alterar el resto de objetos.
 
+
 ### Práctica 2: El hilo de Ariadna
 
 Para realizar esta práctica hemos utilizado el proyecto base de Navegación. En él, a raíz de un archivo de texto codificado para formar un mapa, una vez pulsamos el botón de Play se creará dicho mapa, teniendo a Teseo en un punto del mapa y al Minotauro en el centro del mismo. Además, hemos reutilizado los scripts de movimiento de la anterior práctica.
-* La esfera __ es el jugador, y se mueve utilizando las teclas WASD o las flechas del teclado y puede tocar mostrar el hilo de Ariadna manteniendo la barra espaciadora, lo que marca el camino más corto en el suelo y comienza a seguirlo, hasta que deje de pulsar el espacio.
+* El caballero, que representa a Teseo, es el jugador, y se mueve utilizando las teclas las flechas del teclado y puede tocar mostrar el hilo de Ariadna manteniendo la barra espaciadora, lo que marca el camino más corto en el suelo y comienza a seguirlo, hasta que deje de pulsar el espacio.
 * Si mientras se ve el hilo de Ariadna se pulsa el botón S, cambiará el camino mostrado al modo suavizado.
-* La esfera ___ es el minotauro, que merodeará de manera lenta a no ser de que en su ángulo de visión vea a Teseo.
+* El minotauro, inicialmente en el centro del escenario, merodeará de manera lenta a no ser de que en su ángulo de visión vea a Teseo.
+* Existe una interfaz que muestra en todo momento el tiempo de cálculo para el camino más corto del hilo de Ariadna, el número de nodos que recorre, el estado del minotauro (merodeo-seguimiento-parado) y por último si el camino mostrado está suavizado o no.
 
-Para ello hemos integrado los componentes de ___
-
+Para ello hemos modificado ligeramente componentes que ya teníamos en el proyecto base (con el objetivo de conseguir los funcionamientos deseados), y además, hemos integrado componentes propios. Estos componentes son los siguientes:
+* TeseoController: Controla la lógica del jugador, es decir, el input para cambiar el tipo del movimiento, el suavizado, etc.
+* CambiarPeso: Script para aumentar el coste de las casillas adyacentes al minotauro a través de detección de colisiones.
+* EvitarMuros: Modifica la dirección de los movimientos automáticos a través de lanzar raycast para evitar los muros en el movimiento.
+* Minotauro: Controla la lógica del minotauro, es decir, cuando perseguir o merodear, a qué velocidad lo hace, el camino que sigue, etc.
+* MirarHaciaDondeVa: Como su propio nombre indica, sirve para encarar al objeto en la dirección en la que camina.
 
 #### Bibliografía
 * Millington, I.: Artificial Intelligence for Games. CRC Press, 3rd Edition(2019)
