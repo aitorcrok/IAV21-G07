@@ -10,7 +10,6 @@ namespace UCM.IAV.Navegacion
         Path p;
         PathFollower pathFollower;
         UCM.IAV.Movimiento.Agente ag;
-        UCM.IAV.Movimiento.Encarar enc;
         List<Vertex> path;
         public Graph graph;
 
@@ -23,22 +22,27 @@ namespace UCM.IAV.Navegacion
 
         public Text stateText;
         Rigidbody rb;
+
+        public float rangeOfVision = 5f;
+        public float velocidadMerodeo;
+        public float aceleracionMerodeo;
+        public float velocidadPersecucion;
+        public float aceleracionPersecucion;
         private void Start()
         {
             p = GetComponent<Path>();
             pathFollower = GetComponent<PathFollower>();
             rb = GetComponent<Rigidbody>();
             ag = GetComponent<UCM.IAV.Movimiento.Agente>();
-            enc = GetComponent<UCM.IAV.Movimiento.Encarar>();
             animator = GetComponentInChildren<Animator>();
         }
         private void Update()
         {
-            Ray ray = new Ray(transform.position, -Vector3.up);
-            RaycastHit[] hits;
-            hits = Physics.RaycastAll(ray, 1);
-            GameObject srcObj = hits[0].collider.gameObject;
-            if (waiting) 
+            RaycastHit hit;
+            Physics.Raycast(transform.position, -Vector3.up, out hit, 2f);
+            GameObject srcObj = hit.collider.gameObject;
+            detectPlayer();
+            if (waiting)
             {
                 waiting = true;
                 animator.SetBool("Waiting", true);
@@ -89,6 +93,8 @@ namespace UCM.IAV.Navegacion
             following = true;
             completedPath = true;
             animator.SetBool("Following", true);
+            ag.velocidadMax = velocidadPersecucion;
+            ag.aceleracionMax = aceleracionPersecucion;
         }
 
         public void ParaPerseguir()
@@ -105,6 +111,33 @@ namespace UCM.IAV.Navegacion
             completedPath = true;
             ag.enabled = true;
             pathFollower.enabled = true;
+        }
+        void detectPlayer()
+        {
+            if (Vector3.Distance(transform.position, player.transform.position) < rangeOfVision)
+            {
+                RaycastHit hit;
+                Vector3 dir = player.transform.position - transform.position;
+                if (Physics.Raycast(transform.position, dir, out hit))
+                {
+                    if (hit.collider.gameObject == player && !following)
+                    {
+                        EmpiezaPerseguir();
+                    }
+                }
+                else if (following)
+                {
+                    ParaPerseguir();
+                }
+            }
+            else if (following)
+            {
+                ParaPerseguir();
+            }
+        }
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawLine(transform.position, player.transform.position);
         }
     }
 }
