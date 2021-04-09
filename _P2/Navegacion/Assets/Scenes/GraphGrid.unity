@@ -402,6 +402,7 @@ GameObject:
   - component: {fileID: 463895064}
   - component: {fileID: 463895073}
   - component: {fileID: 463895063}
+  - component: {fileID: 463895074}
   - component: {fileID: 463895070}
   - component: {fileID: 463895072}
   - component: {fileID: 463895071}
@@ -556,7 +557,7 @@ MonoBehaviour:
   graph: {fileID: 1574568752}
   lineContainer: {fileID: 1716256219}
   line: {fileID: 8225685189511236582, guid: eff8092f2769f2641bc6e43a64cfb9b9, type: 3}
-  suavizadoText: {fileID: 1077356642}
+  suavizadoText: {fileID: 0}
 --- !u!114 &463895071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -588,6 +589,24 @@ MonoBehaviour:
   path: {fileID: 463895071}
   pathOffset: 0
 --- !u!114 &463895073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463895062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a329526a618c84bb19f8353d16f7c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peso: 1
+  prioridad: 1
+  objetivo: {fileID: 0}
+  radioObj: 5
+  radioS: 30
+  tiempoAObjetivo: 0.1
+--- !u!114 &463895074
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -969,7 +988,7 @@ MonoBehaviour:
   prioridad: 2
   objetivo: {fileID: 0}
   radioObj: 5
-  radioS: 0
+  radioS: 30
   tiempoAObjetivo: 0.1
 --- !u!1 &1092431992
 GameObject:
@@ -1618,8 +1637,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1077356641}
+  m_Children: []
   m_Father: {fileID: 475954860}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

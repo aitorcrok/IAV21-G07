@@ -6,8 +6,10 @@ namespace UCM.IAV.Movimiento
 {
     public class Alinear : ComportamientoAgente
     {
-        public float radioObj;
-        public float radioS;
+        //Si esto es 0, peta
+        public float radioObj=5;
+
+        public float radioS = 30;
         public float tiempoAObjetivo = 0.1f;
         // Obtiene la direccion
         //Esto es literalmente igual que llegada pero con angulos
