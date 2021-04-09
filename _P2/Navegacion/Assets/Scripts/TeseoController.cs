@@ -40,7 +40,7 @@ namespace UCM.IAV.Navegacion
                 hits = Physics.RaycastAll(ray, 1);
                 GameObject srcObj = hits[0].collider.gameObject;
                 float t;
-                path = graph.GetPathAstar(srcObj, exit, out t, null); // Se pasa la heurística
+                path = graph.GetPathAstar(srcObj, exit, out t, graph.HeurPeso); // Se pasa la heurística
                 if (smooth)
                     path = graph.Smooth(path); // Suavizar el camino, una vez calculado
                 GraphGrid g = (GraphGrid)graph;

@@ -301,5 +301,11 @@ namespace UCM.IAV.Navegacion
             return Mathf.Abs(posA.x - posB.x) + Mathf.Abs(posA.y - posB.y);
         }
 
+        public float HeurPeso(Vertex a, Vertex b)
+        {
+            Vector3 posA = a.transform.position * a.peso;
+            Vector3 posB = b.transform.position * b.peso;
+            return Vector3.Distance(posA, posB);
+        }
     }
 }

@@ -35,5 +35,7 @@ namespace UCM.IAV.Navegacion
         // Vértice previo
         [HideInInspector]
         public Vertex prev;
+
+        public int peso = 1;
     }
 }
