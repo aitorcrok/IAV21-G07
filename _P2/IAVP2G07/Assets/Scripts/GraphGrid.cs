@@ -203,7 +203,7 @@ namespace UCM.IAV.Navegacion
                 col = (int)p.x;
                 row = (int)p.y;
                 int id = GridToId(col, row);
-                if (mapVertices[col, row])
+                if (mapVertices[row, col])
                     return vertices[id];
 
                 if (!explored.Contains(p))

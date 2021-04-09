@@ -61,10 +61,8 @@ namespace UCM.IAV.Navegacion
             else if (completedPath)
             {
                 float t;
-                GraphGrid g = (GraphGrid)graph;
                 completedPath = false;
-                Vector3 point = new Vector3(Random.Range(0, g.GetRows()), 0, Random.Range(0, g.GetCols()));
-                obj = graph.GetNearestVertex(point).gameObject;
+                obj = graph.GetVertexObj(Random.Range(0, graph.GetSize())).gameObject;
                 path = graph.GetPathAstar(srcObj, obj, out t, null); // Se pasa la heurística ( a mirar !)
                 path.Reverse();
                 p.SetNodes(path);
@@ -103,6 +101,7 @@ namespace UCM.IAV.Navegacion
         public void ParaPerseguir()
         {
             following = false;
+            completedPath = true;
             animator.SetBool("Following", false);
             ag.velocidadMax = velocidadMerodeo;
             ag.aceleracionMax = aceleracionMerodeo;
@@ -128,6 +127,10 @@ namespace UCM.IAV.Navegacion
                     if (hit.collider.gameObject == player && !following)
                     {
                         EmpiezaPerseguir();
+                    }
+                    else
+                    {
+                        ParaPerseguir();
                     }
                 }
                 else if (following)
