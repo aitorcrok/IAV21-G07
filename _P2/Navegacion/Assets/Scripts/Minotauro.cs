@@ -101,6 +101,8 @@ namespace UCM.IAV.Navegacion
         {
             following = false;
             animator.SetBool("Following", false);
+            ag.velocidadMax = velocidadMerodeo;
+            ag.aceleracionMax = aceleracionMerodeo;
         }
         IEnumerator waitingABit()
         {
