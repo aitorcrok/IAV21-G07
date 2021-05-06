@@ -5,9 +5,11 @@ using UnityEngine;
 public class GoToTarget : MonoBehaviour
 {
     public Transform initialTarget;
+    public float speed;
+
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, initialTarget.position, 3 * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, initialTarget.position, speed * Time.deltaTime);
     }
 
     public void setTarget(Transform t) { initialTarget = t; }
