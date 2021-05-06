@@ -30,12 +30,15 @@ namespace UCM.IAV.Movimiento
         /// </summary>
         private Vector3 _dir;
 
+        Animator animator;
+
         /// <summary>
         /// Al despertar, establecer el cuerpo rígido
         /// </summary>
         private void Awake()
         {
             _cuerpoRigido = GetComponent<Rigidbody>();
+            animator = GetComponentInChildren<Animator>();
         }
 
         /// <summary>
@@ -45,6 +48,11 @@ namespace UCM.IAV.Movimiento
         {
             velocidad.x = Input.GetAxis("Horizontal");
             velocidad.z = Input.GetAxis("Vertical");
+
+
+            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) animator.SetBool("Moving", true);
+            else animator.SetBool("Moving", false);
+
             // Faltaba por normalizar el vector
             velocidad.Normalize();
             velocidad *= velocidadMax; 
