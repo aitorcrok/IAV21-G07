@@ -20,7 +20,7 @@ public class RestoreLampara : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            destroyed = false;
+            //destroyed = false;
             Debug.Log(variableName + " restaurada");
             Variables.Object(sv).Set(variableName, true);
             palanca.GetComponent<Palanca>().setPalanca(false); // se puede volver a tirar la lampara (reactivar palanca)
@@ -28,7 +28,7 @@ public class RestoreLampara : MonoBehaviour
     }
     private void Update()
     {
-        if (!destroyed)
+        if (Variables.Object(sv).Get<bool>(variableName))
             transform.position = Vector3.MoveTowards(transform.position, originalPos, Time.deltaTime * speed);
         else
             transform.position = Vector3.MoveTowards(transform.position, floorPos, Time.deltaTime * speed);
