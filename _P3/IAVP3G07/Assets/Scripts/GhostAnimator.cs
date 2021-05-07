@@ -15,8 +15,8 @@ public class GhostAnimator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(GetComponent<Rigidbody>().velocity);
-        if (GetComponent<Rigidbody>().velocity.x != 0 || GetComponent<Rigidbody>().velocity.z != 0) animator.SetBool("Moving", true);
-        else animator.SetBool("Moving", false);
+        //Debug.Log(GetComponent<Rigidbody>().velocity);
+        //if (GetComponent<Rigidbody>().velocity.x != 0 || GetComponent<Rigidbody>().velocity.z != 0) animator.SetBool("Moving", true);
+        //else animator.SetBool("Moving", false);
     }
 }
