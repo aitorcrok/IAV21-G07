@@ -22,7 +22,7 @@ public class CallBarca : MonoBehaviour
     {
         //entra al ontriggerstay dos veces no se por que entonces hago esto para que solo haga el proceso una vez
 
-        if (Input.GetKey(KeyCode.Space))
+        if (other.gameObject.tag == "fantasma" || Input.GetKey(KeyCode.Space))
         {
             if (isColiding) return;
             isColiding = true;
