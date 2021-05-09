@@ -22,11 +22,11 @@ public class CallBarca : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //entra al ontriggerstay dos veces no se por que entonces hago esto para que solo haga el proceso una vez
-
         if (other.gameObject.tag == "Player" && Input.GetKey(KeyCode.Space))
         {
-            if (isColliding) return;
-            isColliding = true;
+            //if (isColliding) return;
+            //isColliding = true;
+            Debug.Log("laputamadre");
             if (isNextTarget)
             {
                 TraeBarca();
