@@ -127,6 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isNextTarget: 0
   nextTarget: {fileID: 0}
+  puerto: {fileID: 0}
   barca: {fileID: 0}
 --- !u!65 &4479613041432445244
 BoxCollider:

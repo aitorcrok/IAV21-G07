@@ -5,17 +5,18 @@ using UnityEngine;
 public class CallBarca : MonoBehaviour
 {
     public bool isNextTarget; //indica si va o viene
-    public Transform nextTarget;
+    public Transform nextTarget, puerto;
     public GameObject barca;
     GoToTarget gtt;
-    bool isColiding = false;
+    bool isColliding = false;
     private void Start()
     {
         gtt = barca.GetComponent<GoToTarget>();
+        puerto = this.transform.GetChild(0);
     }
     private void OnTriggerExit(Collider other)
     {
-        isColiding = false;
+        isColliding = false;
     }
     // Start is called before the first frame update
     private void OnTriggerStay(Collider other)
@@ -24,22 +25,28 @@ public class CallBarca : MonoBehaviour
 
         if (other.gameObject.tag == "fantasma" || Input.GetKey(KeyCode.Space))
         {
-            if (isColiding) return;
-            isColiding = true;
+            if (isColliding) return;
+            isColliding = true;
             if (isNextTarget)
             {
-                Debug.Log("ven perro");
-                gtt.setTarget(this.transform.GetChild(0));
-                isNextTarget = false;
+                TraeBarca();
             }
             else
             {
-                Debug.Log("llévame contigo, perro");
-                Vector3 quecoñopasaaqui = this.transform.GetChild(0).position;
-                Debug.Log("Ve a " + nextTarget.position + " desde " + quecoñopasaaqui);
-                gtt.setTarget(nextTarget);
-                isNextTarget = true;
+                MandaBarca();
             }
         }
+    }
+    public void TraeBarca()
+    {
+        Debug.Log("ven perro");
+        gtt.setTarget(puerto);
+    }
+    public void MandaBarca()
+    {
+        Debug.Log("llévame contigo, perro");
+        Vector3 quecoñopasaaqui = puerto.position;
+        Debug.Log("Ve a " + nextTarget.position + " desde " + quecoñopasaaqui);
+        gtt.setTarget(nextTarget);
     }
 }
