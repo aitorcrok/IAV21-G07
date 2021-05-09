@@ -14,7 +14,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Opera
         [Tooltip("VariableName")]
         public SharedString variableName;
         [Tooltip("Value")]
-        public SharedBool value;
+        public bool value;
         public override void OnStart()
         {
             sV = sceneVariables.Value.GetComponent<SceneVariables>();
