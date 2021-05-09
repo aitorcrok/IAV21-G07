@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    [SerializeField] Camera mainCamera;
     [SerializeField] Camera countCamera;
     [SerializeField] Camera singerCamera;
     [SerializeField] Camera ghostCamera;
-    int activeCam = 0;
+    int activeCam = 3;
     // Update is called once per frame
     void Update()
     {
         if(activeCam != 0 && Input.GetKey(KeyCode.V))
         {
+            mainCamera.enabled = false;
             countCamera.enabled = true;
             singerCamera.enabled = false;
             ghostCamera.enabled = false;
@@ -20,6 +22,7 @@ public class CameraController : MonoBehaviour
         }
         else if (activeCam != 1 && Input.GetKey(KeyCode.C))
         {
+            mainCamera.enabled = false;
             countCamera.enabled = false;
             singerCamera.enabled = true;
             ghostCamera.enabled = false;
@@ -27,10 +30,19 @@ public class CameraController : MonoBehaviour
         }
         else if (activeCam != 2 && Input.GetKey(KeyCode.F))
         {
+            mainCamera.enabled = false;
             countCamera.enabled = false;
             singerCamera.enabled = false;
             ghostCamera.enabled = true;
             activeCam = 2;
+        }
+        else if (activeCam != 3 && Input.GetKey(KeyCode.G))
+        {
+            mainCamera.enabled = true;
+            countCamera.enabled = false;
+            singerCamera.enabled = false;
+            ghostCamera.enabled = false;
+            activeCam = 3;
         }
     }
 }
