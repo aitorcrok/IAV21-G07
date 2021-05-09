@@ -23,7 +23,7 @@ public class CallBarca : MonoBehaviour
     {
         //entra al ontriggerstay dos veces no se por que entonces hago esto para que solo haga el proceso una vez
 
-        if (other.gameObject.tag == "fantasma" || Input.GetKey(KeyCode.Space))
+        if (other.gameObject.tag == "Player" && Input.GetKey(KeyCode.Space))
         {
             if (isColliding) return;
             isColliding = true;
@@ -34,6 +34,7 @@ public class CallBarca : MonoBehaviour
             else
             {
                 MandaBarca();
+                other.transform.position = puerto.position + Vector3.up * 3 / 2;
             }
         }
     }

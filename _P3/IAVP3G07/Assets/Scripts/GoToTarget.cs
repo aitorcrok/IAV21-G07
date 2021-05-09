@@ -52,6 +52,21 @@ public class GoToTarget : MonoBehaviour
                 if (transform.GetChild(0).tag == "fantasma")
                 {
                     Debug.Log("aia");
+
+                    //cambia los costes de los nodos haciendo que al que llegues se considere mas barato
+                    if (!puertoA.isNextTarget)
+                    {
+                        puertoB.gameObject.transform.GetChild(1).GetComponentInChildren<OffMeshLink>().costOverride = 10;
+                        puertoA.gameObject.transform.GetChild(1).GetComponentInChildren<OffMeshLink>().costOverride = 0;
+                    }
+
+                    if (!puertoB.isNextTarget)
+                    {
+                        puertoA.gameObject.transform.GetChild(1).GetComponentInChildren<OffMeshLink>().costOverride = 10;
+                        puertoB.gameObject.transform.GetChild(1).GetComponentInChildren<OffMeshLink>().costOverride = 0;
+
+                    }
+
                     transform.GetChild(0).GetComponent<NavMeshAgent>().enabled = true;
                     transform.GetChild(0).GetComponent<Bolt.StateMachine>().enabled = true;
                 }
