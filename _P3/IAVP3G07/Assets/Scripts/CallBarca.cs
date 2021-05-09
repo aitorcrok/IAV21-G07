@@ -26,7 +26,7 @@ public class CallBarca : MonoBehaviour
         {
             //if (isColliding) return;
             //isColliding = true;
-            Debug.Log("laputamadre");
+            //Debug.Log("laputamadre");
             if (isNextTarget)
             {
                 TraeBarca();
@@ -40,14 +40,14 @@ public class CallBarca : MonoBehaviour
     }
     public void TraeBarca()
     {
-        Debug.Log("ven perro");
+        //Debug.Log("ven perro");
         gtt.setTarget(puerto);
     }
     public void MandaBarca()
     {
-        Debug.Log("llévame contigo, perro");
+        //Debug.Log("llévame contigo, perro");
         Vector3 quecoñopasaaqui = puerto.position;
-        Debug.Log("Ve a " + nextTarget.position + " desde " + quecoñopasaaqui);
+        //Debug.Log("Ve a " + nextTarget.position + " desde " + quecoñopasaaqui);
         gtt.setTarget(nextTarget);
     }
 }

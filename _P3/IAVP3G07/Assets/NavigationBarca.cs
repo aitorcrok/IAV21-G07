@@ -20,7 +20,7 @@ public class NavigationBarca: MonoBehaviour
         //desactiva navmesh
         if (collision.gameObject.tag == "fantasma")
         {
-            Debug.Log("eie");
+            //Debug.Log("eie");
             collision.gameObject.GetComponent<NavMeshAgent>().enabled = false;
             collision.gameObject.GetComponent<Bolt.StateMachine>().enabled = false;
             //Si la barca no esta, llama para que se la traigan

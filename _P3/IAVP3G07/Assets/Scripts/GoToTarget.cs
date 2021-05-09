@@ -24,12 +24,12 @@ public class GoToTarget : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         collision.transform.SetParent(this.transform);
-        Debug.Log("setparent");
+        //Debug.Log("setparent");
     }
     private void OnCollisionExit(Collision collision)
     {
         collision.transform.SetParent(null);
-        Debug.Log("setparent a null");
+        //Debug.Log("setparent a null");
 
     }
     private void OnArrive()
@@ -51,7 +51,7 @@ public class GoToTarget : MonoBehaviour
                 //Reactiva la Navmesh del fantasma
                 if (transform.GetChild(0).tag == "fantasma")
                 {
-                    Debug.Log("aia");
+                    //Debug.Log("aia");
 
                     //cambia los costes de los nodos haciendo que al que llegues se considere mas barato
                     if (!puertoA.isNextTarget)
