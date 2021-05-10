@@ -1,0 +1,63 @@
+Integrantes del grupo 07: 
+- Jorge Bello Martín
+- Aitor García Casamayor
+- David Godoy Ruiz
+- Tomás López Antón
+- Eva Lucas Leiro
+
+--------------------------------------------------
+La cantante
+
+La cantante comienza su estancia en el escenario cantando, lo que pone al fantasma en movimiento. Mientras no sea secuestrada sigue su rutina de ir
+del escenario a las bambalinas y viceversa, quedandose varios segundos al llegar a cada estancia.
+
+Si el fantasma se acerca a ella y la captura, irá a donde vaya hasta que el fantasma la suelte ya sea por un golpe del vizconde o por haberla llevado a la celda.
+Mientras sea libre intenta volver a su rutina. Merodea hasta encontrar el escenario o, en su defecto, al ver al vizconde,
+a quien seguirá hasta llegar a alguna de estas estancias.
+
+Para implementar el comportamiento de la cantante hemos utilizado una máquina de estados de BOLT, que actúa siguiendo los comportamientos descritos arriba.
+--------------------------------------------------
+El vizconde
+
+El vizconde es controlado por el jugador con las flechas de dirección o con WASD. Puede moverse con libertad por toda la ópera e interactuar con ciertos
+elementos con la tecla ESPACIO.
+Este botón de interacción permite al jugador tirar las lámparas del patio de butacas al accionar la palanca correspondiente en cada palco, 
+arreglar dichas lámparas si se encuentra cerca de ellas, golpear al fantasma para aturdirle y que suelte a la cantante si la lleva consigo.
+
+--------------------------------------------------
+El público
+
+El público está en el patio de butacas y lo único que hace es salir de allí al vestíbulo cuando cae alguna de las dos lámparas. No vuelven al patio de
+butacas hasta que las lámparas estén arregladas y haya pasado un tiempo.
+
+--------------------------------------------------
+El fantasma
+
+El fantasma viaja a las bambalinas cuando oye cantar a la cantante. Si se encuentra con ella la llevará a su celda, y si no comprobará si hay público en el escenario.
+Si este es el caso tirará una de las lamparas para espantar al público, y si no irá al escenario a buscar a la cantante. Si esta no está allí
+el fantasma deambulará hasta encontrarla.
+
+En el caso de que el fantasma sea atacado por el vizconde quedará aturdido por unos segundos y volverá a su sala de música, y si llevaba a la bailarina la soltará.
+
+Para implementar el comportamiento del fantasma hemos utilizado una máquina de estados de BOLT, que actúa siguiendo los comportamientos descritos arriba.
+--------------------------------------------------
+El entorno
+
+El entorno está organizado tal y como se indica en la práctica, con todas las conexiones pertinentes.
+--------------------------------------------------
+Las barcas
+
+Las barcas están desarrolladas de tal forma que el jugador o el fantasma pueden ir a UNO DE LOS POSTES NEGROS y subirse a la barca que les espera allí
+o pueden "llamar" a la barca, lo que les hace esperar a que llegue.
+
+Para el movimiento de las barcas del fantasma el NavMesh tiene los "saltos" puestos en los embarcaderos pero colocados de tal forma que antes de llegar a ellos
+el comportamiento del fantasma cambia y hace que active la barca y espere hasta llegar al destino. Para aumentar el coste de la navegación del fantasma, al subirse a una barca altera el 
+coste del "salto" del NavMesh, pero solo cuando el fantasma lo hace, para el vizconde no cambia y la cantante no puede subir a las barcas.
+
+--------------------------------------------------
+La cámara
+
+El jugador puede cambiar de cámara en cualquier momento usando los botones 'c', 'v', 'g', 'f'.
+--------------------------------------------------
+Enlace al repositorio:
+https://github.com/aitorcrok/IAV21-G07
