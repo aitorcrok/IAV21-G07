@@ -7,6 +7,8 @@ namespace es.ucm.fdi.iav.rts
     public class InfluenceMap : Graph
     {
         public List<Unit> unitList;
+        public float dropOffThreshold;
+        private Guild[] guildList;
         // works as vertices in regular graph
         GameObject[] locations;
 
@@ -14,6 +16,7 @@ namespace es.ucm.fdi.iav.rts
         {
             if (unitList == null)
                 unitList = new List<Unit>();
+            guildList = gameObject.GetComponents<Guild>();
         }
         public void AddUnit(Unit u)
         {
@@ -57,6 +60,82 @@ namespace es.ucm.fdi.iav.rts
                     pending = new List<Vertex>(frontier);
                 }
             }
+        }
+        public List<GuildRecord> ComputeMapFlooding()
+        {
+            GPWiki.BinaryHeap<GuildRecord> open;
+            open = new GPWiki.BinaryHeap<GuildRecord>();
+            List<GuildRecord> closed;
+            closed = new List<GuildRecord>();
+
+            foreach (Guild g in guildList)
+            {
+                GuildRecord gr = new GuildRecord();
+                gr.location = GetNearestVertex(g.baseObject.transform.position);
+                gr.guild = g;
+                gr.strength = g.GetDropOff(0f);
+                open.Add(gr);
+            }
+            while (open.Count != 0)
+            {
+                GuildRecord current;
+                current = open.Remove();
+                Vertex currObj;
+                currObj = GetVertexObj(current.location.id);
+                Vector3 currPos;
+                currPos = currObj.transform.position;
+                Vertex[] neighbours;
+                neighbours = GetNeighbours(current.location);
+                foreach (Vertex n in neighbours)
+                {
+                    Vertex nObj = GetVertexObj(n.id);
+                    Vector3 nPos = nObj.transform.position;
+                    float dist = Vector3.Distance(currPos, nPos);
+                    float strength = current.guild.GetDropOff(dist);
+                    if (strength < dropOffThreshold) 
+                            continue;
+
+                    GuildRecord neighGR = new GuildRecord();
+                    neighGR.location = n;
+                    neighGR.strength = strength; 
+                    VertexInfluence vi;
+                    vi = nObj.GetComponent<VertexInfluence>();
+                    neighGR.guild = vi.guild;
+
+                    if (closed.Contains(neighGR))
+                    {
+                        Vertex location = neighGR.location;
+                        int index = closed.FindIndex(x => x.location == location);
+                        GuildRecord gr = closed[index];
+                        if (gr.guild.name != current.guild.name && gr.strength < strength)
+                            continue;
+                    }
+                    else if (open.Contains(neighGR)) 
+                    { 
+                        bool mustContinue = false;
+                        foreach (GuildRecord gr in open)
+                        {
+                            if (gr.Equals(neighGR)) 
+                            {
+                                mustContinue = true;
+                                break;
+                            }
+                        } 
+                        if (mustContinue) 
+                            continue; 
+                    }
+                    else 
+                    {
+                        neighGR = new GuildRecord();
+                        neighGR.location = n;
+                    }
+                    neighGR.guild = current.guild;
+                    neighGR.strength = strength;
+                    open.Add(neighGR);
+                }
+                closed.Add(current);
+            }
+            return closed;
         }
     }
 }

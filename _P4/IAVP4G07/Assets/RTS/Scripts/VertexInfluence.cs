@@ -8,6 +8,7 @@ namespace es.ucm.fdi.iav.rts
     {
         public Faction faction;
         public float value = 0f;
+        public Guild guild;
 
         public bool SetValue(Faction f, float v)
         {
