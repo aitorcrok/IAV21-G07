@@ -69,7 +69,13 @@ namespace es.ucm.fdi.iav.rts
 
 
         public Faction faction;
-        public float influence = 1f;
+        [SerializeField] private float _influence = 1f;
+
+        public virtual float GetDropOff(int locationDistance)
+        {
+            float d = _influence / _radius * locationDistance;
+            return _influence - d; 
+        }
 
         /*******************************************************************/
 
