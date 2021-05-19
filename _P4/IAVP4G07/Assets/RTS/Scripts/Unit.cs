@@ -15,6 +15,12 @@ using System;
 
 namespace es.ucm.fdi.iav.rts
 {
+    public enum Faction
+    {
+        // example values
+        BLUE, RED
+    }
+
     /* 
      * Las unidades son los agentes con movilidad y comportamientos inteligentes del ejército.
      * Tienen la responsabilidad de moverse, ya sea para obtener recursos o atacar, y pueden sufrir daños e incluso ser destruidas por el enemigo o las amenazas del escenario.
@@ -60,6 +66,10 @@ namespace es.ucm.fdi.iav.rts
         // Debe ser siempre menor de la distancia de detección de las unidades y del alcance que tengan los proyectiles disparados.
         [SerializeField] private float _radius = 10;
         public float Radius { get { return _radius; } }
+
+
+        public Faction faction;
+        public float influence = 1f;
 
         /*******************************************************************/
 
