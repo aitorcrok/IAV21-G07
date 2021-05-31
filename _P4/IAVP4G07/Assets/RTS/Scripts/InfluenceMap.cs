@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace es.ucm.fdi.iav.rts
 {
-    public class InfluenceMap : Graph
+    public class InfluenceMap : GraphGrid
     {
         public List<Unit> unitList;
         public float dropOffThreshold;
