@@ -96,8 +96,8 @@ namespace es.ucm.fdi.iav.rts
 
         // Última unidad creada
         private Unit LastUnit { get; set; }
-
         private InfluenceMap _map;
+
 
         // Despierta el controlador y configura toda estructura interna que sea necesaria
         private void Awake()
@@ -114,7 +114,11 @@ namespace es.ucm.fdi.iav.rts
             _labelSmallStyle.fontSize = 11;
             _labelSmallStyle.normal.textColor = Color.yellow;
 
-            _map = new InfluenceMap();
+            _map = GetComponent<InfluenceMap>();
+            if (_map == null)
+            {
+                Debug.LogError("El gameObject no tiene componente InfluenceMap");
+            }
         }
 
         // El método de pensar que sobreescribe e implementa el controlador, para percibir (hacer mapas de influencia, etc.) y luego actuar.

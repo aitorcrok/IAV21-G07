@@ -27,6 +27,7 @@ namespace es.ucm.fdi.iav.rts
     {
         // Tiempo en segundos que tarda la corrutina de pensamiento (percibir/actuar) en ejecutarse.
         [SerializeField] private float thinkTime = 0.5f;
+
         public float ThinkTime { set { thinkTime = value; } get { return thinkTime; } }
 
         /****************************************************/
