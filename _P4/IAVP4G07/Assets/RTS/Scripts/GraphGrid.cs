@@ -24,16 +24,16 @@ namespace es.ucm.fdi.iav.rts
 
     public class GraphGrid : Graph
     {
-        public bool get8Vicinity = false;
+        //public bool get8Vicinity = false;
         public float cellSize = 1f;
-        [Range(0, Mathf.Infinity)]
-        public float defaultCost = 1f;
-        [Range(0, Mathf.Infinity)]
-        public float maximumCost = Mathf.Infinity;
-
+        //[Range(0, Mathf.Infinity)]
+        //public float defaultCost = 1f;
+        //[Range(0, Mathf.Infinity)]
+        //public float maximumCost = Mathf.Infinity;
         int numCols;
         int numRows;
         GameObject[] vertexObjs;
+
 
         protected int GridToId(int x, int y)
         {
@@ -106,7 +106,7 @@ namespace es.ucm.fdi.iav.rts
 
         public override void Load()
         {
-            Vector3 terrainSize = GetComponentInParent<Terrain>().terrainData.size;
+            Vector3 terrainSize = RTSGameManager.Instance.GetTerrain().terrainData.size;
             int width = (int)(terrainSize.x / cellSize);
             int depth = (int)(terrainSize.z / cellSize);
 
@@ -169,6 +169,7 @@ namespace es.ucm.fdi.iav.rts
             col = (int)p.x;
             row = (int)p.y;
             int id = GridToId(col, row);
+            Debug.Log(id);
             return vertices[id];
         }
 

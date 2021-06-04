@@ -25,7 +25,7 @@ namespace es.ucm.fdi.iav.rts
     public abstract class Graph : MonoBehaviour
     {
 
-        public GameObject vertexPrefab;
+       // public GameObject vertexPrefab;
         protected List<Vertex> vertices;
         protected List<List<Vertex>> neighbors;
         protected List<List<float>> costs;
@@ -40,9 +40,9 @@ namespace es.ucm.fdi.iav.rts
         //    return estimation;
         //}
         // Used for getting path in frames
-        public List<Vertex> path;
-        public bool isFinished;
-        public float time;
+       // public List<Vertex> path;
+       // public bool isFinished;
+       // public float time;
         public virtual void Start()
         {
             Load();

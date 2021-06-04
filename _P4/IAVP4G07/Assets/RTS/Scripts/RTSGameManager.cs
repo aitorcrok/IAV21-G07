@@ -70,6 +70,9 @@ namespace es.ucm.fdi.iav.rts
         private GameObject DestructionUnitEvenPrefab { get { return _destructionUnitEvenPrefab; } }
         [SerializeField] private GameObject _destructionUnitOddPrefab = null;
         private GameObject DestructionUnitOddPrefab { get { return _destructionUnitOddPrefab; } }
+        public GameObject ArrakisGO;
+        private Terrain ArrakisTerrain;
+        public Terrain GetTerrain() { return ArrakisTerrain; }
 
         // Utiliza un sencillo patrón Singleton para dar acceso global y eliminar duplicados, aunque no crea un objeto si no estamos en una escena ni se mantiene si cambiamos de escena
         private static RTSGameManager _instance;
@@ -121,6 +124,7 @@ namespace es.ucm.fdi.iav.rts
                     ControllersDestructionUnits.Add(new List<DestructionUnit>(controller.GetComponentsInChildren<DestructionUnit>()));
                 }
             }
+            ArrakisTerrain = ArrakisGO.GetComponent<Terrain>();
         }
 
         // Inicializa el estado del juego en relación a otros objetos, activando todas las instalaciones y unidades del juego
@@ -145,7 +149,8 @@ namespace es.ucm.fdi.iav.rts
 
                     foreach (var destructionUnit in ControllersDestructionUnits[index])
                         destructionUnit.Enable(controller);
-            }     
+                } 
+          
         }
 
         // Devuelve el índice correspondiente al controlador que nos pasan.

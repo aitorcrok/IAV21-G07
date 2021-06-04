@@ -130,8 +130,11 @@ namespace es.ucm.fdi.iav.rts
             // Me aseguro de que el comportamiento está activo (y por lo tanto iniciará su actividad)
             BehaviorTree.EnableBehavior();
 
+        }
+        private void Start()
+        {
             players = RTSGameManager.Instance.Controllers;
-            for (int i = 0; i<players.Count; i++)
+            for (int i = 0; i < players.Count; i++)
             {
                 if (players[i].GetComponent<RTSAIControllerJoaquin>() != null)
                 {
@@ -141,9 +144,7 @@ namespace es.ucm.fdi.iav.rts
                         players[i].GetComponent<RTSAIControllerJoaquin>().AddAllyEnemy(false, this); //true = aliado
                 }
             }
-
         }
-
         // Al colisionar se comprueba si se trata de un proyectil que no pertenece al controlador de esta unidad, en cuyo caso se recibe daño 
         // Tanto el proyectil como el objetivo son rigidbodys con un collider en modo trigger, por eso funciona este método privado.
         private void OnTriggerEnter(UnityEngine.Collider trigger)
