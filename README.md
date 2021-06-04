@@ -94,3 +94,4 @@ Para implementar a Joaquín, hemos usado como base el RTSAIController proporcion
 * Millington, I.: Artificial Intelligence for Games. CRC Press, 3rd Edition(2019)
 * Palacios, J.: Unity 2018 Artificial Intelligence Cookbook. Packt Publishing, 2nd Revised edition (2018)
 * Creador de mapas: https://www.dcode.fr/maze-generator
+* Información acerca de mapas de influencia: http://gameschoolgems.blogspot.com/2009/12/influence-maps-i.html , https://www.gamedev.net/tutorials/programming/artificial-intelligence/the-core-mechanics-of-influence-mapping-r2799/
