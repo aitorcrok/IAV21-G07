@@ -44,7 +44,7 @@ namespace es.ucm.fdi.iav.rts
             ClosestEnemyRandomUnit, ClosestEnemyDestroyer, ClosestEnemyExplorer, ClosestEnemyExtraction,
             ClosestBase, ClosestProcesingFacility, FurthestBase, FurthestProcesingFacility,
             LastRandomUnit, LastDestroyer, LastExplorer, LastExtraction,
-            ClosestRandomUnit, ClosestDestroyer, ClosestExplorer, ClosestExtraction, ConcretePosition
+            ClosestRandomUnit, ClosestDestroyer, ClosestExplorer, ClosestExtraction, MostVulnerablePoint
         }
 
         // Estos valores son los máximos personales que la IA considera que es razonable no superar en cuanto a número de unidades de cada tipo
@@ -321,8 +321,13 @@ namespace es.ucm.fdi.iav.rts
                     nextObjective = (nextObjective + 1) % Objectives.Count;
 
                     float vValue;
-                    Vector3 p;
-                    p = _mapVulnerability.GetMostVulnerable(out vValue);
+                    _mapVulnerability.GetMostVulnerable(out vValue);
+                    
+                    if (vValue > 1)
+                    {
+                        nextObjective = (int)PosibleObjective.MostVulnerablePoint;
+                        nextMove = (int)PosibleMovement.MoveAllDestroyer;
+                    }
 
 
                     // Aquí se comprueba que hayamos acabado con absolutamente todo el ejército enemigo, para descansar
@@ -674,6 +679,12 @@ namespace es.ucm.fdi.iav.rts
 
                         help = getCloseOrFarObj(UnitsExtractList.ToArray(), from, true);
                         ObjectiveTrans = help.transform;
+                    }
+                    break;
+                case PosibleObjective.MostVulnerablePoint:
+                    {
+                        float v;
+                        ObjectiveTrans = _mapVulnerability.GetMostVulnerable(out v);
                     }
                     break;
 
