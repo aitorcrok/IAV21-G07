@@ -44,7 +44,7 @@ namespace es.ucm.fdi.iav.rts
             ClosestEnemyRandomUnit, ClosestEnemyDestroyer, ClosestEnemyExplorer, ClosestEnemyExtraction,
             ClosestBase, ClosestProcesingFacility, FurthestBase, FurthestProcesingFacility,
             LastRandomUnit, LastDestroyer, LastExplorer, LastExtraction,
-            ClosestRandomUnit, ClosestDestroyer, ClosestExplorer, ClosestExtraction
+            ClosestRandomUnit, ClosestDestroyer, ClosestExplorer, ClosestExtraction, ConcretePosition
         }
 
         // Estos valores son los máximos personales que la IA considera que es razonable no superar en cuanto a número de unidades de cada tipo
@@ -96,7 +96,11 @@ namespace es.ucm.fdi.iav.rts
 
         // Última unidad creada
         private Unit LastUnit { get; set; }
-        private InfluenceMap _map;
+        private AllyMap _mapAlly;
+        private EnemyMap _mapEnemy;
+        private InfluenceMap _mapInfluence;
+        private TensionMap _mapTension;
+        private VulnerabilityMap _mapVulnerability;
 
 
         // Despierta el controlador y configura toda estructura interna que sea necesaria
@@ -114,18 +118,23 @@ namespace es.ucm.fdi.iav.rts
             _labelSmallStyle.fontSize = 11;
             _labelSmallStyle.normal.textColor = Color.yellow;
 
-            _map = GetComponent<InfluenceMap>();
-            if (_map == null)
-            {
-                Debug.LogError("El gameObject no tiene componente InfluenceMap");
-            }
+            _mapAlly = GetComponent<AllyMap>();          
+            _mapEnemy = GetComponent<EnemyMap>();
+            _mapInfluence = GetComponent<InfluenceMap>();
+            _mapTension = GetComponent<TensionMap>();
+            _mapVulnerability = GetComponent<VulnerabilityMap>();
+
         }
 
         // El método de pensar que sobreescribe e implementa el controlador, para percibir (hacer mapas de influencia, etc.) y luego actuar.
         protected override void Think()
         {
             // Actualizo el mapa de influencia 
-            _map.ComputeInfluence();
+            _mapAlly.ComputeInfluence();
+            _mapEnemy.ComputeInfluence();
+            _mapInfluence.ComputeInfluence();
+            _mapTension.ComputeInfluence();
+            _mapVulnerability.ComputeInfluence();
 
             // Para decidir sobre las órdenes se comprueba que tengo dinero suficiente y que se dan las condiciones que hagan falta...
             // (Ojo: lo suyo siempre es comprobar que cada llamada tiene sentido y es posible hacerla)
@@ -296,7 +305,6 @@ namespace es.ucm.fdi.iav.rts
                                 movedUnit = UnitsDestroyerList[UnitsDestroyerList.Count - 1]; // Por indicar lo que estoy moviendo
                             }
                             break;
-
                     }
 
                     // Nuestra política es muy tonta: voy recorriendo todos los tipos de movimiento que conozco, haciendo uno cada vez
@@ -305,6 +313,9 @@ namespace es.ucm.fdi.iav.rts
                     // Con los objetivos, la política es igual de estúpida
                     nextObjective = (nextObjective + 1) % Objectives.Count;
 
+                    float vValue;
+                    Vector3 p;
+                    p = _mapVulnerability.GetMostVulnerable(out vValue);
 
 
                     // Aquí se comprueba que hayamos acabado con absolutamente todo el ejército enemigo, para descansar
