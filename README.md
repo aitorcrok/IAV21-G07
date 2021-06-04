@@ -74,7 +74,7 @@ El jugador puede cambiar de cámara en cualquier momento usando los botones 'c',
 
 ### Práctica 4: Dune
 
-Para realizar esta práctica hemos utilizado el proyecto base de RTSNavegación. Este proyecto tenía toda la base del funcionamiento del juego, desde las unidades y sus movimientos hasta algún ejemplo de controlador IA. Teniendo esta base, hemos creado un escenario propio, basado en el siguiente mapa del videojuego Starcraft:
+Para realizar esta práctica hemos utilizado el proyecto base de RTSNavegación. Este proyecto tenía toda la base del funcionamiento del juego, desde las unidades y sus movimientos hasta algún ejemplo de controlador IA. Teniendo esta base, hemos creado un escenario propio, basado en el siguiente mapa del videojuego Starcraft: \n
 ![Mapa de Starcraft](images/starcraft.png)
 ![Nuestro mapa](images/custom.png)
 
