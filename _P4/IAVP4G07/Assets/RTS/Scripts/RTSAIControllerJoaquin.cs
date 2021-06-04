@@ -182,9 +182,9 @@ namespace es.ucm.fdi.iav.rts
                     if (Facilities.Count > 0) // Si tengo alguna instalación base, me puedo plantear construir
                     {
                         // Intento crear una unidad en este orden: extractora, destructora y exploradora
-                        if (UnitsExtractList.Count < PersonalMaxExtractor && UnitsExtractList.Count < RTSGameManager.Instance.ExtractionUnitsMax && RTSGameManager.Instance.GetMoney(MyIndex) > RTSGameManager.Instance.ExtractionUnitCost)
+                        while (UnitsExtractList.Count < PersonalMaxExtractor && UnitsExtractList.Count < RTSGameManager.Instance.ExtractionUnitsMax && RTSGameManager.Instance.GetMoney(MyIndex) > RTSGameManager.Instance.ExtractionUnitCost)
                         {
-
+                            //Al encargarse ellas solas de extraer no hace falta moverlas manualmente
                             RTSGameManager.Instance.CreateUnit(this, MyFirstBaseFacility, RTSGameManager.UnitType.EXTRACTION);
                         }
                         if (UnitsDestroyerList.Count < PersonalMaxDestroyer && UnitsDestroyerList.Count < RTSGameManager.Instance.DestructionUnitsMax && RTSGameManager.Instance.GetMoney(MyIndex) > RTSGameManager.Instance.DestructionUnitCost)
@@ -301,8 +301,11 @@ namespace es.ucm.fdi.iav.rts
 
                     // Nuestra política es muy tonta: voy recorriendo todos los tipos de movimiento que conozco, haciendo uno cada vez
                     nextMove = (nextMove + 1) % Moves.Count;
+
                     // Con los objetivos, la política es igual de estúpida
                     nextObjective = (nextObjective + 1) % Objectives.Count;
+
+
 
                     // Aquí se comprueba que hayamos acabado con absolutamente todo el ejército enemigo, para descansar
                     // A veces comprobábamos si EnemyFacilities[0].Health.Amount <=0 por si no había sido destruida por error

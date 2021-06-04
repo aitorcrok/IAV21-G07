@@ -74,6 +74,21 @@ El jugador puede cambiar de cámara en cualquier momento usando los botones 'c',
 
 ### Práctica 4: Dune
 
+Para realizar esta práctica hemos utilizado el proyecto base de RTSNavegación. Este proyecto tenía toda la base del funcionamiento del juego, desde las unidades y sus movimientos hasta algún ejemplo de controlador IA. Teniendo esta base, hemos creado un escenario propio, basado en el siguiente mapa del videojuego Starcraft:
+![Mapa de Starcraft](starcraft.png)
+![Nuestro mapa](custom.png)
+
+Modificando el terreno de Unity proporcionado en el proyecto base para mantener la estética, hemos colocado las dos bases en las esquinas, creando unos pasillos en la parte central como puntos calientes, además de crear unos pasillos laterales que servirán a los enemigos para atacar por sorpresa y aprovechar huecos en las filas enemigas.
+A continuación, explicaremos los diferentes puntos que hemos trabajado para la realización de la práctica:
+#### El mapa de influencia y la clase GraphGrid
+En esta práctica hemos implementado un mapa de influencia. El mapa de influencia es la representación gráfica de los "puntos calientes" del mapa, es decir, dónde se encuentran los mayores peligros tanto como para un bando como para el otro (es decir, las unidades enemigas, aliadas y neutras). 
+Para ello, hemos usado la clase GraphGrid que teníamos en la práctica 2 para representar el terreno como una cuadrícula en dos dimensiones. En lugar de utilizar un .txt como el aquella práctica, la cuadrícula la creamos dinámicamente según el escenario que tengamos en la escena. Dado que la cuadrícula siempre será la misma, pero con tamaños diferentes según el terreno, hemos eliminado todas las lecturas de archivo de la clase GraphGrid y hemos instanciado un cubo en cada posición indicada, según el tamaño de la celda.
+Una vez tenemos la cuadrícula, es hora de formar el mapa de influencia. Hemos creado la clase InfluenceMap basándonos en el CookBook de Ian Millington. El mapa de influencia tiene unos indicadores numéricos mayores o menores según si en esa zona de la cuadrícula de juego hay unidades (aliadas, enemigas o neutras). Se indicará visualmente según el color y la transparencia de cada casilla. Cuando el controlador añade una unidad, éste indica al mapa de influencia que lo ha añadido, sumando así el valor de influencia a la zona necesaria.
+
+#### Joaquín: nuestro controlador inteligente
+Además, para utilizar las funciones del mapa de influencia, hemos creado un controlador de IA al que hemos bautizado como Joaquín. Joaquín es un jugador cuyo estilo de juego se basa en el "late-game". Se trata de una IA prudente que se centra principalmente en construir muchas extractoras al inicio de la partida para así conseguir recursos y mientras tanto defenderse para poder llevar a cabo esa tarea. Una vez conseguidos muchos recursos, Joaquín pasará al ataque, centrando así sus esfuerzos en un estilo de juego agresivo con el objetivo de acabar con todas las unidades enemigas.
+Para implementar a Joaquín, hemos usado como base el RTSAIController proporcionado en la práctica. Hemos hecho modificaciones en el orden en el que realiza las acciones para que siga una lógica en la partida, basando dicha lógica también en el mapa de influencia. 
+
 
 #### Bibliografía
 * Millington, I.: Artificial Intelligence for Games. CRC Press, 3rd Edition(2019)
