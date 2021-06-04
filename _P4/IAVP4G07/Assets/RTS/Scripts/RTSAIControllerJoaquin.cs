@@ -125,7 +125,7 @@ namespace es.ucm.fdi.iav.rts
         protected override void Think()
         {
             // Actualizo el mapa de influencia 
-            _map.ComputeInfluenceSimple();
+            _map.ComputeInfluence();
 
             // Para decidir sobre las órdenes se comprueba que tengo dinero suficiente y que se dan las condiciones que hagan falta...
             // (Ojo: lo suyo siempre es comprobar que cada llamada tiene sentido y es posible hacerla)
@@ -182,7 +182,7 @@ namespace es.ucm.fdi.iav.rts
                     if (Facilities.Count > 0) // Si tengo alguna instalación base, me puedo plantear construir
                     {
                         // Intento crear una unidad en este orden: extractora, destructora y exploradora
-                        while (UnitsExtractList.Count < PersonalMaxExtractor && UnitsExtractList.Count < RTSGameManager.Instance.ExtractionUnitsMax && RTSGameManager.Instance.GetMoney(MyIndex) > RTSGameManager.Instance.ExtractionUnitCost)
+                        while (UnitsExtractList.Count < PersonalMaxExtractor && UnitsExtractList.Count < RTSGameManager.Instance.ExtractionUnitsMax && RTSGameManager.Instance.GetMoney(MyIndex) > RTSGameManager.Instance.ExtractionUnitCost && PFacilities.Count > 0)
                         {
                             //Al encargarse ellas solas de extraer no hace falta moverlas manualmente
                             RTSGameManager.Instance.CreateUnit(this, MyFirstBaseFacility, RTSGameManager.UnitType.EXTRACTION);
