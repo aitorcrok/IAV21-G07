@@ -75,8 +75,8 @@ El jugador puede cambiar de cámara en cualquier momento usando los botones 'c',
 ### Práctica 4: Dune
 
 Para realizar esta práctica hemos utilizado el proyecto base de RTSNavegación. Este proyecto tenía toda la base del funcionamiento del juego, desde las unidades y sus movimientos hasta algún ejemplo de controlador IA. Teniendo esta base, hemos creado un escenario propio, basado en el siguiente mapa del videojuego Starcraft:
-![Mapa de Starcraft](starcraft.png)
-![Nuestro mapa](custom.png)
+![Mapa de Starcraft](images/starcraft.png)
+![Nuestro mapa](images/custom.png)
 
 Modificando el terreno de Unity proporcionado en el proyecto base para mantener la estética, hemos colocado las dos bases en las esquinas, creando unos pasillos en la parte central como puntos calientes, además de crear unos pasillos laterales que servirán a los enemigos para atacar por sorpresa y aprovechar huecos en las filas enemigas.
 A continuación, explicaremos los diferentes puntos que hemos trabajado para la realización de la práctica:
