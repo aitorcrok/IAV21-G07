@@ -82,7 +82,8 @@ namespace es.ucm.fdi.iav.rts
                     Color mycolor;
 
                     if (f == Faction.BLUE) mycolor = Color.blue;
-                    else mycolor = Color.red;
+                    else if (f == Faction.RED) mycolor = Color.red;
+                    else mycolor = Color.green;
 
                     mycolor.a = value;
 

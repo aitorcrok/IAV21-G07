@@ -18,7 +18,7 @@ namespace es.ucm.fdi.iav.rts
     public enum Faction
     {
         // example values
-        BLUE, RED
+        BLUE, RED , NEUTRAL
     }
 
     /* 
