@@ -24,7 +24,6 @@ namespace es.ucm.fdi.iav.rts
 
     public class GraphGrid : Graph
     {
-        public GameObject obstaclePrefab;
         public bool get8Vicinity = false;
         public float cellSize = 1f;
         [Range(0, Mathf.Infinity)]
@@ -75,7 +74,8 @@ namespace es.ucm.fdi.iav.rts
                         position.z = i * cellSize;
                         id = GridToId(j, i);
                             
-                        vertexObjs[id] = Instantiate(obstaclePrefab, position, Quaternion.identity) as GameObject;
+                        vertexObjs[id] = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        vertexObjs[id].transform.SetPositionAndRotation(position, Quaternion.identity);
 
                         vertexObjs[id].name = vertexObjs[id].name.Replace("(Clone)", id.ToString());
                         Vertex v = vertexObjs[id].AddComponent<Vertex>();
