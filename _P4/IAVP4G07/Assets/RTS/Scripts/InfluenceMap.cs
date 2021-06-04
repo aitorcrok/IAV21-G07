@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//INFORMACION RELEVANTE:
+//ESTO ES UN COMPONENTE, HAY QUE AÑADIRSELO A UN GAMEOBJECT
+//VA CON GRAPHGRID, ASI QUE TIENE MOVIDAS DE CARGA DE MAPAS POR ARCHIVO: MAL
+//AUN NO SABEMOS COMO CREAR BIEN LOS GRAFOS
+
+
 namespace es.ucm.fdi.iav.rts
 {
     public class InfluenceMap : GraphGrid
