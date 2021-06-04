@@ -10,6 +10,7 @@
    Contacto: email@federicopeinado.com
 */
 using UnityEngine;
+using System.Collections.Generic;
 using BehaviorDesigner.Runtime;
 using System;
 
@@ -70,7 +71,7 @@ namespace es.ucm.fdi.iav.rts
 
         public Faction faction;
         [SerializeField] private float _influence = 1f;
-
+        private List<RTSController> players;
         public virtual float GetDropOff(int locationDistance)
         {
             float d = _influence / _radius * locationDistance;
@@ -129,8 +130,18 @@ namespace es.ucm.fdi.iav.rts
             // Me aseguro de que el comportamiento está activo (y por lo tanto iniciará su actividad)
             BehaviorTree.EnableBehavior();
 
-            //if (GetComponentInParent<InfluenceMap>() != null)
-            //    GetComponentInParent<InfluenceMap>().AddUnit(this);
+            players = RTSGameManager.Instance.Controllers;
+            for (int i = 0; i<players.Count; i++)
+            {
+                if (players[i].GetComponent<RTSAIControllerJoaquin>() != null)
+                {
+                    if ((int)faction == i)
+                        players[i].GetComponent<RTSAIControllerJoaquin>().AddAllyEnemy(true, this); //true = aliado
+                    else
+                        players[i].GetComponent<RTSAIControllerJoaquin>().AddAllyEnemy(false, this); //true = aliado
+                }
+            }
+
         }
 
         // Al colisionar se comprueba si se trata de un proyectil que no pertenece al controlador de esta unidad, en cuyo caso se recibe daño 

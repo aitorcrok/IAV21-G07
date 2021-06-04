@@ -102,6 +102,13 @@ namespace es.ucm.fdi.iav.rts
         private TensionMap _mapTension;
         private VulnerabilityMap _mapVulnerability;
 
+        public void AddAllyEnemy(bool ally, Unit u)
+        {
+            if (ally)
+                _mapAlly.AddUnit(u);
+            else
+                _mapEnemy.AddUnit(u);
+        }
 
         // Despierta el controlador y configura toda estructura interna que sea necesaria
         private void Awake()
