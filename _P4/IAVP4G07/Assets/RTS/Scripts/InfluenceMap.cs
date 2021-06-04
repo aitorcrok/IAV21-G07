@@ -67,6 +67,21 @@ namespace es.ucm.fdi.iav.rts
                     pending = new List<Vertex>(frontier);
                 }
             }
+
+            for (int i = 0; i < GetRows(); i++)
+            {
+                for (int j = 0; j < GetCols(); i++)
+                {
+                    int id = GridToId(j, i);
+
+                    VertexInfluence vertex = vertices[id] as VertexInfluence;
+
+                    float value = vertex.value;
+                    Faction f = vertex.faction;
+
+                    GetVertexObj(id).GetComponent<Renderer>().GetComponent<Material>().color = mycolor;
+                }
+            }
         }
         public List<GuildRecord> ComputeMapFlooding()
         {

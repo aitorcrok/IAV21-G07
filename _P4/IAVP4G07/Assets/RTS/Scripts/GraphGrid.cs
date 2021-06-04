@@ -25,8 +25,6 @@ namespace es.ucm.fdi.iav.rts
     public class GraphGrid : Graph
     {
         public GameObject obstaclePrefab;
-        public string mapsDir = "Maps"; // Directorio por defecto
-        public string mapName = "arena.map"; // Fichero por defecto
         public bool get8Vicinity = false;
         public float cellSize = 1f;
         [Range(0, Mathf.Infinity)]
@@ -37,20 +35,8 @@ namespace es.ucm.fdi.iav.rts
         int numCols;
         int numRows;
         GameObject[] vertexObjs;
-        bool[,] mapVertices;
 
-        public Text tekusuto;
-        public Text nodesText;
-
-        public void UpdateTimeText(float time)
-        {
-            tekusuto.text = "Tiempo: " + time*1000 + " ms";
-        }
-        public void UpdateNodesText(int nodes)
-        {
-            nodesText.text = "Número de nodos: " + nodes;
-        }
-        private int GridToId(int x, int y)
+        protected int GridToId(int x, int y)
         {
             return Math.Max(numRows, numCols) * y + x;
         }
@@ -63,70 +49,52 @@ namespace es.ucm.fdi.iav.rts
             return location;
         }
 
-        private void LoadMap(string filename)
+        private void LoadMap(int width, int height)
         {
-            string path = Application.dataPath + "/" + mapsDir + "/" + filename;
             try
             {
-                StreamReader strmRdr = new StreamReader(path);
-                using (strmRdr)
+                int j = 0;
+                int i = 0;
+                int id = 0;
+
+                Vector3 position = Vector3.zero;
+                Vector3 scale = Vector3.zero;
+ 
+                numRows = height;
+                numCols = width;
+
+                vertices = new List<Vertex>(numRows * numCols);
+                neighbors = new List<List<Vertex>>(numRows * numCols);
+                vertexObjs = new GameObject[numRows * numCols];
+
+                for (i = 0; i < numRows; i++)
                 {
-                    int j = 0;
-                    int i = 0;
-                    int id = 0;
-                    string line;
-
-                    Vector3 position = Vector3.zero;
-                    Vector3 scale = Vector3.zero;
-                    line = strmRdr.ReadLine();// non-important line
-                    line = strmRdr.ReadLine();// height
-                    numRows = int.Parse(line.Split(' ')[1]);
-                    line = strmRdr.ReadLine();// width
-                    numCols = int.Parse(line.Split(' ')[1]);
-                    line = strmRdr.ReadLine();// "map" line in file
-
-                    vertices = new List<Vertex>(numRows * numCols);
-                    neighbors = new List<List<Vertex>>(numRows * numCols);
-                    costs = new List<List<float>>(numRows * numCols);
-                    vertexObjs = new GameObject[numRows * numCols];
-                    mapVertices = new bool[numRows, numCols];
-
-                    for (i = 0; i < numRows; i++)
+                    for (j = 0; j < numCols; j++)
                     {
-                        line = strmRdr.ReadLine();
-                        for (j = 0; j < numCols; j++)
-                        {
-                            bool isGround = true;
-                            if (line[j] != '.')
-                                isGround = false;
-                            mapVertices[i, j] = isGround;
-                            position.x = j * cellSize;
-                            position.z = i * cellSize;
-                            id = GridToId(j, i);
-                            if (isGround)
-                                vertexObjs[id] = Instantiate(vertexPrefab, position, Quaternion.identity) as GameObject;
-                            else
-                                vertexObjs[id] = Instantiate(obstaclePrefab, position, Quaternion.identity) as GameObject;
-                            vertexObjs[id].name = vertexObjs[id].name.Replace("(Clone)", id.ToString());
-                            Vertex v = vertexObjs[id].AddComponent<Vertex>();
-                            v.id = id;
-                            vertices.Add(v);
-                            neighbors.Add(new List<Vertex>());
-                            costs.Add(new List<float>());
-                            float y = vertexObjs[id].transform.localScale.y;
-                            scale = new Vector3(cellSize, y, cellSize);
-                            vertexObjs[id].transform.localScale = scale;
-                            vertexObjs[id].transform.parent = gameObject.transform;
-                        }
+                        position.x = j * cellSize;
+                        position.z = i * cellSize;
+                        id = GridToId(j, i);
+                            
+                        vertexObjs[id] = Instantiate(obstaclePrefab, position, Quaternion.identity) as GameObject;
+
+                        vertexObjs[id].name = vertexObjs[id].name.Replace("(Clone)", id.ToString());
+                        Vertex v = vertexObjs[id].AddComponent<Vertex>();
+                        v.id = id;
+                        vertices.Add(v);
+                        neighbors.Add(new List<Vertex>());
+                        float y = vertexObjs[id].transform.localScale.y;
+                        scale = new Vector3(cellSize, y, cellSize);
+                        vertexObjs[id].transform.localScale = scale;
+                        vertexObjs[id].transform.parent = gameObject.transform;
                     }
+                }
 
-                    // now onto the neighbours
-                    for (i = 0; i < numRows; i++)
+                // now onto the neighbours
+                for (i = 0; i < numRows; i++)
+                {
+                    for (j = 0; j < numCols; j++)
                     {
-                        for (j = 0; j < numCols; j++)
-                        {
-                            SetNeighbours(j, i);
-                        }
+                        SetNeighbours(j, i);
                     }
                 }
             }
@@ -138,7 +106,11 @@ namespace es.ucm.fdi.iav.rts
 
         public override void Load()
         {
-            LoadMap(mapName);
+            Vector3 terrainSize = GetComponentInParent<Terrain>().terrainData.size;
+            int width = (int)(terrainSize.x / cellSize);
+            int depth = (int)(terrainSize.z / cellSize);
+
+            LoadMap(width, depth);
         }
 
         protected void SetNeighbours(int x, int y, bool get8 = false)
@@ -148,7 +120,6 @@ namespace es.ucm.fdi.iav.rts
             int i, j;
             int vertexId = GridToId(x, y);
             neighbors[vertexId] = new List<Vertex>();
-            costs[vertexId] = new List<float>();
             Vector2[] pos = new Vector2[0];
             if (get8)
             {
@@ -181,11 +152,8 @@ namespace es.ucm.fdi.iav.rts
                     continue;
                 if (i == row && j == col)
                     continue;
-                if (!mapVertices[i, j])
-                    continue;
                 int id = GridToId(j, i);
                 neighbors[vertexId].Add(vertices[id]);
-                costs[vertexId].Add(defaultCost);
             }
         }
 
@@ -197,35 +165,11 @@ namespace es.ucm.fdi.iav.rts
             List<Vector2> explored = new List<Vector2>();
             Queue<Vector2> queue = new Queue<Vector2>();
             queue.Enqueue(p);
-            do
-            {
-                p = queue.Dequeue();
-                col = (int)p.x;
-                row = (int)p.y;
-                int id = GridToId(col, row);
-                if (mapVertices[row, col])
-                    return vertices[id];
-
-                if (!explored.Contains(p))
-                {
-                    explored.Add(p);
-                    int i, j;
-                    for (i = row - 1; i <= row + 1; i++)
-                    {
-                        for (j = col - 1; j <= col + 1; j++)
-                        {
-                            if (i < 0 || j < 0)
-                                continue;
-                            if (j >= numCols || i >= numRows)
-                                continue;
-                            if (i == row && j == col)
-                                continue;
-                            queue.Enqueue(new Vector2(j, i));
-                        }
-                    }
-                }
-            } while (queue.Count != 0);
-            return null;
+            p = queue.Dequeue();
+            col = (int)p.x;
+            row = (int)p.y;
+            int id = GridToId(col, row);
+            return vertices[id];
         }
 
         public int GetCols() { return numCols; }
