@@ -44,7 +44,8 @@ namespace es.ucm.fdi.iav.rts
             ClosestEnemyRandomUnit, ClosestEnemyDestroyer, ClosestEnemyExplorer, ClosestEnemyExtraction,
             ClosestBase, ClosestProcesingFacility, FurthestBase, FurthestProcesingFacility,
             LastRandomUnit, LastDestroyer, LastExplorer, LastExtraction,
-            ClosestRandomUnit, ClosestDestroyer, ClosestExplorer, ClosestExtraction, MostVulnerablePoint
+            ClosestRandomUnit, ClosestDestroyer, ClosestExplorer, ClosestExtraction, MostVulnerablePoint,
+            LessTensePoint
         }
 
         // Estos valores son los máximos personales que la IA considera que es razonable no superar en cuanto a número de unidades de cada tipo
@@ -320,15 +321,27 @@ namespace es.ucm.fdi.iav.rts
                     // Con los objetivos, la política es igual de estúpida
                     nextObjective = (nextObjective + 1) % Objectives.Count;
 
-                    float vValue;
+                    float vValue, tValue;
                     _mapVulnerability.GetMostVulnerable(out vValue);
-                    
-                    if (vValue > 1)
+                    _mapTension.GetLessTense(out tValue);
+
+                    if(UnitsDestroyerList.Count == 0) 
+                    {
+                        nextObjective = (int)PosibleObjective.ClosestBase;
+                        nextMove = (int)PosibleMovement.MoveAllExplorer;
+                    }
+
+                    else if (vValue > 1)
                     {
                         nextObjective = (int)PosibleObjective.MostVulnerablePoint;
                         nextMove = (int)PosibleMovement.MoveAllDestroyer;
                     }
 
+                    else if (tValue < 1)
+                    {
+                        nextObjective = (int)PosibleObjective.LessTensePoint;
+                        nextMove = (int)PosibleMovement.MoveRandomExplorer;
+                    }
 
                     // Aquí se comprueba que hayamos acabado con absolutamente todo el ejército enemigo, para descansar
                     // A veces comprobábamos si EnemyFacilities[0].Health.Amount <=0 por si no había sido destruida por error
@@ -687,7 +700,12 @@ namespace es.ucm.fdi.iav.rts
                         ObjectiveTrans = _mapVulnerability.GetMostVulnerable(out v);
                     }
                     break;
-
+                case PosibleObjective.LessTensePoint:
+                    {
+                        float v;
+                        ObjectiveTrans = _mapVulnerability.GetMostVulnerable(out v);
+                    }
+                    break;
             }
 
             return ObjectiveTrans;

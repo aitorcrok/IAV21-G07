@@ -47,5 +47,51 @@ namespace es.ucm.fdi.iav.rts
                 }
             }
         }
+
+        public Transform GetMostTense(out float value)
+        {
+            float max = -1;
+            Transform pos = null;
+            for (int i = 0; i < GetRows(); i++)
+            {
+                for (int j = 0; j < GetCols(); i++)
+                {
+                    int id = GridToId(j, i);
+
+                    VertexInfluence vertex = vertices[id] as VertexInfluence;
+                    if (vertex.value > max)
+                    {
+                        max = vertex.value;
+                        pos = vertex.transform;
+                    }
+                }
+            }
+
+            value = max;
+            return pos;
+        }
+
+        public Transform GetLessTense(out float value)
+        {
+            float min = 1000;
+            Transform pos = null;
+            for (int i = 0; i < GetRows(); i++)
+            {
+                for (int j = 0; j < GetCols(); i++)
+                {
+                    int id = GridToId(j, i);
+
+                    VertexInfluence vertex = vertices[id] as VertexInfluence;
+                    if (vertex.value < min)
+                    {
+                        min = vertex.value;
+                        pos = vertex.transform;
+                    }
+                }
+            }
+
+            value = min;
+            return pos;
+        }
     }
 }
