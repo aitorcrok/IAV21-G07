@@ -129,8 +129,8 @@ namespace es.ucm.fdi.iav.rts
             // Me aseguro de que el comportamiento está activo (y por lo tanto iniciará su actividad)
             BehaviorTree.EnableBehavior();
 
-            if (GetComponentInParent<InfluenceMap>() != null)
-                GetComponentInParent<InfluenceMap>().AddUnit(this);
+            //if (GetComponentInParent<InfluenceMap>() != null)
+            //    GetComponentInParent<InfluenceMap>().AddUnit(this);
         }
 
         // Al colisionar se comprueba si se trata de un proyectil que no pertenece al controlador de esta unidad, en cuyo caso se recibe daño 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace es.ucm.fdi.iav.rts
 {
-    public class InfluenceMap : GraphGrid
+    public class TensionMap : GraphGrid
     {
         private AllyMap allyMap;
         private EnemyMap enemyMap;
@@ -35,15 +35,11 @@ namespace es.ucm.fdi.iav.rts
                     VertexInfluence allyVertice = allyVertex[id] as VertexInfluence;
                     VertexInfluence enemyVertice = enemyVertex[id] as VertexInfluence;
 
-                    vertex.value = allyVertice.value + enemyVertice.value;
+                    vertex.value = allyVertice.value - enemyVertice.value;
 
                     float value = vertex.value;
 
-                    Color mycolor;
-
-                    if (value > 0) mycolor = Color.blue;
-                    else if (value < 0) mycolor = Color.red;
-                    else mycolor = Color.white;
+                    Color mycolor = Color.green;
 
                     mycolor.a = value;
 
