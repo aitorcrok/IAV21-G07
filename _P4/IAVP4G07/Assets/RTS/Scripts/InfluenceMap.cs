@@ -79,6 +79,13 @@ namespace es.ucm.fdi.iav.rts
                     float value = vertex.value;
                     Faction f = vertex.faction;
 
+                    Color mycolor;
+
+                    if (f == Faction.BLUE) mycolor = Color.blue;
+                    else mycolor = Color.red;
+
+                    mycolor.a = value;
+
                     GetVertexObj(id).GetComponent<Renderer>().GetComponent<Material>().color = mycolor;
                 }
             }
