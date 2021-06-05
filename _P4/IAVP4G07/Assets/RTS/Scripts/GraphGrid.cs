@@ -34,6 +34,14 @@ namespace es.ucm.fdi.iav.rts
         int numRows;
         GameObject[] vertexObjs;
 
+        public void AwakeGraph()
+        {
+            Vector3 terrainSize = RTSGameManager.Instance.GetTerrain().terrainData.size;
+            int width = (int)(terrainSize.x / cellSize);
+            int depth = (int)(terrainSize.z / cellSize);
+
+            LoadMap(width, depth);
+        }
 
         protected int GridToId(int x, int y)
         {
@@ -58,7 +66,7 @@ namespace es.ucm.fdi.iav.rts
 
                 Vector3 position = Vector3.zero;
                 Vector3 scale = Vector3.zero;
- 
+
                 numRows = height;
                 numCols = width;
 
@@ -73,8 +81,16 @@ namespace es.ucm.fdi.iav.rts
                         position.x = j * cellSize;
                         position.z = i * cellSize;
                         id = GridToId(j, i);
-                            
+
                         vertexObjs[id] = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        Renderer r = vertexObjs[id].gameObject.GetComponent<Renderer>();
+                        r.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                        r.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                        r.material.SetInt("_ZWrite", 0);
+                        r.material.DisableKeyword("_ALPHATEST_ON");
+                        r.material.EnableKeyword("_ALPHABLEND_ON");
+                        r.material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                        r.material.renderQueue = 3000;
                         vertexObjs[id].transform.SetPositionAndRotation(position, Quaternion.identity);
 
                         vertexObjs[id].name = vertexObjs[id].name.Replace("(Clone)", id.ToString());
@@ -105,14 +121,6 @@ namespace es.ucm.fdi.iav.rts
             }
         }
 
-        public override void Load()
-        {
-            Vector3 terrainSize = RTSGameManager.Instance.GetTerrain().terrainData.size;
-            int width = (int)(terrainSize.x / cellSize);
-            int depth = (int)(terrainSize.z / cellSize);
-
-            LoadMap(width, depth);
-        }
 
         protected void SetNeighbours(int x, int y, bool get8 = false)
         {
@@ -170,11 +178,12 @@ namespace es.ucm.fdi.iav.rts
             col = (int)p.x;
             row = (int)p.y;
             int id = GridToId(col, row);
-            Debug.Log(id);
+            //Debug.Log(id);
             return vertices[id];
         }
 
         public int GetCols() { return numCols; }
         public int GetRows() { return numRows; }
+        public GameObject[] GetVertexObjs() { return vertexObjs; }
     }
 }

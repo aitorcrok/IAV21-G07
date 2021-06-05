@@ -436,6 +436,8 @@ namespace es.ucm.fdi.iav.rts
                 // Mostramos información de lo que pasa en el juego al menos en consola
                 Debug.Log("Unidad de destrucción [ C" + index + " ] destruida. Quedan " + ControllersDestructionUnits[index].Count);
             }
+            if (_controllers[index].GetComponent<RTSAIControllerJoaquin>() != null)
+                _controllers[index].GetComponent<RTSAIControllerJoaquin>().RemoveUnits(unit);
 
        }
 
@@ -465,5 +467,19 @@ namespace es.ucm.fdi.iav.rts
                 Debug.Log("Instalación de procesamiento [ C" + index + " ] destruida. Quedan " + ControllersProcessingFacilities[index].Count);
             }
         }
+
+        private void Update()
+        {
+            if (Input.anyKeyDown && Input.inputString != "")
+            {
+                char input = Input.inputString[0];
+                if (input == '1' || input == '2' || input == '3' || input == '4' || input == '5' || input == '0')
+                {
+                    if (_controllers[0].GetComponent<RTSAIControllerJoaquin>() != null)
+                        _controllers[0].GetComponent<RTSAIControllerJoaquin>().activateMap(input);
+                }
+            }
+        }
+
     }
 }

@@ -126,7 +126,7 @@ namespace es.ucm.fdi.iav.rts
             _labelSmallStyle.fontSize = 11;
             _labelSmallStyle.normal.textColor = Color.yellow;
 
-            _mapAlly = GetComponent<AllyMap>();          
+            _mapAlly = GetComponent<AllyMap>();
             _mapEnemy = GetComponent<EnemyMap>();
             _mapInfluence = GetComponent<InfluenceMap>();
             _mapTension = GetComponent<TensionMap>();
@@ -323,7 +323,7 @@ namespace es.ucm.fdi.iav.rts
                     _mapVulnerability.GetMostVulnerable(out vValue);
                     _mapTension.GetLessTense(out tValue);
 
-                    if(UnitsDestroyerList.Count == 0) 
+                    if (UnitsDestroyerList.Count == 0)
                     {
                         nextObjective = PosibleObjective.ClosestBase;
                         nextMove = PosibleMovement.MoveAllExplorer;
@@ -770,5 +770,62 @@ namespace es.ucm.fdi.iav.rts
                 return list[maxIt].gameObject;
         }
 
+        public void activateMap(char input)
+        {
+            switch (input)
+            {
+                case '1':
+                    _mapAlly.setVisible(true);
+                    _mapEnemy.setVisible(false);
+                    _mapInfluence.setVisible(false);
+                    _mapTension.setVisible(false);
+                    _mapVulnerability.setVisible(false);
+                    break;
+                case '2':
+                    _mapAlly.setVisible(false);
+                    _mapEnemy.setVisible(true);
+                    _mapInfluence.setVisible(false);
+                    _mapTension.setVisible(false);
+                    _mapVulnerability.setVisible(false);
+                    break;
+                case '3':
+                    _mapAlly.setVisible(false);
+                    _mapEnemy.setVisible(false);
+                    _mapInfluence.setVisible(true);
+                    _mapTension.setVisible(false);
+                    _mapVulnerability.setVisible(false);
+                    break;
+                case '4':
+                    _mapAlly.setVisible(false);
+                    _mapEnemy.setVisible(false);
+                    _mapInfluence.setVisible(false);
+                    _mapTension.setVisible(true);
+                    _mapVulnerability.setVisible(false);
+                    break;
+                case '5':
+                    _mapAlly.setVisible(false);
+                    _mapEnemy.setVisible(false);
+                    _mapInfluence.setVisible(false);
+                    _mapTension.setVisible(false);
+                    _mapVulnerability.setVisible(true);
+                    break;
+                case '0':
+                    _mapAlly.setVisible(false);
+                    _mapEnemy.setVisible(false);
+                    _mapInfluence.setVisible(false);
+                    _mapTension.setVisible(false);
+                    _mapVulnerability.setVisible(false);
+                    break;
+                default:
+                    break;
+
+            }
+        }
+
+        public void RemoveUnits(Unit u)
+        {
+            _mapAlly.RemoveUnit(u);
+            _mapEnemy.RemoveUnit(u);
+        }
     }
 }

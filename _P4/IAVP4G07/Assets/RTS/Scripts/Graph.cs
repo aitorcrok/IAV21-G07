@@ -43,13 +43,6 @@ namespace es.ucm.fdi.iav.rts
        // public List<Vertex> path;
        // public bool isFinished;
        // public float time;
-        public virtual void Start()
-        {
-            Load();
-        }
-
-        public virtual void Load() { }
-
         public virtual int GetSize()
         {
             if (ReferenceEquals(vertices, null))

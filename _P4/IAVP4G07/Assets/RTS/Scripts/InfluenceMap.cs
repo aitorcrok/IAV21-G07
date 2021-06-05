@@ -9,15 +9,22 @@ namespace es.ucm.fdi.iav.rts
         private AllyMap allyMap;
         private EnemyMap enemyMap;
         public VertexInfluence[] influences;
+        bool visible = false;
+        bool changeVisibility = true;
 
         // works as vertices in regular graph
         // GameObject[] locations;
 
         void Awake()
         {
+            AwakeGraph();
             allyMap = GetComponent<AllyMap>();
             enemyMap = GetComponent<EnemyMap>();
             influences = new VertexInfluence[GetRows() * GetCols()];
+            for (int i = 0; i < influences.Length; i++)
+            {
+                influences[i] = GetVertexObjs()[i].AddComponent<VertexInfluence>();
+            }
 
         }
         public List<Vertex> GetVertex()
@@ -28,9 +35,9 @@ namespace es.ucm.fdi.iav.rts
         {
             VertexInfluence[] allyVertex = allyMap.influences;
             VertexInfluence[] enemyVertex = enemyMap.influences;
-            foreach (VertexInfluence ver in influences)
+            for (int i = 0; i < influences.Length; i++)
             {
-                ver.value = 0;
+                influences[i].value = 0;
             }
 
             for (int i = 0; i < GetRows(); i++)
@@ -48,14 +55,35 @@ namespace es.ucm.fdi.iav.rts
 
                     Color mycolor;
 
-                    if (value > 0) mycolor = Color.blue;
-                    else if (value < 0) mycolor = Color.red;
-                    else mycolor = Color.white;
-
-                    mycolor.a = value;
+                    if (value > 0)
+                        mycolor = new Color(0, 0, 1, Mathf.Abs(value));
+                    else if (value < 0)
+                        mycolor = new Color(1, 0, 0, Mathf.Abs(value));
+                    else
+                        mycolor = new Color(1, 1, 1, Mathf.Abs(value));
 
                     GetVertexObj(id).GetComponent<MeshRenderer>().material.color = mycolor;
                 }
+            }
+        }
+        public void setVisible(bool b)
+        {
+            visible = b; changeVisibility = true;
+        }
+        private void Update()
+        {
+            if (changeVisibility)
+            {
+                for (int i = 0; i < GetRows(); i++)
+                {
+                    for (int j = 0; j < GetCols(); j++)
+                    {
+                        int id = GridToId(j, i);
+
+                        GetVertexObj(id).GetComponent<MeshRenderer>().enabled = visible;
+                    }
+                }
+                changeVisibility = false;
             }
         }
     }
