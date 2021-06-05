@@ -78,7 +78,7 @@ namespace es.ucm.fdi.iav.rts
                         vertexObjs[id].transform.SetPositionAndRotation(position, Quaternion.identity);
 
                         vertexObjs[id].name = vertexObjs[id].name.Replace("(Clone)", id.ToString());
-                        Vertex v = vertexObjs[id].AddComponent<VertexInfluence>();
+                        Vertex v = vertexObjs[id].AddComponent<Vertex>();
 
                         v.id = id;
                         vertices.Add(v);

@@ -14,7 +14,7 @@ namespace es.ucm.fdi.iav.rts
     public class EnemyMap : GraphGrid
     {
         public List<Unit> unitList;
-        public List<VertexInfluence> influences;
+        public VertexInfluence[] influences;
         // works as vertices in regular graph
         // GameObject[] locations;
 
@@ -22,6 +22,7 @@ namespace es.ucm.fdi.iav.rts
         {
             if (unitList == null)
                 unitList = new List<Unit>();
+            influences = new VertexInfluence[GetRows() * GetCols()];
         }
         public void AddUnit(Unit u)
         {
@@ -45,11 +46,9 @@ namespace es.ucm.fdi.iav.rts
             List<Vertex> visited = new List<Vertex>();
             List<Vertex> frontier;
             Vertex[] neighbours;
-            influences.Clear();
-
-            foreach (Vertex ver in vertices)
+            foreach (VertexInfluence ver in influences)
             {
-                influences.Add(new VertexInfluence());
+                ver.value = 0;
             }
 
             foreach (Unit u in unitList)
@@ -77,7 +76,7 @@ namespace es.ucm.fdi.iav.rts
 
             for (int i = 0; i < GetRows(); i++)
             {
-                for (int j = 0; j < GetCols(); i++)
+                for (int j = 0; j < GetCols(); j++)
                 {
                     int id = GridToId(j, i);
 

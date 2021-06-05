@@ -56,7 +56,7 @@ namespace es.ucm.fdi.iav.rts
         [SerializeField]
         // Los movimientos que estarán disponibles de verdad
         public List<PosibleMovement> Moves;
-        private int nextMove = 0; // Índice para ir eligiendo enumerados de movimiento
+        private PosibleMovement nextMove = 0; // Índice para ir eligiendo enumerados de movimiento
 
         // La última unidad movida (por mi, de mi ejército)
         private Unit movedUnit;
@@ -65,7 +65,7 @@ namespace es.ucm.fdi.iav.rts
         [SerializeField]
         // Los objetivos que estarán disponibles de verdad
         public List<PosibleObjective> Objectives;
-        private int nextObjective = 0;
+        private PosibleObjective nextObjective = 0;
         private int MyIndex { get; set; }
         private int FirstEnemyIndex { get; set; }
         private BaseFacility MyFirstBaseFacility { get; set; }
@@ -221,7 +221,7 @@ namespace es.ucm.fdi.iav.rts
 
                     // Escojo el enumerado de movimiento correspondiente a un índice que iré variando
                     // (esto habría sido más elegante hacerlo con una lista, pero nos interesaba que fueran enumerados por si alguien los quiere usar desde fuera)
-                    switch (Moves[nextMove])
+                    switch (nextMove)
                     {
                         case PosibleMovement.MoveRandomExtraction:
                             if (UnitsExtractList != null && UnitsExtractList.Count > 0)
@@ -316,10 +316,8 @@ namespace es.ucm.fdi.iav.rts
                     }
 
                     // Nuestra política es muy tonta: voy recorriendo todos los tipos de movimiento que conozco, haciendo uno cada vez
-                    nextMove = (nextMove + 1) % Moves.Count;
 
                     // Con los objetivos, la política es igual de estúpida
-                    nextObjective = (nextObjective + 1) % Objectives.Count;
 
                     float vValue, tValue;
                     _mapVulnerability.GetMostVulnerable(out vValue);
@@ -327,20 +325,20 @@ namespace es.ucm.fdi.iav.rts
 
                     if(UnitsDestroyerList.Count == 0) 
                     {
-                        nextObjective = (int)PosibleObjective.ClosestBase;
-                        nextMove = (int)PosibleMovement.MoveAllExplorer;
+                        nextObjective = PosibleObjective.ClosestBase;
+                        nextMove = PosibleMovement.MoveAllExplorer;
                     }
 
                     else if (vValue > 1)
                     {
-                        nextObjective = (int)PosibleObjective.MostVulnerablePoint;
-                        nextMove = (int)PosibleMovement.MoveAllDestroyer;
+                        nextObjective = PosibleObjective.MostVulnerablePoint;
+                        nextMove = PosibleMovement.MoveAllDestroyer;
                     }
 
                     else if (tValue < 1)
                     {
-                        nextObjective = (int)PosibleObjective.LessTensePoint;
-                        nextMove = (int)PosibleMovement.MoveRandomExplorer;
+                        nextObjective = PosibleObjective.LessTensePoint;
+                        nextMove = PosibleMovement.MoveRandomExplorer;
                     }
 
                     // Aquí se comprueba que hayamos acabado con absolutamente todo el ejército enemigo, para descansar
@@ -368,7 +366,6 @@ namespace es.ucm.fdi.iav.rts
         protected Transform chooseObjective(Transform from)
         {
             Transform ObjectiveTrans = from;
-            PosibleObjective ob = Objectives[nextObjective];
             GameObject help;
 
             // Variables auxiliares
@@ -377,7 +374,7 @@ namespace es.ucm.fdi.iav.rts
 
             // Escojo el enumerado de objetivo correspondiente a un índice que iré variando
             // (esto habría sido más elegante hacerlo con una lista, pero nos interesaba que fueran enumerados por si alguien los quiere usar desde fuera)
-            switch (ob)
+            switch (nextObjective)
             {
                 case PosibleObjective.FurthestEnemyBase:
                     if (EnemyFacilities != null && EnemyFacilities.Count > 0)

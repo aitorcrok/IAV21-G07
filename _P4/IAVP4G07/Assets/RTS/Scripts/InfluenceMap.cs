@@ -8,7 +8,7 @@ namespace es.ucm.fdi.iav.rts
     {
         private AllyMap allyMap;
         private EnemyMap enemyMap;
-        public List<VertexInfluence> influences;
+        public VertexInfluence[] influences;
 
         // works as vertices in regular graph
         // GameObject[] locations;
@@ -17,6 +17,8 @@ namespace es.ucm.fdi.iav.rts
         {
             allyMap = GetComponent<AllyMap>();
             enemyMap = GetComponent<EnemyMap>();
+            influences = new VertexInfluence[GetRows() * GetCols()];
+
         }
         public List<Vertex> GetVertex()
         {
@@ -24,17 +26,16 @@ namespace es.ucm.fdi.iav.rts
         }
         public void ComputeInfluence()
         {
-            List<VertexInfluence> allyVertex = allyMap.influences;
-            List<VertexInfluence> enemyVertex = enemyMap.influences;
-            influences.Clear();
-
-            foreach (Vertex ver in vertices)
+            VertexInfluence[] allyVertex = allyMap.influences;
+            VertexInfluence[] enemyVertex = enemyMap.influences;
+            foreach (VertexInfluence ver in influences)
             {
-                influences.Add(new VertexInfluence());
+                ver.value = 0;
             }
+
             for (int i = 0; i < GetRows(); i++)
             {
-                for (int j = 0; j < GetCols(); i++)
+                for (int j = 0; j < GetCols(); j++)
                 {
                     int id = GridToId(j, i);
 
