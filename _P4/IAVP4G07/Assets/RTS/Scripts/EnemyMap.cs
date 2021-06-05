@@ -14,6 +14,7 @@ namespace es.ucm.fdi.iav.rts
     public class EnemyMap : GraphGrid
     {
         public List<Unit> unitList;
+        public List<VertexInfluence> influences;
         // works as vertices in regular graph
         // GameObject[] locations;
 
@@ -44,6 +45,12 @@ namespace es.ucm.fdi.iav.rts
             List<Vertex> visited = new List<Vertex>();
             List<Vertex> frontier;
             Vertex[] neighbours;
+            influences.Clear();
+
+            foreach (Vertex ver in vertices)
+            {
+                influences.Add(new VertexInfluence());
+            }
 
             foreach (Unit u in unitList)
             {
@@ -59,9 +66,8 @@ namespace es.ucm.fdi.iav.rts
                         if (visited.Contains(p))
                             continue;
                         visited.Add(p);
-                        v = p as VertexInfluence;
                         dropOff = u.GetDropOff(i);
-                        v.SubstractValue(dropOff);
+                        influences[p.id].SubstractValue(dropOff);
                         neighbours = GetNeighbours(vert);
                         frontier.AddRange(neighbours);
                     }
@@ -75,7 +81,7 @@ namespace es.ucm.fdi.iav.rts
                 {
                     int id = GridToId(j, i);
 
-                    VertexInfluence vertex = vertices[id] as VertexInfluence;
+                    VertexInfluence vertex = influences[id];
 
                     float value = vertex.value;
 
@@ -87,7 +93,7 @@ namespace es.ucm.fdi.iav.rts
 
                     mycolor.a = value;
 
-                    GetVertexObj(id).GetComponent<Renderer>().GetComponent<Material>().color = mycolor;
+                    GetVertexObj(id).GetComponent<MeshRenderer>().material.color = mycolor;
                 }
             }
         }

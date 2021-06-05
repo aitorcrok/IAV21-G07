@@ -8,6 +8,7 @@ namespace es.ucm.fdi.iav.rts
     {
         private AllyMap allyMap;
         private EnemyMap enemyMap;
+        public List<VertexInfluence> influences;
         // works as vertices in regular graph
         // GameObject[] locations;
 
@@ -43,7 +44,7 @@ namespace es.ucm.fdi.iav.rts
 
                     mycolor.a = value;
 
-                    GetVertexObj(id).GetComponent<Renderer>().GetComponent<Material>().color = mycolor;
+                    GetVertexObj(id).GetComponent<MeshRenderer>().material.color = mycolor;
                 }
             }
         }

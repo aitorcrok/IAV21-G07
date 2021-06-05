@@ -8,6 +8,8 @@ namespace es.ucm.fdi.iav.rts
     {
         private AllyMap allyMap;
         private EnemyMap enemyMap;
+        public List<VertexInfluence> influences;
+
         // works as vertices in regular graph
         // GameObject[] locations;
 
@@ -22,22 +24,26 @@ namespace es.ucm.fdi.iav.rts
         }
         public void ComputeInfluence()
         {
-            List<Vertex> allyVertex = allyMap.GetVertex();
-            List<Vertex> enemyVertex = enemyMap.GetVertex();
+            List<VertexInfluence> allyVertex = allyMap.influences;
+            List<VertexInfluence> enemyVertex = enemyMap.influences;
+            influences.Clear();
 
+            foreach (Vertex ver in vertices)
+            {
+                influences.Add(new VertexInfluence());
+            }
             for (int i = 0; i < GetRows(); i++)
             {
                 for (int j = 0; j < GetCols(); i++)
                 {
                     int id = GridToId(j, i);
 
-                    VertexInfluence vertex = vertices[id] as VertexInfluence;
-                    VertexInfluence allyVertice = allyVertex[id] as VertexInfluence;
-                    VertexInfluence enemyVertice = enemyVertex[id] as VertexInfluence;
+                    VertexInfluence allyVertice = allyVertex[id];
+                    VertexInfluence enemyVertice = enemyVertex[id];
 
-                    vertex.value = allyVertice.value + enemyVertice.value;
+                    influences[id].value = allyVertice.value + enemyVertice.value;
 
-                    float value = vertex.value;
+                    float value = influences[id].value;
 
                     Color mycolor;
 
@@ -47,7 +53,7 @@ namespace es.ucm.fdi.iav.rts
 
                     mycolor.a = value;
 
-                    GetVertexObj(id).GetComponent<Renderer>().GetComponent<Material>().color = mycolor;
+                    GetVertexObj(id).GetComponent<MeshRenderer>().material.color = mycolor;
                 }
             }
         }
