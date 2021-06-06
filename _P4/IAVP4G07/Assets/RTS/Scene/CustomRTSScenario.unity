@@ -502,7 +502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca3421451e6606d4096b6103e0f4db7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: 15
+  cellSize: 20
   influences: []
 --- !u!4 &199240328
 Transform:
@@ -538,7 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7551d070236fccc4ea7c31ce7330f18b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: 15
+  cellSize: 20
   influences: []
 --- !u!114 &199240330
 MonoBehaviour:
@@ -552,7 +552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21a5d0c8abd38024fae33af31053dbea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: 15
+  cellSize: 20
   influences: []
 --- !u!114 &199240331
 MonoBehaviour:
@@ -566,7 +566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc7247996261ae40bb60bec1051ce42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: 15
+  cellSize: 20
   unitList: []
   influences: []
 --- !u!114 &199240332
@@ -581,7 +581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c6839bebcf82a747ab562c08e863e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: 15
+  cellSize: 20
   unitList: []
   influences: []
 --- !u!114 &199240333
@@ -1451,7 +1451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca3421451e6606d4096b6103e0f4db7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: 15
+  cellSize: 20
   influences: []
 --- !u!4 &602950445
 Transform:
@@ -1507,7 +1507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7551d070236fccc4ea7c31ce7330f18b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: 15
+  cellSize: 20
   influences: []
 --- !u!114 &602950448
 MonoBehaviour:
@@ -1521,7 +1521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21a5d0c8abd38024fae33af31053dbea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: 15
+  cellSize: 20
   influences: []
 --- !u!114 &602950449
 MonoBehaviour:
@@ -1535,7 +1535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc7247996261ae40bb60bec1051ce42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: 15
+  cellSize: 20
   unitList: []
   influences: []
 --- !u!114 &602950450
@@ -1550,7 +1550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c6839bebcf82a747ab562c08e863e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: 15
+  cellSize: 20
   unitList: []
   influences: []
 --- !u!114 &602950451

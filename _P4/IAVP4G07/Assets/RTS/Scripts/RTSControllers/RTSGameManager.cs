@@ -98,6 +98,8 @@ namespace es.ucm.fdi.iav.rts
         // Inicializa las estructuras internas del estado del juego, como el dinero que se establece inicialmente en 0.
         // Posibles mejoras: 
         // - Por seguridad podrían también destruir los controladores, sus instalaciones y unidades, o incluso el escenario al completo...  y recrearlo todo de alguna manera, por ejemplo desde fichero en el Start. 
+        private float destructionMoveTime = 50.0f;
+        private float timer = 50.0f;
         private void Awake()
         {
             if (_instance != null && _instance != this)
@@ -479,7 +481,20 @@ namespace es.ucm.fdi.iav.rts
                         _controllers[0].GetComponent<RTSAIControllerJoaquin>().activateMap(input);
                 }
             }
+
+            if (_controllers[0].GetComponent<RTSAIControllerJoaquin>() != null && !_controllers[0].GetComponent<RTSAIControllerJoaquin>().canDestructorMove())
+            {
+                timer -= Time.deltaTime;
+                if (timer <= 0.0f)
+                {
+                    timer = destructionMoveTime;
+                    _controllers[0].GetComponent<RTSAIControllerJoaquin>().setDestructorMove(true);
+                }
+            }
+                
         }
 
+        public int GetTimer() { return (int)timer; }
+        public int GetMaxTimeDestructor() { return (int)destructionMoveTime; }
     }
 }

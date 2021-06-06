@@ -32,7 +32,7 @@ namespace es.ucm.fdi.iav.rts
         {
             MoveRandomExtraction, MoveAllExtraction, MoveLastExtraction,
             MoveRandomExplorer, MoveAllExplorer, MoveLastExplorer,
-            MoveRandomDestroyer, MoveAllDestroyer, MoveLastDestroyer
+            MoveRandomDestroyer, MoveAllDestroyer, MoveLastDestroyer, Nothing
         }
 
         // Todos los posibles objetivos que puede poner a sus movimientos este IA
@@ -45,7 +45,7 @@ namespace es.ucm.fdi.iav.rts
             ClosestBase, ClosestProcesingFacility, FurthestBase, FurthestProcesingFacility,
             LastRandomUnit, LastDestroyer, LastExplorer, LastExtraction,
             ClosestRandomUnit, ClosestDestroyer, ClosestExplorer, ClosestExtraction, MostVulnerablePoint,
-            LessTensePoint
+            LessTensePoint, RandomPoint
         }
 
         // Estos valores son los máximos personales que la IA considera que es razonable no superar en cuanto a número de unidades de cada tipo
@@ -53,6 +53,7 @@ namespace es.ucm.fdi.iav.rts
         public int PersonalMaxExplorer;
         public int PersonalMaxDestroyer;
 
+        bool canMove = true;
         [SerializeField]
         // Los movimientos que estarán disponibles de verdad
         public List<PosibleMovement> Moves;
@@ -110,7 +111,6 @@ namespace es.ucm.fdi.iav.rts
             else
                 _mapEnemy.AddUnit(u);
         }
-
         // Despierta el controlador y configura toda estructura interna que sea necesaria
         private void Awake()
         {
@@ -157,8 +157,6 @@ namespace es.ucm.fdi.iav.rts
                     // Obtengo referencias a mis cosas (asumo que existen al comenzar, ojo! porque luego las puedo perder y que no estén)
                     MyFirstBaseFacility = RTSGameManager.Instance.GetBaseFacilities(MyIndex)[0];
                     MyFirstProcessingFacility = RTSGameManager.Instance.GetProcessingFacilities(MyIndex)[0];
-                    // MyFirstBaseFacility
-                    // ...
 
                     // Obtengo referencias a las cosas de mi enemigo
                     var indexList = RTSGameManager.Instance.GetIndexes();
@@ -313,6 +311,8 @@ namespace es.ucm.fdi.iav.rts
                                 movedUnit = UnitsDestroyerList[UnitsDestroyerList.Count - 1]; // Por indicar lo que estoy moviendo
                             }
                             break;
+                        case PosibleMovement.Nothing:
+                            break;
                     }
 
                     // Nuestra política es muy tonta: voy recorriendo todos los tipos de movimiento que conozco, haciendo uno cada vez
@@ -323,23 +323,34 @@ namespace es.ucm.fdi.iav.rts
                     _mapVulnerability.GetMostVulnerable(out vValue);
                     _mapTension.GetLessTense(out tValue);
 
-                    if (UnitsDestroyerList.Count == 0)
+                    
+                    //if ()
+                    //{
+                    //    nextObjective = PosibleObjective.ClosestExtraction;
+                    //    nextMove = PosibleMovement.MoveAllExtraction;
+                    //}
+                    /*else*/ if(UnitsDestroyerList.Count == 0)
                     {
                         nextObjective = PosibleObjective.ClosestBase;
                         nextMove = PosibleMovement.MoveAllExplorer;
                     }
-
-                    else if (vValue > 1)
+                    else if (canMove && vValue > 1)
                     {
                         nextObjective = PosibleObjective.MostVulnerablePoint;
                         nextMove = PosibleMovement.MoveAllDestroyer;
+                        canMove = false;
                     }
-
-                    else if (tValue < 1)
+                    else if (vValue < 1)
                     {
-                        nextObjective = PosibleObjective.LessTensePoint;
+                        nextObjective = PosibleObjective.RandomPoint;
                         nextMove = PosibleMovement.MoveRandomExplorer;
                     }
+                    else
+                    {
+                        nextMove = PosibleMovement.Nothing;
+                    }
+                    Debug.Log(nextObjective);
+                    Debug.Log(nextMove);
 
                     // Aquí se comprueba que hayamos acabado con absolutamente todo el ejército enemigo, para descansar
                     // A veces comprobábamos si EnemyFacilities[0].Health.Amount <=0 por si no había sido destruida por error
@@ -703,6 +714,11 @@ namespace es.ucm.fdi.iav.rts
                         ObjectiveTrans = _mapVulnerability.GetMostVulnerable(out v);
                     }
                     break;
+                case PosibleObjective.RandomPoint:
+                    {
+                        ObjectiveTrans = _mapInfluence.GetRandomPoint();
+                    }
+                    break;
             }
 
             return ObjectiveTrans;
@@ -827,5 +843,7 @@ namespace es.ucm.fdi.iav.rts
             _mapAlly.RemoveUnit(u);
             _mapEnemy.RemoveUnit(u);
         }
+        public void setDestructorMove(bool b) { canMove = b; }
+        public bool canDestructorMove() { return canMove; }
     }
 }

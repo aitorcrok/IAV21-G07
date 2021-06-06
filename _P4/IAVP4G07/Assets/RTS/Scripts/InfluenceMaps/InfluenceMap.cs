@@ -86,5 +86,11 @@ namespace es.ucm.fdi.iav.rts
                 changeVisibility = false;
             }
         }
+
+        public Transform GetRandomPoint()
+        {
+            int i = Random.Range(0, GetCols()*GetRows());
+            return influences[i].gameObject.transform;
+        }
     }
 }

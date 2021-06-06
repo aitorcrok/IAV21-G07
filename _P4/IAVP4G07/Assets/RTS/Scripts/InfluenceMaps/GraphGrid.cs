@@ -47,7 +47,6 @@ namespace es.ucm.fdi.iav.rts
         {
             return Math.Max(numRows, numCols) * y + x;
         }
-
         private Vector2 IdToGrid(int id)
         {
             Vector2 location = Vector2.zero;

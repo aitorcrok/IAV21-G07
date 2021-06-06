@@ -50,7 +50,6 @@ namespace es.ucm.fdi.iav.rts
                     influences[id].value = allyVertice.value - enemyVertice.value;
 
                     float value = influences[id].value;
-                    if (value != 0) Debug.Log(value);
                     Color mycolor = new Color(0,1,0, Mathf.Abs(value));
 
                     GetVertexObj(id).GetComponent<MeshRenderer>().material.color = mycolor;
