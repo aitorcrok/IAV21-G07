@@ -47,7 +47,7 @@ namespace es.ucm.fdi.iav.rts
         }
         public void ComputeInfluence()
         {
-            VertexInfluence v;
+            //VertexInfluence v;
             float dropOff;
             List<Vertex> pending = new List<Vertex>();
             List<Vertex> visited = new List<Vertex>();

@@ -112,7 +112,7 @@ MonoBehaviour:
   _influence: 1
   _attackDamage: 10
   _attackTime: 2
-  _attackDistance: 15
+  _attackDistance: 25
 --- !u!54 &-8770835171561959098
 Rigidbody:
   m_ObjectHideFlags: 0

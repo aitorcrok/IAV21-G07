@@ -107,7 +107,7 @@ namespace es.ucm.fdi.iav.rts
         private VulnerabilityMap _mapVulnerability;
 
         public int vulnerabilityThreshold = 1;
-        public int maxExplorers = 10;
+        public int maxExplorers = 3;
         private int explorerCount = 0;
 
         public void AddAllyEnemy(bool ally, Unit u)
@@ -215,10 +215,12 @@ namespace es.ucm.fdi.iav.rts
                             {
                                 RTSGameManager.Instance.CreateUnit(this, MyFirstBaseFacility, RTSGameManager.UnitType.EXPLORATION);
                                 explorerCount++;
+
                             }
                             else if (UnitsDestroyerList.Count < PersonalMaxDestroyer && UnitsDestroyerList.Count < RTSGameManager.Instance.DestructionUnitsMax && RTSGameManager.Instance.GetMoney(MyIndex) > RTSGameManager.Instance.DestructionUnitCost)
                             {
                                 RTSGameManager.Instance.CreateUnit(this, MyFirstBaseFacility, RTSGameManager.UnitType.DESTRUCTION);
+
                             }
                         }
                     }
@@ -351,7 +353,7 @@ namespace es.ucm.fdi.iav.rts
                     _mapTension.GetLessTense(out tValue);
 
                     //Cuando tenga el maximo de destructores los manda hacia la base enemiga
-                    if (UnitsDestroyerList.Count == PersonalMaxDestroyer)
+                    if (UnitsDestroyerList.Count >= 3)
                     {
                         nextObjective = PosibleObjective.ClosestEnemyBase;
                         nextMove = PosibleMovement.MoveAllAttackers;
@@ -380,17 +382,13 @@ namespace es.ucm.fdi.iav.rts
                     {
                         nextMove = PosibleMovement.Nothing;
                     }
-                    Debug.Log(nextObjective);
-                    Debug.Log(nextMove);
+                    //Debug.Log(nextObjective);
+                    //Debug.Log(nextMove);
 
                     // Aquí se comprueba que hayamos acabado con absolutamente todo el ejército enemigo, para descansar
                     // A veces comprobábamos si EnemyFacilities[0].Health.Amount <=0 por si no había sido destruida por error
                     // Bastaría con que las EnemyFacilities estén destruidas, porque se supone que ahí acaba el juego
-                    if ((EnemyFacilities == null || EnemyFacilities.Count == 0) &&
-                        (EnemyPFacilities == null || EnemyPFacilities.Count == 0) &&
-                        (EnemyUnitsExtractList == null || EnemyUnitsExtractList.Count == 0) &&
-                        (EnemyUnitsExploreList == null || EnemyUnitsExploreList.Count == 0) &&
-                        (EnemyUnitsDestroyerList == null || EnemyUnitsDestroyerList.Count == 0))
+                    if (EnemyFacilities == null || EnemyFacilities.Count == 0)
                     {
                         // Realmente aquí el juego habría acabado y no tiene sentido seguir haciendo cosas
                         Stopthinking();

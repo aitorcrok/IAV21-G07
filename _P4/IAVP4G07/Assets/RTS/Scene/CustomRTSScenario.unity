@@ -602,6 +602,8 @@ MonoBehaviour:
   PersonalMaxDestroyer: 8
   Moves: 000000000000000000000000000000000000000000000000
   Objectives: 00000000000000000000000000000000000000000000000000000000
+  vulnerabilityThreshold: 1
+  maxExplorers: 10
 --- !u!1001 &243753206
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1571,6 +1573,8 @@ MonoBehaviour:
   PersonalMaxDestroyer: 8
   Moves: 000000000000000000000000000000000000000000000000
   Objectives: 00000000000000000000000000000000000000000000000000000000
+  vulnerabilityThreshold: 1
+  maxExplorers: 10
 --- !u!1001 &688952018
 PrefabInstance:
   m_ObjectHideFlags: 0

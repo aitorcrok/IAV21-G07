@@ -92,6 +92,8 @@ namespace es.ucm.fdi.iav.rts
                         r.material.renderQueue = 3000;
                         vertexObjs[id].transform.SetPositionAndRotation(position, Quaternion.identity);
 
+                        vertexObjs[id].GetComponent<BoxCollider>().enabled = false;
+
                         vertexObjs[id].name = vertexObjs[id].name.Replace("(Clone)", id.ToString());
                         Vertex v = vertexObjs[id].AddComponent<Vertex>();
 
