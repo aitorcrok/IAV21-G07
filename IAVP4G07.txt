@@ -30,10 +30,6 @@ Se trata de una IA prudente que se centra principalmente en construir muchas ext
 y mientras tanto defenderse para poder llevar a cabo esa tarea. Una vez conseguidos muchos recursos, Joaquín pasará al ataque, centrando así
 sus esfuerzos en un estilo de juego agresivo con el objetivo de acabar con todas las unidades enemigas.
 
---------------------------------------------------
-Problemas:
-
-En el ejecutable los colores de los mapas de influencia no funcionan correctamente.
 
 --------------------------------------------------
 Enlace al repositorio:
