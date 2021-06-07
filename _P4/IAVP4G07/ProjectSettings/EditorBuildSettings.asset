@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/RTS/Scene/CustomRTSScenario.unity
+    guid: acf52cd28d69ce741944ae769874d80d
   m_configObjects: {}
