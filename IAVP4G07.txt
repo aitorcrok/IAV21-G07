@@ -1,0 +1,40 @@
+Integrantes del grupo 07: 
+- Jorge Bello Martín
+- Aitor García Casamayor
+- David Godoy Ruiz
+- Tomás López Antón
+- Eva Lucas Leiro
+
+--------------------------------------------------
+El mapa de influencia y la clase GraphGrid
+
+Para implementar los mapas de influencia hemos utilizado la clase Graph Grid de la práctica 2, pero en lugar de utilizar un archivo .txt, 
+la cuadrícula la creamos dinámicamente según el escenario que tengamos en la escena instanciando un cubo en la celda correspondiente.
+Contamos con 5 mapas de infuencia: AllyMap, EnemyMap, InfluenceMap, TensionMap y VulnerabilityMap . Los dos primeros marcarán las 
+zonas controladas por los aliados/enemigosy serán los mapas sobre los que se basaran los tres restantes. El InfluenceMap resta a la 
+influencia aliada la enemiga, lo que provoca que tenga valores inferiores en el "frente de batalla".El TensionMap suma ambas influencias,
+lo que muestra zonas seguras si la influencia es positiva (es decir aliada), o zonas de peligro si la influencia es negativa (es decir, enemiga).
+El VulnerabilityMap  muestra con valores negativos las zonas que están dominadas por alguno de los dos ejércitos y con valores 
+altos las zonas en las que la pelea está más igualada.
+
+Se indicará visualmente según el color y la transparencia de cada casilla. Cuando el controlador añade una unidad, éste indica al mapa de 
+influencia que lo ha añadido, sumando así el valor de influencia a la zona necesaria. El jugador puede cambiar entre los posibles mapas de 
+influencia con las teclas numéricas (1-5).
+
+--------------------------------------------------
+Joaquín: nuestro controlador inteligente
+
+Para implementar a Joaquín, hemos usado como base el RTSAIController proporcionado en la práctica. Hemos hecho modificaciones en el orden en 
+el que realiza las acciones para que siga una lógica en la partida, basando dicha lógica también en el mapa de influencia.
+Se trata de una IA prudente que se centra principalmente en construir muchas extractoras al inicio de la partida para así conseguir recursos
+y mientras tanto defenderse para poder llevar a cabo esa tarea. Una vez conseguidos muchos recursos, Joaquín pasará al ataque, centrando así
+sus esfuerzos en un estilo de juego agresivo con el objetivo de acabar con todas las unidades enemigas.
+
+--------------------------------------------------
+Problemas:
+
+En el ejecutable los colores de los mapas de influencia no funcionan correctamente.
+
+--------------------------------------------------
+Enlace al repositorio:
+https://github.com/aitorcrok/IAV21-G07
