@@ -32,7 +32,7 @@ namespace es.ucm.fdi.iav.rts
         {
             MoveRandomExtraction, MoveAllExtraction, MoveLastExtraction,
             MoveRandomExplorer, MoveAllExplorer, MoveLastExplorer,
-            MoveRandomDestroyer, MoveAllDestroyer, MoveLastDestroyer, Nothing
+            MoveRandomDestroyer, MoveAllDestroyer, MoveLastDestroyer, Nothing, MoveAllAttackers
         }
 
         // Todos los posibles objetivos que puede poner a sus movimientos este IA
@@ -98,11 +98,17 @@ namespace es.ucm.fdi.iav.rts
 
         // Última unidad creada
         private Unit LastUnit { get; set; }
+
+        //Mapas de influencia para la evaluacion de la ia
         private AllyMap _mapAlly;
         private EnemyMap _mapEnemy;
         private InfluenceMap _mapInfluence;
         private TensionMap _mapTension;
         private VulnerabilityMap _mapVulnerability;
+
+        public int vulnerabilityThreshold = 1;
+        public int maxExplorers = 10;
+        private int explorerCount = 0;
 
         public void AddAllyEnemy(bool ally, Unit u)
         {
@@ -114,8 +120,8 @@ namespace es.ucm.fdi.iav.rts
         // Despierta el controlador y configura toda estructura interna que sea necesaria
         private void Awake()
         {
-            Name = "Example 3";
-            Author = "Alejandro Ansón";
+            Name = "Joaquin";
+            Author = "IAV_7";
 
             // Aumenta el tamaño y cambia el color de fuente de letra para OnGUI (amarillo para las IAs)
             _labelStyle = new GUIStyle();
@@ -137,7 +143,7 @@ namespace es.ucm.fdi.iav.rts
         // El método de pensar que sobreescribe e implementa el controlador, para percibir (hacer mapas de influencia, etc.) y luego actuar.
         protected override void Think()
         {
-            // Actualizo el mapa de influencia 
+            // Actualizo los mapas de influencia 
             _mapAlly.ComputeInfluence();
             _mapEnemy.ComputeInfluence();
             _mapInfluence.ComputeInfluence();
@@ -196,21 +202,25 @@ namespace es.ucm.fdi.iav.rts
 
                     if (Facilities.Count > 0) // Si tengo alguna instalación base, me puedo plantear construir
                     {
-                        // Intento crear una unidad en este orden: extractora, destructora y exploradora
-                        while (UnitsExtractList.Count < PersonalMaxExtractor && UnitsExtractList.Count < RTSGameManager.Instance.ExtractionUnitsMax && RTSGameManager.Instance.GetMoney(MyIndex) > RTSGameManager.Instance.ExtractionUnitCost && PFacilities.Count > 0)
+                        // Prioriza tener el maximo de unidades extractoras si hay instalaciones de procesado
+                        if (UnitsExtractList.Count < PersonalMaxExtractor && UnitsExtractList.Count < RTSGameManager.Instance.ExtractionUnitsMax && RTSGameManager.Instance.GetMoney(MyIndex) > RTSGameManager.Instance.ExtractionUnitCost && PFacilities.Count > 0)
                         {
                             //Al encargarse ellas solas de extraer no hace falta moverlas manualmente
                             RTSGameManager.Instance.CreateUnit(this, MyFirstBaseFacility, RTSGameManager.UnitType.EXTRACTION);
                         }
-                        if (UnitsDestroyerList.Count < PersonalMaxDestroyer && UnitsDestroyerList.Count < RTSGameManager.Instance.DestructionUnitsMax && RTSGameManager.Instance.GetMoney(MyIndex) > RTSGameManager.Instance.DestructionUnitCost)
+                        else
                         {
-                            RTSGameManager.Instance.CreateUnit(this, MyFirstBaseFacility, RTSGameManager.UnitType.DESTRUCTION);
+                            //Construye una cantidad maxima de exploradores por partida, para luego centrarse en construir destructores cuando la partida este mas avanzada y tenga mas recursos
+                            if (explorerCount < maxExplorers && UnitsExploreList.Count < RTSGameManager.Instance.ExplorationUnitsMax && RTSGameManager.Instance.GetMoney(MyIndex) > RTSGameManager.Instance.ExplorationUnitCost)
+                            {
+                                RTSGameManager.Instance.CreateUnit(this, MyFirstBaseFacility, RTSGameManager.UnitType.EXPLORATION);
+                                explorerCount++;
+                            }
+                            else if (UnitsDestroyerList.Count < PersonalMaxDestroyer && UnitsDestroyerList.Count < RTSGameManager.Instance.DestructionUnitsMax && RTSGameManager.Instance.GetMoney(MyIndex) > RTSGameManager.Instance.DestructionUnitCost)
+                            {
+                                RTSGameManager.Instance.CreateUnit(this, MyFirstBaseFacility, RTSGameManager.UnitType.DESTRUCTION);
+                            }
                         }
-                        if (UnitsExploreList.Count < PersonalMaxExplorer && UnitsExploreList.Count < RTSGameManager.Instance.ExplorationUnitsMax && RTSGameManager.Instance.GetMoney(MyIndex) > RTSGameManager.Instance.ExplorationUnitCost)
-                        {
-                            RTSGameManager.Instance.CreateUnit(this, MyFirstBaseFacility, RTSGameManager.UnitType.EXPLORATION);
-                        }
-
                     }
 
                     // Variables auxiliares
@@ -311,37 +321,58 @@ namespace es.ucm.fdi.iav.rts
                                 movedUnit = UnitsDestroyerList[UnitsDestroyerList.Count - 1]; // Por indicar lo que estoy moviendo
                             }
                             break;
+                        case PosibleMovement.MoveAllAttackers:
+                            //Mueve a todos los destructores y exploradores a un punto
+                            if (UnitsDestroyerList != null && UnitsDestroyerList.Count > 0)
+                            {
+                                foreach (Unit x in UnitsDestroyerList)
+                                {
+                                    RTSGameManager.Instance.MoveUnit(this, x, chooseObjective(x.transform));
+                                    movedUnit = x; // Por indicar lo que estoy moviendo
+                                }
+                            }
+                            if (UnitsExploreList != null && UnitsExploreList.Count > 0)
+                            {
+                                foreach (Unit x in UnitsExploreList)
+                                {
+                                    RTSGameManager.Instance.MoveUnit(this, x, chooseObjective(x.transform));
+                                    movedUnit = x; // Por indicar lo que estoy moviendo
+                                }
+                            }
+                            break;
                         case PosibleMovement.Nothing:
                             break;
                     }
 
-                    // Nuestra política es muy tonta: voy recorriendo todos los tipos de movimiento que conozco, haciendo uno cada vez
 
-                    // Con los objetivos, la política es igual de estúpida
 
                     float vValue, tValue;
                     _mapVulnerability.GetMostVulnerable(out vValue);
                     _mapTension.GetLessTense(out tValue);
 
-                    
-                    //if ()
-                    //{
-                    //    nextObjective = PosibleObjective.ClosestExtraction;
-                    //    nextMove = PosibleMovement.MoveAllExtraction;
-                    //}
-                    /*else*/ if(UnitsDestroyerList.Count == 0)
+                    //Cuando tenga el maximo de destructores los manda hacia la base enemiga
+                    if (UnitsDestroyerList.Count == PersonalMaxDestroyer)
                     {
+                        nextObjective = PosibleObjective.ClosestEnemyBase;
+                        nextMove = PosibleMovement.MoveAllAttackers;
+                    }
+                    else if(UnitsDestroyerList.Count == 0)
+                    {
+                        //Si no tiene destructores se repliega
                         nextObjective = PosibleObjective.ClosestBase;
                         nextMove = PosibleMovement.MoveAllExplorer;
                     }
-                    else if (canMove && vValue > 1)
+                    else if (canMove && vValue > vulnerabilityThreshold)
                     {
+                        //Cada mas tiempo que un paso logico busca el punto mas vulnerable
+                        //Si su valor es mayor que el limite, manda a todos sus destructores a ayudar
                         nextObjective = PosibleObjective.MostVulnerablePoint;
                         nextMove = PosibleMovement.MoveAllDestroyer;
                         canMove = false;
                     }
-                    else if (vValue < 1)
+                    else if (vValue < vulnerabilityThreshold)
                     {
+                        //Si no lo es se dedica a explorar el mapa
                         nextObjective = PosibleObjective.RandomPoint;
                         nextMove = PosibleMovement.MoveRandomExplorer;
                     }
