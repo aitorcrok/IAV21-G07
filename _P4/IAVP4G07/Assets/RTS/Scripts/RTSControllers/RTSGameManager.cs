@@ -100,6 +100,7 @@ namespace es.ucm.fdi.iav.rts
         // - Por seguridad podrían también destruir los controladores, sus instalaciones y unidades, o incluso el escenario al completo...  y recrearlo todo de alguna manera, por ejemplo desde fichero en el Start. 
         private float destructionMoveTime = 50.0f;
         private float timer = 50.0f;
+        public GameObject cubePrefab;
         private void Awake()
         {
             if (_instance != null && _instance != this)

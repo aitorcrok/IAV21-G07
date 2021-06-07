@@ -2685,6 +2685,8 @@ MonoBehaviour:
   _destructionUnitOddPrefab: {fileID: 100000, guid: 671e287d801cb894fab6a4c0a8407efa,
     type: 3}
   ArrakisGO: {fileID: 1583882777}
+  cubePrefab: {fileID: 6350001319874485515, guid: d3ab64488aa455147be5da28fb7d64a7,
+    type: 3}
 --- !u!1 &1357167914
 GameObject:
   m_ObjectHideFlags: 0

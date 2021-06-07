@@ -81,17 +81,7 @@ namespace es.ucm.fdi.iav.rts
                         position.z = i * cellSize;
                         id = GridToId(j, i);
 
-                        vertexObjs[id] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                        Renderer r = vertexObjs[id].gameObject.GetComponent<Renderer>();
-                        r.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                        r.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                        r.material.SetInt("_ZWrite", 0);
-                        r.material.DisableKeyword("_ALPHATEST_ON");
-                        r.material.EnableKeyword("_ALPHABLEND_ON");
-                        r.material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                        r.material.renderQueue = 3000;
-                        vertexObjs[id].transform.SetPositionAndRotation(position, Quaternion.identity);
-
+                        vertexObjs[id] = Instantiate<GameObject>(RTSGameManager.Instance.cubePrefab, position, Quaternion.identity);
                         vertexObjs[id].GetComponent<BoxCollider>().enabled = false;
 
                         vertexObjs[id].name = vertexObjs[id].name.Replace("(Clone)", id.ToString());
