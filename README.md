@@ -86,7 +86,7 @@ Para ello, hemos usado la clase GraphGrid que teníamos en la práctica 2 para r
 Una vez tenemos la cuadrícula, es hora de formar los mapa de influencia. Hemos creado varias interpretaciones la clase InfluenceMap basándonos en el CookBook de Ian Millington. Cada mapa de influencia tiene unos indicadores numéricos mayores o menores según el critero de cada uno de los mapas.
 
 El AllyMap muestra únicamente la influencia de las unidades aliadas. Esta información es usada para calcular el resto de mapas junto con el EnemyMap, que es igual pero con las unidades enemigas.
-Los otros tres mapas se calculan a partir de estos y son los que aportan la ifnormación más relevanta a nuestro controlador:
+Los otros tres mapas se calculan a partir de estos y son los que aportan la información más relevanta a nuestro controlador:
 
 El InfluenceMap resta a la influencia aliada la enemiga, lo que provoca que tenga valores inferiores en el "frente de batalla", es decir, en el punto en el que las influencias aliada y enemiga están igualadas.
 El TensionMap suma ambas influencias, lo que muestra las zonas con más unidades agrupadas independientemente del bando, lo que muestra zonas seguras si la influencia es positiva (es decir aliada), o zonas de peligro si la influencia es negativa (es decir, enemiga).
