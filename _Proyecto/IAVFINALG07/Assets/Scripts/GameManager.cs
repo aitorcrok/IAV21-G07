@@ -2,32 +2,33 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace IAV.G07.MUS
 {
+    public enum CardType
+    {
+        Bastos,
+        Espadas,
+        Copas,
+        Oros
+    };
+    public struct Card
+    {
+        public Card(CardType p, int n, Sprite i) { palo = p; num = n; sprite = i; }
+        public CardType palo;
+        public int num;
+        public Sprite sprite;
+    };
     public class GameManager : MonoBehaviour
     {
         private static GameManager _instance;
         public static GameManager Instance { get { return _instance; } }
-
-        public enum CardType
-        {
-            Basto,
-            Espada,
-            Copas,
-            Oro
-        };
-        public struct Card
-        {
-            public Card(CardType p, int n) { palo = p; num = n; }
-            public CardType palo;
-            public int num;
-        };
-
         private Stack<Card> _baraja = new Stack<Card>();
         private Stack<Card> _descartes = new Stack<Card>();
         private Queue<Card> _envites = new Queue<Card>();
-        //private vector<Player> _players; //se meten los jugadores en orden, los dos primeros son el primer equipo y los dos ultimos el segundo equipo
+        public GameObject cardPrefab;
+        private List<Player> _players = new List<Player>(); //se meten los jugadores en orden, los dos primeros son el primer equipo y los dos ultimos el segundo equipo
         private void Awake()
         {
             if (_instance != null && _instance != this)
@@ -44,18 +45,27 @@ namespace IAV.G07.MUS
         {
             for(int i = 0; i < 4; i++)
             {
-                for(int j = 0; j < 7; j++)
+                CardType t = (CardType)i;
+                for (int j = 0; j < 7; j++)
                 {
-                    Card c = new Card((CardType)i, j+1);
+                    string path = t.ToString() + "_" + (j+1);
+                    Card c = new Card(t, j+1, Resources.Load<Sprite>(path));
                     _baraja.Push(c);
                 }
                 for(int j = 10; j<13; j++)
                 {
-                    Card c = new Card((CardType)i, j);
+                    string path = t.ToString() + "_" + j;
+                    Card c = new Card(t, j, Resources.Load<Sprite>(path));
                     _baraja.Push(c);
                 }
             }
             Barajar(_baraja);
+            //inicializar mano del jugador (a.k.a robar 4 cartas) ESTO NO IRIA AQUI SINO EN OTRO SITIO PERO YO LO PONGO AQUI POR AHORA
+            for(int i = 0; i<4; i++)
+            {
+                _players[0].Mano().Add(_baraja.Peek());
+                _baraja.Pop();
+            }
         }
 
         //Fisher-Yates shuffle
@@ -76,10 +86,33 @@ namespace IAV.G07.MUS
                 b.Push(c);
         }
 
-        // Update is called once per frame
+        public void AddPlayer(Player p) { _players.Add(p); }
+
+        //UPDATE PARA HACER PRUEBAS DE AÑADIR Y ELIMINAR CARTAS
         void Update()
         {
-        
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (_players[0].Mano().Count > 0)
+                {
+                    var c = _players[0].Mano()[0];
+                    _descartes.Push(c);
+                    _players[0].Mano().RemoveAt(0);
+                    _players[0].RenderCards();
+                    Debug.Log(_descartes.Count + " cartas en los DESCARTES");
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.A))
+            {
+                if (_players[0].Mano().Count < 5)
+                {
+                    _players[0].Mano().Add(_baraja.Peek());
+                    _baraja.Pop();
+                    _players[0].RenderCards();
+                    Debug.Log(_baraja.Count + " cartas en la BARAJA");
+                }
+
+            }           
         }
     }
 
