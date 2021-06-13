@@ -10,6 +10,14 @@ namespace IAV.G07.MUS
         private List<Card> _mano = new List<Card>();
         public List<Card> Mano() { return _mano; }
 
+        private Fase actualFase;
+        private bool mus;
+
+        void Awake()
+        {
+            actualFase = GameManager.Instance.actualFase;
+        }
+
         //// Start is called before the first frame update
         //void Start()
         //{
@@ -30,6 +38,27 @@ namespace IAV.G07.MUS
                 if(index == 0)g.GetComponent<Image>().sprite = _mano[j].sprite;
             }
         }
+
+        public bool StartRoutine()
+        {
+            StartCoroutine("AskRoutine");
+            return mus;
+        }
+        IEnumerator AskRoutine()
+        {
+            mus = true;
+            yield return new WaitForSeconds(.1f);
+        }
+
+        public void Descartar()
+        {
+
+        }
+
+        public void Pasar(){ }        
+        public void Envidar(){ }
+        public void Ver(){ }
+        public void Subir(){ }
     }
 
 }
