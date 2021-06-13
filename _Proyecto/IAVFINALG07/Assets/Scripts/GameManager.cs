@@ -28,7 +28,7 @@ namespace IAV.G07.MUS
         private Stack<Card> _descartes = new Stack<Card>();
         private Queue<Card> _envites = new Queue<Card>();
         public GameObject cardPrefab;
-        private List<Player> _players = new List<Player>(); //se meten los jugadores en orden, los dos primeros son el primer equipo y los dos ultimos el segundo equipo
+        private List<Player> _players = new List<Player>(4); //se meten los jugadores en orden, los dos primeros son el primer equipo y los dos ultimos el segundo equipo
         private void Awake()
         {
             if (_instance != null && _instance != this)
@@ -39,6 +39,8 @@ namespace IAV.G07.MUS
             {
                 _instance = this;
             }
+            for(int i = 0; i < _players.Capacity; i++)
+                _players.Add(null);
         }
         // Start is called before the first frame update
         void Start()
@@ -60,11 +62,14 @@ namespace IAV.G07.MUS
                 }
             }
             Barajar(_baraja);
-            //inicializar mano del jugador (a.k.a robar 4 cartas) ESTO NO IRIA AQUI SINO EN OTRO SITIO PERO YO LO PONGO AQUI POR AHORA
-            for(int i = 0; i<4; i++)
+            //inicializar mano de los jugadores (a.k.a robar 4 cartas) ESTO NO IRIA AQUI SINO EN OTRO SITIO PERO YO LO PONGO AQUI POR AHORA
+            for(int i = 0; i < _players.Count; i++)
             {
-                _players[0].Mano().Add(_baraja.Peek());
-                _baraja.Pop();
+                for(int k = 0; k<4; k++)
+                {
+                    _players[i].Mano().Add(_baraja.Peek());
+                    _baraja.Pop();
+                }
             }
         }
 
@@ -86,7 +91,20 @@ namespace IAV.G07.MUS
                 b.Push(c);
         }
 
-        public void AddPlayer(Player p) { _players.Add(p); }
+        public void AddPlayer(Player p, int index) { _players[index] = p; }
+
+        public int GetIndexPlayer(Player p)
+        {
+            if (p == null)
+                throw new ArgumentNullException();
+
+            for (int index = 0; index < _players.Count; index++)
+            {
+                if (_players[index] == p)
+                    return index;
+            }
+            throw new ArgumentException("El gestor del juego no conoce este controlador");
+        }
 
         //UPDATE PARA HACER PRUEBAS DE AÑADIR Y ELIMINAR CARTAS
         void Update()
