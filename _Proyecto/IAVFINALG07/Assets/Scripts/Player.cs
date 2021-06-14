@@ -7,11 +7,15 @@ namespace IAV.G07.MUS
 {
     public class Player : MonoBehaviour
     {
-        private List<Card> _mano = new List<Card>();
+        protected List<Card> _mano = new List<Card>();
         public List<Card> Mano() { return _mano; }
 
         protected Fase actualFase;
         protected int mus = -1;
+
+        protected bool endTurn = false;
+        public bool getEnd() { return endTurn; }
+        public void setEnd() { endTurn = false; }
         public int getMus() { return mus;}
         public void setMus(int i) { mus = i; }
 
@@ -29,14 +33,11 @@ namespace IAV.G07.MUS
                 if(index == 0)g.GetComponent<Image>().sprite = _mano[j].sprite;
             }
         } 
-        public void Descartar()
-        {
-
-        }
-        public void Pasar(){ }        
-        public void Envidar(){ }
-        public void Ver(){ }
-        public void Subir(){ }
+        
+        //public void Pasar(){ }        
+        //public void Envidar(){ }
+        //public void Ver(){ }
+        //public void Subir(){ }
     }
 
 }
