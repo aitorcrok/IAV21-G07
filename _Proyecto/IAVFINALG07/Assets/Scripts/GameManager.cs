@@ -23,7 +23,7 @@ namespace IAV.G07.MUS
         Copas,
         Oros
     };
-    public struct Card
+    public class Card
     {
         public Card(CardType p, int n, Sprite i) { palo = p; num = n; sprite = i; descarte = false; }
         public CardType palo;
@@ -44,9 +44,12 @@ namespace IAV.G07.MUS
         private Stack<Card> _descartes = new Stack<Card>();
         private Queue<Card> _envites = new Queue<Card>();
         public GameObject cardPrefab;
-
-        public Fase actualFase = Fase.Mus;
-        public KeyCode actualInput;
+        public GameObject barajaTextGO;
+        private Text barajaText;
+        private Text descartesText;
+        public GameObject descartesTextGO;
+        private Fase _actualFase = Fase.Mus;
+        public Fase GetActualFase() { return _actualFase; }
         private int actualTurn = 0; //0,1,2, o 3 segun el jugador que le toque
         private List<Player> _players = new List<Player>(4); //se meten los jugadores en orden, los dos primeros son el primer equipo y los dos ultimos el segundo equipo
         private void Awake()
@@ -65,6 +68,8 @@ namespace IAV.G07.MUS
         // Start is called before the first frame update
         void Start()
         {
+            barajaText = barajaTextGO.GetComponent<Text>();
+            descartesText = descartesTextGO.GetComponent<Text>();
             Iniciar();
         }
 
@@ -134,7 +139,8 @@ namespace IAV.G07.MUS
         }
         private void Update()
         {
-            if (actualFase == Fase.Mus)
+
+            if (_actualFase == Fase.Mus)
             {
                 int mus;
                 //Esto no es exactamente en este orden, hay que tener en cuenta la mano
@@ -144,7 +150,7 @@ namespace IAV.G07.MUS
                 {
                     if (mus == 0) //no mus
                     {
-                        actualFase = Fase.Grande;
+                        _actualFase = Fase.Grande;
                         foreach (Player p in _players)
                             p.setMus(-1);
                         actualTurn = 0;
@@ -154,8 +160,7 @@ namespace IAV.G07.MUS
                         _players[actualTurn].setMus(-1);
                         if (actualTurn == 3) //si es el ultimo, hace cosas antes de preguntar al siguiente de nuevo
                         {
-                            Debug.Log("Descartense");
-                            actualFase = Fase.Descartar;
+                            _actualFase = Fase.Descartar;
                             //eliges cartas que descartarse y las cambias
                         }
                         changeTurn();
@@ -164,47 +169,49 @@ namespace IAV.G07.MUS
 
             }
 
-            else if (actualFase == Fase.Descartar)
+            else if (_actualFase == Fase.Descartar)
             {
+                Debug.Log("Descartando jugador "+actualTurn +"..." );
                 //_players[actualTurn].Descartar();
-                if (_players[actualTurn].getEnd())
+                if (_players[actualTurn].getEnd()) //si el jugador ha acabado de decidirse, se descartan sus cartas
                 {
                     Descartar();
                     _players[actualTurn].setEnd();
 
-                    if (actualTurn == 3)
+                    if (actualTurn == 3) //si han acabado de descartar todos los jugadores, se vuelve a la fase de mus
                     {
-                        actualFase = Fase.Mus;
+                        _actualFase = Fase.Mus;
                     }
                     changeTurn();
                 }
             }
 
-            else if (actualFase == Fase.Grande)
+            else if (_actualFase == Fase.Grande)
             {
 
-                actualFase = Fase.Chica;
+                _actualFase = Fase.Chica;
             }
-            else if (actualFase == Fase.Chica)
+            else if (_actualFase == Fase.Chica)
             {
 
-                actualFase = Fase.Pares;
+                _actualFase = Fase.Pares;
             }
-            else if (actualFase == Fase.Pares)
+            else if (_actualFase == Fase.Pares)
             {
 
-                actualFase = Fase.Juego;
+                _actualFase = Fase.Juego;
             }
-            else if (actualFase == Fase.Juego)
+            else if (_actualFase == Fase.Juego)
             {
 
-                actualFase = Fase.Final;
+                _actualFase = Fase.Final;
             }
-            else if (actualFase == Fase.Final)
+            else if (_actualFase == Fase.Final)
             {
 
             }
             Debug.Log("Turno actual: " + actualTurn);
+            setUI();
         }
 
         public bool checkTurn(Player p) { return GetIndexPlayer(p) == actualTurn; }
@@ -216,31 +223,30 @@ namespace IAV.G07.MUS
 
         public void Descartar()
         {
-            for(int i=3; i >= 0; --i)
+            for(int i=3; i >= 0; --i) //recorrer las cuatro cartas del jugador
             {
                 var c = _players[actualTurn].Mano()[i];
 
-                if (c.descarte == true)
+                if (c.descarte == true) //si ha decidido descartarse esta carta
                 {
+                    //se le quita la carta
                     _descartes.Push(c);
                     _players[actualTurn].Mano().RemoveAt(i);
 
-                    if(_baraja.Count == 0)
-                    {
+                    //se le añade otra
+                    if(_baraja.Count == 0)//si no quedan cartas en la baraja para añadir, rebaraja con la baraja de descartes
                         reBarajar();
-                    }
-
                     _players[actualTurn].Mano().Add(_baraja.Peek());
                     _baraja.Pop();
-
                 }
             }
-
             _players[actualTurn].RenderCards();
+            if (actualTurn >1) //jugadores 3 y 4, que juegan en los laterales, hay que rotar sus cartas para que se vean bien en la mesa
+                _players[actualTurn].RotateCards();
         }
 
         public void reBarajar(){ //se llama si no quedan cartas en la baraja
-
+            Debug.Log("NO QUEDAN CARTAS. REBARAJANDO CON LOS DESCARTES");
             foreach(Card c in _descartes)
             {
                 c.changeDescarte();
@@ -250,6 +256,12 @@ namespace IAV.G07.MUS
             _descartes.Clear();
             Barajar(_baraja);
 
+        }
+
+        public void setUI()
+        {
+            barajaText.text = "BARAJA: " + _baraja.Count;
+            descartesText.text = "DESCARTES: " + _descartes.Count;
         }
     }
 

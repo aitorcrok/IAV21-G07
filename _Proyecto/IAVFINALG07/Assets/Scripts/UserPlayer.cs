@@ -9,7 +9,7 @@ namespace IAV.G07.MUS
         private void Awake()
         {
             GameManager.Instance.AddPlayer(this, 0);
-            actualFase = GameManager.Instance.actualFase;
+            actualFase = GameManager.Instance.GetActualFase();
         }
 
         private void Start()
@@ -17,26 +17,10 @@ namespace IAV.G07.MUS
             RenderCards();
         }
 
-        private void Update()
-        {
-            if (GameManager.Instance.checkTurn(this)) //si es mi turno
-            {
-                if (GameManager.Instance.actualFase == Fase.Mus)
-                {
-                    if (Input.GetKeyDown(KeyCode.S)) { mus = 1; Debug.Log("Mus_" + GameManager.Instance.GetIndexPlayer(this)); }
-                    else if (Input.GetKeyDown(KeyCode.N)) { mus = 0; Debug.Log("No Mus_" + GameManager.Instance.GetIndexPlayer(this)); }
-                }
-                else if (GameManager.Instance.actualFase == Fase.Descartar && !endTurn)
-                {
-                    if (Input.GetKeyDown(KeyCode.Alpha1)) { _mano[0].changeDescarte(); }
-                    else if (Input.GetKeyDown(KeyCode.Alpha2)) { _mano[1].changeDescarte(); }
-                    else if (Input.GetKeyDown(KeyCode.Alpha3)) { _mano[2].changeDescarte(); }
-                    else if (Input.GetKeyDown(KeyCode.Alpha4)) { _mano[3].changeDescarte(); }
-                    else if (Input.GetKeyDown(KeyCode.Return)) { endTurn = true; } //fin de descarte
-
-                }
-            }
-        }
+        //private void Update()
+        //{
+        //   //ESTE UPDATE ES EL QUE ESTÁ AHORA MISMO EN PLAYER.
+        //}
 
         public void Descartar()
         {

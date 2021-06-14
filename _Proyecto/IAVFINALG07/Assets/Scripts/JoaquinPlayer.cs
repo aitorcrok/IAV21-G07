@@ -17,13 +17,6 @@ namespace IAV.G07.MUS
             if (player > 2) //jugadores 3 y 4, que juegan en los laterales, hay que rotar sus cartas para que se vean bien en la mesa
                 RotateCards();
         }
-        private void RotateCards()
-        {
-            for(int i = 0; i<transform.childCount; i++)
-            {
-                transform.GetChild(i).Rotate(new Vector3(0,0,1), 90);
-            }
-        }
     }
 }
 
