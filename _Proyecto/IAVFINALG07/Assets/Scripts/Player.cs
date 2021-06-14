@@ -10,19 +10,10 @@ namespace IAV.G07.MUS
         private List<Card> _mano = new List<Card>();
         public List<Card> Mano() { return _mano; }
 
-        private Fase actualFase;
-        private bool mus;
-
-        void Awake()
-        {
-            actualFase = GameManager.Instance.actualFase;
-        }
-
-        //// Start is called before the first frame update
-        //void Start()
-        //{
-        //    RenderCards();
-        //}
+        protected Fase actualFase;
+        protected int mus = -1;
+        public int getMus() { return mus;}
+        public void setMus(int i) { mus = i; }
 
         //Esto sólo lo usará el jugador 1 (depende del GameManager que solo lo use el jugador 1).
         public void RenderCards()
@@ -37,24 +28,11 @@ namespace IAV.G07.MUS
                 GameObject g = Instantiate<GameObject>(GameManager.Instance.cardPrefab, this.transform);
                 if(index == 0)g.GetComponent<Image>().sprite = _mano[j].sprite;
             }
-        }
-
-        public bool StartRoutine()
-        {
-            StartCoroutine("AskRoutine");
-            return mus;
-        }
-        IEnumerator AskRoutine()
-        {
-            mus = true;
-            yield return new WaitForSeconds(.1f);
-        }
-
+        } 
         public void Descartar()
         {
 
         }
-
         public void Pasar(){ }        
         public void Envidar(){ }
         public void Ver(){ }
