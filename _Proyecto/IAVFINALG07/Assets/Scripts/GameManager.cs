@@ -64,7 +64,7 @@ namespace IAV.G07.MUS
         public static GameManager Instance { get { return _instance; } }
         private Stack<Card> _baraja = new Stack<Card>();
         private Stack<Card> _descartes = new Stack<Card>();
-        private Queue<int> _envites = new Queue<int>();
+        private Stack<int> _envites = new Stack<int>();
         public int getEnvites() { return _envites.Count; }
         public int getLastEnvite() { return _envites.Peek(); }
         public GameObject cardPrefab;
@@ -74,7 +74,11 @@ namespace IAV.G07.MUS
         public string GetInputFieldText() { return inputField.text; }
         private Text barajaText;
         private Text descartesText;
+        private Text envitesText;
+        private Text turnText;
         public GameObject descartesTextGO;
+        public GameObject turnTextGO;
+        public GameObject enviteGO;
         private Fase _actualFase = Fase.Mus;
         public Fase GetActualFase() { return _actualFase; }
         private int actualTurn = 0; //0,1,2, o 3 segun el jugador que le toque
@@ -97,6 +101,8 @@ namespace IAV.G07.MUS
         {
             barajaText = barajaTextGO.GetComponent<Text>();
             descartesText = descartesTextGO.GetComponent<Text>();
+            turnText = turnTextGO.GetComponent<Text>();
+            envitesText = enviteGO.GetComponent<Text>();
             inputField = inputFieldGO.GetComponent<InputField>();
             Iniciar();
         }
@@ -228,76 +234,79 @@ namespace IAV.G07.MUS
             Debug.Log("Jugadr " + actualTurn + ", envidas o pasas?...");
 
             Action playerAction = _players[actualTurn].actual;
-            if (_players[actualTurn].getEnd()) //si el jugador ha acabado de decidirse
+
+            switch (playerAction)
             {
-                switch (playerAction)
-                {
-                    case (Action.Envidar):
+                case (Action.Envidar):
+                    {
+                        if (_players[actualTurn].GetComponent</*UserPlayer*/Player>())
+                            inputFieldGO.SetActive(true);
+                        if (_players[actualTurn].getEnd())
                         {
-                            if (_players[actualTurn].GetComponent</*UserPlayer*/Player>())
-                                inputFieldGO.SetActive(true);
-                            if (_players[actualTurn].getEnd())
-                            {
-                                inputFieldGO.SetActive(false);
-                                inputField.text = "Escribe apuesta, ESC para salir";
-                                _envites.Enqueue(_players[actualTurn].getApuesta());
-                                Debug.Log("AÑADIDA APUESTA DE " + _players[actualTurn].getApuesta());
-                                _players[actualTurn].resetAction();
+                            inputFieldGO.SetActive(false);
+                            inputField.text = "Escribe apuesta, ESC para salir";
+                            _envites.Push(_players[actualTurn].getApuesta());
+                            Debug.Log("AÑADIDA APUESTA DE " + _players[actualTurn].getApuesta());
+                            _players[actualTurn].resetAction();
 
-                                if (actualTurn < 2) actualTurn = 2;
-                                else actualTurn = 0;
-                                //_actualFase = Fase.Chica;
+                            if (actualTurn < 2) actualTurn = 2;
+                            else actualTurn = 0;
+                            //_actualFase = Fase.Chica;
 
-                            }
-                            break;
                         }
-                    case (Action.Pasar):
+                        break;
+                    }
+                case (Action.Pasar):
+                    {
+                        if (_players[actualTurn].getEnd())
                         {
+                            _players[actualTurn].resetAction();
                             changeTurn();
                             if (actualTurn == 0) //si al cambiar de turno le toca al primero otra vez, ha dado la vuelta y todos pasan
                             {
-                                _envites.Enqueue(1);
+                                _envites.Push(1);
                                 Debug.Log("AÑADIDA APUESTA DE " + 1);
                                 _actualFase++;
                             }
-                            break;
                         }
-                    case (Action.Subir):
+                        
+                        break;
+                    }
+                case (Action.Subir):
+                    {
+                        if (_players[actualTurn].GetComponent</*UserPlayer*/Player>())
+                            inputFieldGO.SetActive(true);
+                        if (_players[actualTurn].getEnd())
                         {
-                            if (_players[actualTurn].GetComponent</*UserPlayer*/Player>())
-                                inputFieldGO.SetActive(true);
-                            if (_players[actualTurn].getEnd())
-                            {
-                                inputFieldGO.SetActive(false);
-                                inputField.text = "Escribe apuesta, ESC para salir";
+                            inputFieldGO.SetActive(false);
+                            inputField.text = "Escribe apuesta, ESC para salir";
+                            _envites.Pop();
+                            _envites.Push(_players[actualTurn].getApuesta());
+                            Debug.Log("AÑADIDA APUESTA DE " + _players[actualTurn].getApuesta());
+                            _players[actualTurn].resetAction();
 
+                            if (actualTurn < 2) actualTurn = 2;
+                            else actualTurn = 0;
+                            //_actualFase = Fase.Chica;
 
-
-                                _envites.Enqueue(_players[actualTurn].getApuesta());
-                                Debug.Log("AÑADIDA APUESTA DE " + _players[actualTurn].getApuesta());
-                                _players[actualTurn].resetAction();
-
-                                if (actualTurn < 2) actualTurn = 2;
-                                else actualTurn = 0;
-                                //_actualFase = Fase.Chica;
-
-                            }
-                            break;
                         }
-                    case (Action.Ver):
+                        break;
+                    }
+                case (Action.Ver):
+                    {
+                        if (_players[actualTurn].getEnd())
                         {
-
+                            _players[actualTurn].resetAction();
                             if (actualTurn < 2) actualTurn = 2;
                             else actualTurn = 0;
 
                             _actualFase++;
-
-                            break;
                         }
+                        break;
+                    }
 
-                }
-                _players[actualTurn].setEnd();
-            }            
+            }
+            _players[actualTurn].setEnd();
         }
         public bool checkTurn(Player p) { return GetIndexPlayer(p) == actualTurn; }
         public void changeTurn()
@@ -348,6 +357,9 @@ namespace IAV.G07.MUS
         {
             barajaText.text = "BARAJA: " + _baraja.Count;
             descartesText.text = "DESCARTES: " + _descartes.Count;
+            if (_envites.Count == 0) envitesText.text = "Última apuesta: Ninguna";
+            else envitesText.text = "Última apuesta: " + _envites.Peek();
+            turnText.text = "Turno: J" + (actualTurn+1);
         }
 
         public void setSign(SignEnum s, int p) 
