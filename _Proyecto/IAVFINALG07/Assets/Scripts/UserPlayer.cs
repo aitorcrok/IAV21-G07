@@ -27,7 +27,7 @@ namespace IAV.G07.MUS
 
         }
         public void Pasar() { }
-        public void Envidar() { }
+
         public void Ver() { }
         public void Subir() { }
 

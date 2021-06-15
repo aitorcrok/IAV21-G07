@@ -10,6 +10,7 @@ namespace IAV.G07.MUS
     {
         Mus,
         Descartar,
+        Envite,
         Grande,
         Chica,
         Pares,
@@ -42,9 +43,12 @@ namespace IAV.G07.MUS
         public static GameManager Instance { get { return _instance; } }
         private Stack<Card> _baraja = new Stack<Card>();
         private Stack<Card> _descartes = new Stack<Card>();
-        private Queue<Card> _envites = new Queue<Card>();
+        private Queue<int> _envites = new Queue<int>();
         public GameObject cardPrefab;
         public GameObject barajaTextGO;
+        public GameObject inputFieldGO;
+        private InputField inputField;
+        public string GetInputFieldText() { return inputField.text; }
         private Text barajaText;
         private Text descartesText;
         public GameObject descartesTextGO;
@@ -70,6 +74,7 @@ namespace IAV.G07.MUS
         {
             barajaText = barajaTextGO.GetComponent<Text>();
             descartesText = descartesTextGO.GetComponent<Text>();
+            inputField = inputFieldGO.GetComponent<InputField>();
             Iniciar();
         }
 
@@ -172,7 +177,6 @@ namespace IAV.G07.MUS
             else if (_actualFase == Fase.Descartar)
             {
                 Debug.Log("Descartando jugador "+actualTurn +"..." );
-                //_players[actualTurn].Descartar();
                 if (_players[actualTurn].getEnd()) //si el jugador ha acabado de decidirse, se descartan sus cartas
                 {
                     Descartar();
@@ -185,35 +189,55 @@ namespace IAV.G07.MUS
                     changeTurn();
                 }
             }
-
-            else if (_actualFase == Fase.Grande)
+            else if(_actualFase == Fase.Envite)
             {
+                if (_players[actualTurn].GetComponent</*UserPlayer*/Player>())
+                    inputFieldGO.SetActive(true);
+                if (_players[actualTurn].getEnd())
+                {
+                    inputFieldGO.SetActive(false);
+                    inputField.text = "Escribe apuesta, ESC para salir";
+                    _envites.Enqueue(_players[actualTurn].getApuesta());
+                    Debug.Log("AÑADIDA APUESTA DE " + _players[actualTurn].getApuesta());
+                    if (actualTurn < 2) actualTurn = 2;
+                    else actualTurn = 0;
+                    _actualFase = Fase.Chica;
+                }
 
-                _actualFase = Fase.Chica;
             }
-            else if (_actualFase == Fase.Chica)
+            else if (_actualFase == Fase.Grande || _actualFase == Fase.Chica || _actualFase == Fase.Pares || _actualFase == Fase.Juego)
             {
-
-                _actualFase = Fase.Pares;
-            }
-            else if (_actualFase == Fase.Pares)
-            {
-
-                _actualFase = Fase.Juego;
-            }
-            else if (_actualFase == Fase.Juego)
-            {
-
-                _actualFase = Fase.Final;
-            }
+                Game();
+            }  
             else if (_actualFase == Fase.Final)
             {
 
             }
-            Debug.Log("Turno actual: " + actualTurn);
+            Debug.Log("Turno actual: " + actualTurn +", Fase actual: "+ _actualFase);
             setUI();
         }
-
+        private void Game()
+        {
+            Debug.Log("Jugadr " + actualTurn + ", envidas o pasas?...");
+            if (_players[actualTurn].getEnd()) //si el jugador ha acabado de decidirse
+            {
+                if (!_players[actualTurn].getEnvite())
+                {
+                    changeTurn();
+                    if (actualTurn == 0) //si al cambiar de turno le toca al primero otra vez, ha dado la vuelta y todos pasan
+                    {
+                        _envites.Enqueue(1);
+                        Debug.Log("AÑADIDA APUESTA DE " + 1);
+                        _actualFase++;
+                    }
+                }
+                else
+                {
+                    _actualFase = Fase.Envite;
+                }
+                _players[actualTurn].setEnd();
+            }
+        }
         public bool checkTurn(Player p) { return GetIndexPlayer(p) == actualTurn; }
         public void changeTurn()
         {
@@ -262,6 +286,12 @@ namespace IAV.G07.MUS
         {
             barajaText.text = "BARAJA: " + _baraja.Count;
             descartesText.text = "DESCARTES: " + _descartes.Count;
+        }
+
+        public void resetInputField() { inputField.text = "Inválido"; }
+        public void Envidar()
+        {
+            _players[actualTurn].Envidar();
         }
     }
 

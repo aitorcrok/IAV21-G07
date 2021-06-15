@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,15 +14,19 @@ namespace IAV.G07.MUS
         protected int mus = -1;
 
         protected bool endTurn = false;
+        protected int apuesta = 0;
+        public int getApuesta() { return apuesta; }
+        bool envidar = false;
+        public bool getEnvite() { return envidar; }
         public bool getEnd() { return endTurn; }
         public void setEnd() { endTurn = false; }
-        public int getMus() { return mus;}
+        public int getMus() { return mus; }
         public void setMus(int i) { mus = i; }
 
         //Esto sólo lo usará el jugador 1 (depende del GameManager que solo lo use el jugador 1).
         public void RenderCards()
         {
-            for(int i = transform.childCount; i > 0; i--)
+            for (int i = transform.childCount; i > 0; i--)
                 Destroy(transform.GetChild(i - 1).gameObject);
             transform.DetachChildren();
             //instanciamos una imagen por carta haya en la mano
@@ -63,10 +67,27 @@ namespace IAV.G07.MUS
                     else if (Input.GetKeyDown(KeyCode.Return)) { endTurn = true; } //fin de descarte
 
                 }
+                else if ((GameManager.Instance.GetActualFase() == Fase.Grande || GameManager.Instance.GetActualFase() == Fase.Chica||
+                          GameManager.Instance.GetActualFase() == Fase.Pares || GameManager.Instance.GetActualFase() == Fase.Juego) && !endTurn)
+                {
+                    if (Input.GetKeyDown(KeyCode.P)) /*pasa turno*/ { endTurn = true; envidar = false; }
+                    else if (Input.GetKeyDown(KeyCode.E)) /*envida*/{ endTurn = true; envidar = true;}
+                }
             }
         }
         //public void Pasar(){ }        
-        //public void Envidar(){ }
+        public void Envidar()
+        {
+            if (Int32.TryParse(GameManager.Instance.GetInputFieldText(), out apuesta))
+            {
+                endTurn = true;
+            }
+            else
+            {
+                GameManager.Instance.resetInputField();
+            }
+
+        }
         //public void Ver(){ }
         //public void Subir(){ }
     }
