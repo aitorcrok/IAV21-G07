@@ -38,6 +38,7 @@ public class Signs : MonoBehaviour
 
     public void setSprite(Sprite s) 
     {
+        childImage.enabled = true;
         childImage.sprite = s;
     }
 

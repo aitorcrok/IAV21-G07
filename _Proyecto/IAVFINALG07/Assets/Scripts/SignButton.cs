@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class SignButton : MonoBehaviour
 {
+    public GameObject signController;
     bool isEnabled = false;
     Image image;
     Text text;
@@ -45,6 +46,9 @@ public class SignButton : MonoBehaviour
 
     public void clickButton() 
     {
-        if (isEnabled) { }
+        if (isEnabled) 
+        {
+            signController.GetComponent<Signs>().setSprite(image.sprite);
+        }
     }
 }
