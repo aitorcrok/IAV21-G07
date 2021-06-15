@@ -106,10 +106,11 @@ namespace IAV.G07.MUS
             {
                 case Envite.Grande:
                     //Va comparando de carta mas alta a mas baja de ambas manos, cuando son distintas gana la que sea mayor
-                    i = 0;
+                    i = -1;
                     int aux, aux2;
                     do
                     {
+                        i++;
                         aux = first[i].num;
                         if (aux == 3) aux = 12;
                         else if (aux == 2) aux = 1;
@@ -117,20 +118,18 @@ namespace IAV.G07.MUS
                         aux2 = second[i].num;
                         if (aux2 == 3) aux2 = 12;
                         else if (aux2 == 2) aux2 = 1;
-                        i++;
                     }
-                    while (i < 4 && aux == aux2);
+                    while (aux == aux2 && i < 3);
 
-                    //Si i es 4 las manos son iguales
-                    if (i == 4) return 1;
-                    if (aux > aux2) return 1;
+                    if (aux >= aux2) return 1;
                     else return 0;
                 case Envite.Chica:
                     //Va comparando de carta mas baja a mas alta de ambas manos, cuando son distintas gana la que sea menor
 
-                    i = 3;
+                    i = 4;
                     do
                     {
+                        i--;
                         aux = first[i].num;
                         if (aux == 3) aux = 12;
                         else if (aux == 2) aux = 1;
@@ -138,13 +137,11 @@ namespace IAV.G07.MUS
                         aux2 = second[i].num;
                         if (aux2 == 3) aux2 = 12;
                         else if (aux2 == 2) aux2 = 1;
-                        i--;
                     }
-                    while (i >= 0 && aux == aux2);
+                    while (aux == aux2 && i > 0);
 
                     //Si i es menor de cero las manos son iguales
-                    if (i < 0) return 1;
-                    if (aux < aux2) return 1;
+                    if (aux <= aux2) return 1;
                     else return 0;
                 case Envite.Pares:
                     //Para evaluar los pares se usan dos variables auxiliares, una por mano, que 
@@ -201,7 +198,7 @@ namespace IAV.G07.MUS
                         aux = second[i].num;
                         if (aux > 10 || aux == 3) aux = 10;
                         else if (aux == 2) aux = 1;
-                        m += second[i].num;
+                        m += aux;
                     }
                     if (n < 31) return 0;
                     if (n == 31) return 1;
