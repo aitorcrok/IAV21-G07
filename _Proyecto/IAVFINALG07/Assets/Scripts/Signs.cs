@@ -2,51 +2,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
-public class Signs : MonoBehaviour
+namespace IAV.G07.MUS 
 {
-    bool menu = false;
-    public GameObject signMenu, signImage;
-    Image image, childImage;
-    Text text;
-    int signID = -1;
-
-    // Start is called before the first frame update
-    void Start()
+    public class Signs : MonoBehaviour
     {
-        image = GetComponent<Image>();
-        childImage = signImage.GetComponent<Image>();
-        text = GetComponentInChildren<Text>();
+        public GameObject gameManager;
+        bool menu = false;
+        public GameObject signMenu, signImage;
+        Image image, childImage;
+        Text text;
+        SignEnum signID = 0;
 
-        childImage.enabled = false;
-        EnableSigns(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void toggleMenu() 
-    {
-        menu = !menu;
-        EnableSigns(menu);
-        text.enabled = !menu;
-    }
-
-    public void setSprite(Sprite s) 
-    {
-        childImage.enabled = true;
-        childImage.sprite = s;
-    }
-
-    private void EnableSigns(bool b) 
-    {
-        for (int i = 0; i < signMenu.transform.childCount; i++)
+        // Start is called before the first frame update
+        void Start()
         {
-            signMenu.transform.GetChild(i).GetComponent<SignButton>().toggleButton(b);
+            image = GetComponent<Image>();
+            childImage = signImage.GetComponent<Image>();
+            text = GetComponentInChildren<Text>();
+
+            childImage.enabled = false;
+            EnableSigns(false);
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+
+        public void toggleMenu()
+        {
+            menu = !menu;
+            EnableSigns(menu);
+            text.enabled = !menu;
+        }
+
+        public void setSign(SignEnum s) 
+        {
+            signID = s;
+            gameManager.GetComponent<GameManager>().setSign(s, 0);
+        }
+
+        public void setSprite(Sprite s)
+        {
+            childImage.enabled = true;
+            childImage.sprite = s;
+        }
+
+        private void EnableSigns(bool b)
+        {
+            for (int i = 0; i < signMenu.transform.childCount; i++)
+            {
+                signMenu.transform.GetChild(i).GetComponent<SignButton>().toggleButton(b);
+            }
         }
     }
 }
+

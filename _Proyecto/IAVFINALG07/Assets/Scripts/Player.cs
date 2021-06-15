@@ -10,6 +10,8 @@ namespace IAV.G07.MUS
         protected List<Card> _mano = new List<Card>();
         public List<Card> Mano() { return _mano; }
 
+        public SignEnum[] señas = {0, 0, 0, 0};
+
         protected Fase actualFase;
         protected int mus = -1;
 
@@ -22,6 +24,7 @@ namespace IAV.G07.MUS
         public void setEnd() { endTurn = false; }
         public int getMus() { return mus; }
         public void setMus(int i) { mus = i; }
+        public void setSign(SignEnum s, int i) { señas[i] = s; }
 
         public Action actual = Action.Inicial;
         public void resetAction() { actual = Action.Inicial; }

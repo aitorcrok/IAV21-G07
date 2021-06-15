@@ -23,6 +23,18 @@ namespace IAV.G07.MUS
         Copas,
         Oros
     };
+    public enum SignEnum
+    {
+        None,
+        DosReyes,
+        TresReyes,
+        DosAses,
+        TresAses,
+        Duples,
+        TreintaUna,
+        TresReyesAs,
+        Ciego
+    };
     public class Card
     {
         public Card(CardType p, int n, Sprite i) { palo = p; num = n; sprite = i; descarte = false; }
@@ -336,6 +348,14 @@ namespace IAV.G07.MUS
         {
             barajaText.text = "BARAJA: " + _baraja.Count;
             descartesText.text = "DESCARTES: " + _descartes.Count;
+        }
+
+        public void setSign(SignEnum s, int p) 
+        {
+            for (int i = 0; i < _players.Count; i++) 
+            {
+                _players[i].setSign(s, p);
+            }
         }
 
         public void resetInputField() { inputField.text = "Inválido"; }
