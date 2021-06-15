@@ -51,8 +51,10 @@ namespace IAV.G07.MUS
         {
             if (isEnabled)
             {
+                text.enabled = false;
                 signController.GetComponent<Signs>().setSprite(image.sprite);
                 signController.GetComponent<Signs>().setSign(ID);
+                signController.GetComponent<Signs>().toggleMenu();
             }
         }
     }
