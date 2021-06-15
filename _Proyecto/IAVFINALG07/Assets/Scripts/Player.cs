@@ -23,6 +23,9 @@ namespace IAV.G07.MUS
         public int getMus() { return mus; }
         public void setMus(int i) { mus = i; }
 
+        public Action actual = Action.Inicial;
+        public void resetAction() { actual = Action.Inicial; }
+
         //Esto sólo lo usará el jugador 1 (depende del GameManager que solo lo use el jugador 1).
         public void RenderCards()
         {
@@ -67,11 +70,17 @@ namespace IAV.G07.MUS
                     else if (Input.GetKeyDown(KeyCode.Return)) { endTurn = true; } //fin de descarte
 
                 }
-                else if ((GameManager.Instance.GetActualFase() == Fase.Grande || GameManager.Instance.GetActualFase() == Fase.Chica||
+                else if ((GameManager.Instance.GetActualFase() == Fase.Grande || GameManager.Instance.GetActualFase() == Fase.Chica ||
                           GameManager.Instance.GetActualFase() == Fase.Pares || GameManager.Instance.GetActualFase() == Fase.Juego) && !endTurn)
                 {
-                    if (Input.GetKeyDown(KeyCode.P)) /*pasa turno*/ { endTurn = true; envidar = false; }
-                    else if (Input.GetKeyDown(KeyCode.E)) /*envida*/{ endTurn = true; envidar = true;}
+                    if (Input.GetKeyDown(KeyCode.P)) /*pasa turno*/ { endTurn = true; envidar = false; actual = Action.Pasar; }
+                    else if (actual == Action.Inicial && Input.GetKeyDown(KeyCode.E)) /*envida*/{ endTurn = true; envidar = true; actual = Action.Envidar; }
+                    else if (GameManager.Instance.getEnvites() == (int)GameManager.Instance.GetActualFase() - 1)
+                    {
+                        if (Input.GetKeyDown(KeyCode.V))/*ver*/ { endTurn = true; actual = Action.Ver; }
+                        else if (Input.GetKeyDown(KeyCode.S)) /*subir*/ { endTurn = true; actual = Action.Subir; }
+                        envidar = false;
+                    }
                 }
             }
         }
@@ -80,7 +89,15 @@ namespace IAV.G07.MUS
         {
             if (Int32.TryParse(GameManager.Instance.GetInputFieldText(), out apuesta))
             {
-                endTurn = true;
+                if (apuesta >= 2)
+                {
+                    Debug.Log("Envite: " + apuesta);
+                    endTurn = true;
+                }
+                else
+                {
+                    GameManager.Instance.resetInputField();
+                }
             }
             else
             {
@@ -88,8 +105,24 @@ namespace IAV.G07.MUS
             }
 
         }
-        //public void Ver(){ }
-        //public void Subir(){ }
+        public void Subir(){
+            if (Int32.TryParse(GameManager.Instance.GetInputFieldText(), out apuesta))
+            {
+                if (apuesta > GameManager.Instance.getLastEnvite())
+                {
+                    Debug.Log("Sube a : " + apuesta);
+                    endTurn = true;
+                }
+                else
+                {
+                    GameManager.Instance.resetInputField();
+                }
+            }
+            else
+            {
+                GameManager.Instance.resetInputField();
+            }
+        }
     }
 
 }
