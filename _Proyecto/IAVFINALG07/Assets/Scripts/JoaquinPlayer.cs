@@ -18,7 +18,14 @@ namespace IAV.G07.MUS
 
         private static int CompareCardsByNumber(Card a, Card b)
         {
-            return a.num.CompareTo(b.num);
+            int x, y;
+            x = b.num;
+            if (x == 3) x = 12;
+            else if (x == 2) x = 1;
+            y = a.num;
+            if (y == 3) y = 12;
+            else if (y == 2) y = 1;
+            return x.CompareTo(y);
         }
         public int player; // jugador 2,3 o 4.
         private void Awake()
@@ -36,7 +43,7 @@ namespace IAV.G07.MUS
 
         private int EvaluateHand(Envite e)
         {
-            int hand = 0;
+            int hand = 0, total = 0;
             int N = possibleCards.Count;
             for (int i = 0; i < N; i++)
             {
@@ -53,6 +60,7 @@ namespace IAV.G07.MUS
                             manoPosible.Add(possibleCards[l]);
                             manoPosible.Sort(CompareCardsByNumber);
                             hand+= CompareHands(_mano, manoPosible, e);
+                            total++;
                         }
                     }
                 }
@@ -91,22 +99,52 @@ namespace IAV.G07.MUS
 
         private int CompareHands(List<Card> first, List<Card> second, Envite e)
         {
-            //Faltar�a tener en cuenta quien es mano en caso de manos iguales
-            //Tambien hace falta comprobar como se ordenan las manos, puede ser que grande y chica esten trocados
-            //Esta hecho asumiendo que sort ordena la mano de mayor a menor
+            //Faltaria tener en cuenta quien es mano en caso de manos iguales
+
             int i;
             switch (e)
             {
                 case Envite.Grande:
+                    //Va comparando de carta mas alta a mas baja de ambas manos, cuando son distintas gana la que sea mayor
                     i = 0;
-                    //Necesitamos una variable valor en Card porque si no los treses no son reyes ni los doses ases
-                    while (first[i].num == second[i].num) i++;
-                    if (first[i].num > second[i].num) return 1;
+                    int aux, aux2;
+                    do
+                    {
+                        aux = first[i].num;
+                        if (aux == 3) aux = 12;
+                        else if (aux == 2) aux = 1;
+
+                        aux2 = second[i].num;
+                        if (aux2 == 3) aux2 = 12;
+                        else if (aux2 == 2) aux2 = 1;
+                        i++;
+                    }
+                    while (i < 4 && aux == aux2);
+
+                    //Si i es 4 las manos son iguales
+                    if (i == 4) return 1;
+                    if (aux > aux2) return 1;
                     else return 0;
                 case Envite.Chica:
+                    //Va comparando de carta mas baja a mas alta de ambas manos, cuando son distintas gana la que sea menor
+
                     i = 3;
-                    while (first[i].num == second[i].num) i--;
-                    if (first[i].num < second[i].num) return 1;
+                    do
+                    {
+                        aux = first[i].num;
+                        if (aux == 3) aux = 12;
+                        else if (aux == 2) aux = 1;
+
+                        aux2 = second[i].num;
+                        if (aux2 == 3) aux2 = 12;
+                        else if (aux2 == 2) aux2 = 1;
+                        i--;
+                    }
+                    while (i >= 0 && aux == aux2);
+
+                    //Si i es menor de cero las manos son iguales
+                    if (i < 0) return 1;
+                    if (aux < aux2) return 1;
                     else return 0;
                 case Envite.Pares:
                     //Para evaluar los pares se usan dos variables auxiliares, una por mano, que 
@@ -148,18 +186,27 @@ namespace IAV.G07.MUS
                     }
 
                     //Compara los valores aux de las dos manos
-                    if (f_aux > s_aux) return 1;
+                    if (f_aux >= s_aux) return 1;
                     else return 0;
 
                 case Envite.Juego:
                     int n = 0, m = 0;
-                    //Necesitamos una variable valorJuego en Card porque si no las figuras no puntuan todas igual
 
                     for (i = 0; i < 4; i++)
                     {
-                        n += first[i].num;
+                        aux = first[i].num;
+                        if (aux > 10 || aux == 3) aux = 10;
+                        else if (aux == 2) aux = 1;
+                        n += aux;
+                        aux = second[i].num;
+                        if (aux > 10 || aux == 3) aux = 10;
+                        else if (aux == 2) aux = 1;
                         m += second[i].num;
                     }
+                    if (n < 31) return 0;
+                    if (n == 31) return 1;
+                    if (n == 32 && m != 31) return 1;
+
                     if (n > m) return 1;
                     else return 0;
                 default:
