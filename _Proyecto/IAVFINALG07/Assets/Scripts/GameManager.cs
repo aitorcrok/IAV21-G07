@@ -88,6 +88,7 @@ namespace IAV.G07.MUS
         private Fase _actualFase = Fase.Mus;
         public Fase GetActualFase() { return _actualFase; }
         private int actualTurn = 0; //0,1,2, o 3 segun el jugador que le toque
+        private int _actualTeam = 0;
         private Action lastAction = Action.Inicial;
         private List<Player> _players = new List<Player>(4); //se meten los jugadores en orden, los dos primeros son el primer equipo y los dos ultimos el segundo equipo
         private void Awake()
@@ -183,7 +184,8 @@ namespace IAV.G07.MUS
         }
         private void Update()
         {
-
+            if (actualTurn < 2) _actualTeam = 1;
+            else _actualTeam = 2;
             if (_actualFase == Fase.Mus)
             {
                 turnText.text = "Turno: J" + (actualTurn + 1)+". Mus? S/N";
@@ -246,9 +248,7 @@ namespace IAV.G07.MUS
             else
                 turnText.text = "Turno: J" + (actualTurn + 1) + "/" + _actualFase.ToString() + ". Envidas o pasas? E/P";
             Action playerAction = _players[actualTurn].actual;
-            int team = 0;
-            if (actualTurn < 2) team = 1;
-            else team = 2;
+            
             switch (playerAction)
             {
                 case (Action.Envidar):
@@ -261,11 +261,11 @@ namespace IAV.G07.MUS
                             inputFieldGO.SetActive(false);
                             inputField.text = "Escribe apuesta, ESC para salir";
                             
-                            _envites.Add(new Apuesta(team,_players[actualTurn].getApuesta()));
+                            _envites.Add(new Apuesta(_actualTeam,_players[actualTurn].getApuesta()));
                             setApuestasUI();
                             _players[actualTurn].resetAction();
 
-                            if (team==1) actualTurn = 2;
+                            if (_actualTeam==1) actualTurn = 2;
                             else actualTurn = 0;
 
                         }
@@ -287,7 +287,7 @@ namespace IAV.G07.MUS
                                 else if(_envites[_envites.Count-1].team ==2 && actualTurn == 1)
                                 {
                                     //si está en el jugador 2 y la apuesta es del equipo 2, quiere decir que ambos jugadores del equipo 1 han decidido pasar de la apuesta.
-                                    actualTurn = 2;
+                                    actualTurn = 0;
                                     _actualFase++;
                                     lastAction = Action.Inicial;
                                 }
@@ -324,7 +324,7 @@ namespace IAV.G07.MUS
                             inputField.text = "Escribe apuesta, ESC para salir";
                             
                             _envites.RemoveAt(_envites.Count - 1);
-                            _envites.Add(new Apuesta(team,_players[actualTurn].getApuesta()));
+                            _envites.Add(new Apuesta(_actualTeam,_players[actualTurn].getApuesta()));
                             setApuestasUI();
                             _players[actualTurn].resetAction();
 
@@ -339,10 +339,10 @@ namespace IAV.G07.MUS
                     {
                         if (_players[actualTurn].getEnd())
                         {
-                            _envites[_envites.Count-1].team = team;
+                            _envites[_envites.Count-1].team = _actualTeam;
                             setApuestasUI();
                             _players[actualTurn].resetAction();
-                            if (team == 1) actualTurn = 2;
+                            if (_actualTeam == 1) actualTurn = 2;
                             else actualTurn = 0;
 
                             _actualFase++;
@@ -357,8 +357,12 @@ namespace IAV.G07.MUS
         public bool checkTurn(Player p) { return GetIndexPlayer(p) == actualTurn; }
         public void changeTurn()
         {
-            actualTurn++;
-            if (actualTurn > 3) actualTurn = 0;
+            if(_actualTeam == 1) { actualTurn++; actualTurn++; }
+            if(_actualTeam == 2)
+            {
+                if(actualTurn == 2) { actualTurn--; }
+                else actualTurn = 0;
+            }
         }
 
         public void Descartar()
