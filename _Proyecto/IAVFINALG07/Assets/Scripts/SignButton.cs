@@ -10,6 +10,7 @@ namespace IAV.G07.MUS
         public GameObject signController;
         public SignEnum ID;
         bool isEnabled = false;
+        PlayerSigns sign;
         Image image;
         Text text;
 
@@ -18,6 +19,7 @@ namespace IAV.G07.MUS
         {
             image = GetComponent<Image>();
             text = GetComponentInChildren<Text>();
+            sign = signController.GetComponent<PlayerSigns>();
 
             image.enabled = false;
 
@@ -52,9 +54,9 @@ namespace IAV.G07.MUS
             if (isEnabled)
             {
                 text.enabled = false;
-                signController.GetComponent<Signs>().setSprite(image.sprite);
-                signController.GetComponent<Signs>().setSign(ID);
-                signController.GetComponent<Signs>().toggleMenu();
+                sign.setSprite(image.sprite);
+                sign.setSign(ID);
+                sign.toggleMenu();
             }
         }
     }
