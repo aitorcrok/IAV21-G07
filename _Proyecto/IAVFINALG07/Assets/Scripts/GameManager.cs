@@ -281,14 +281,16 @@ namespace IAV.G07.MUS
                                 {
                                     //si está en el jugador 4 y la apuesta es del equipo 1, quiere decir que ambos jugadores del equipo 2 han decidido pasar de la apuesta.
                                     actualTurn = 0;
-                                    _actualFase++;
+                                    //_actualFase++;
+                                    changeFase();
                                     lastAction = Action.Inicial;
                                 }
                                 else if(_envites[_envites.Count-1].team ==2 && actualTurn == 1)
                                 {
                                     //si está en el jugador 2 y la apuesta es del equipo 2, quiere decir que ambos jugadores del equipo 1 han decidido pasar de la apuesta.
                                     actualTurn = 0;
-                                    _actualFase++;
+                                    //_actualFase++;
+                                    changeFase();
                                     lastAction = Action.Inicial;
                                 }
                                 else
@@ -305,7 +307,8 @@ namespace IAV.G07.MUS
                                 {
                                     _envites.Add(new Apuesta(0, 1));
                                     setApuestasUI();
-                                    _actualFase++;
+                                    //_actualFase++;
+                                    changeFase();
                                     lastAction = Action.Inicial;
                                 }
                             }
@@ -345,7 +348,8 @@ namespace IAV.G07.MUS
                             if (_actualTeam == 1) actualTurn = 2;
                             else actualTurn = 0;
 
-                            _actualFase++;
+                            //_actualFase++;
+                            changeFase();
                             lastAction = Action.Inicial;
                         }
                         break;
@@ -363,6 +367,13 @@ namespace IAV.G07.MUS
                 if(actualTurn == 2) { actualTurn--; }
                 else actualTurn = 0;
             }
+        }
+
+        public void changeFase()
+        {
+            actualTurn = 0;
+            _actualTeam = 1;
+            _actualFase++;
         }
 
         public void Descartar()
