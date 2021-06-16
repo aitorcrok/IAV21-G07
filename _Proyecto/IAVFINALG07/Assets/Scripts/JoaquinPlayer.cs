@@ -204,7 +204,7 @@ namespace IAV.G07.MUS
                     if (n == 31) return 1;
                     if (n == 32 && m != 31) return 1;
 
-                    if (n > m) return 1;
+                    if (m > 32 && n > m) return 1;
                     else return 0;
                 default:
                     return 0;
