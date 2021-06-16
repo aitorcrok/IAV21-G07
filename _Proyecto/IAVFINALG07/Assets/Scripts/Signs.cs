@@ -26,7 +26,7 @@ namespace IAV.G07.MUS
         };
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             image = GetComponent<Image>();
             childImage = signImage.GetComponent<Image>();

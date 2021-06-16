@@ -88,11 +88,34 @@ namespace IAV.G07.MUS
             else time = Time.time;
         }
 
+        public void UpdateSign()
+        {
+            if (_mano[0] == _mano[1] && _mano[2] == _mano[3]) sign.setSign(SignEnum.Duples);
+            else if (_mano[2].num == 1 || _mano[2].num == 2) sign.setSign(SignEnum.TresAses);
+            else if (_mano[1].num == 1 || _mano[1].num == 2) sign.setSign(SignEnum.DosAses);
+            else if ((_mano[2].num == 12 || _mano[2].num == 3) && (_mano[3].num == 1 || _mano[3].num == 2)) sign.setSign(SignEnum.TresReyesAs);
+            else
+            {
+                int aux, n = 0;
+                for (int i = 0; i < 4; i++)
+                {
+                    aux = _mano[i].num;
+                    if (aux > 10 || aux == 3) aux = 10;
+                    else if (aux == 2) aux = 1;
+                    n += aux;
+                }
+                if (n == 31) sign.setSign(SignEnum.TreintaUna);
+                else if (_mano[2].num == 12 || _mano[2].num == 3) sign.setSign(SignEnum.TresReyes);
+                else if (_mano[1].num == 12 || _mano[1].num == 3) sign.setSign(SignEnum.DosReyes);
+                else sign.setSign(SignEnum.Ciego);
+            }
+        }
 
         private void InitAI()
         {
             InitPossible();
             HandValues();
+            UpdateSign();
         }
 
         private void InitPossible()
@@ -136,6 +159,7 @@ namespace IAV.G07.MUS
                 handValue[(int)e] = (float)n / (float)total;
             }
         }
+
 
         private bool CheckMus()
         {

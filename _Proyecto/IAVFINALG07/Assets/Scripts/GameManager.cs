@@ -523,7 +523,11 @@ namespace IAV.G07.MUS
             }
             _players[actualTurn].OrdenarMano();
             if (_players[actualTurn].GetComponent<JoaquinPlayer>())
+            {
                 _players[actualTurn].GetComponent<JoaquinPlayer>().HandValues();
+                _players[actualTurn].GetComponent<JoaquinPlayer>().UpdateSign();
+
+            }
             if (actualTurn > 1) //jugadores 3 y 4, que juegan en los laterales, hay que rotar sus cartas para que se vean bien en la mesa
                 _players[actualTurn].RotateCards();
         }
