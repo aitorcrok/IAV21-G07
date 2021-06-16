@@ -111,7 +111,7 @@ namespace IAV.G07.MUS
         public void Subir(){
             if (Int32.TryParse(GameManager.Instance.GetInputFieldText(), out apuesta))
             {
-                if (apuesta > GameManager.Instance.getLastEnvite())
+                if (apuesta > GameManager.Instance.getLastEnvite().apuesta)
                 {
                     Debug.Log("Sube a : " + apuesta);
                     endTurn = true;

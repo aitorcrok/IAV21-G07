@@ -35,6 +35,12 @@ namespace IAV.G07.MUS
         TresReyesAs,
         Ciego
     };
+    public class Apuesta
+    {
+        public Apuesta(int t, int a) { team = t; apuesta = a; }
+        public int team;
+        public int apuesta;
+    }
     public class Card
     {
         public Card(CardType p, int n, Sprite i) { palo = p; num = n; sprite = i; descarte = false; }
@@ -64,9 +70,9 @@ namespace IAV.G07.MUS
         public static GameManager Instance { get { return _instance; } }
         private Stack<Card> _baraja = new Stack<Card>();
         private Stack<Card> _descartes = new Stack<Card>();
-        private Stack<int> _envites = new Stack<int>();
+        private List<Apuesta> _envites = new List<Apuesta>();
         public int getEnvites() { return _envites.Count; }
-        public int getLastEnvite() { return _envites.Peek(); }
+        public Apuesta getLastEnvite() { return _envites[_envites.Count-1]; }
         public GameObject cardPrefab;
         public GameObject barajaTextGO;
         public GameObject inputFieldGO;
@@ -74,14 +80,15 @@ namespace IAV.G07.MUS
         public string GetInputFieldText() { return inputField.text; }
         private Text barajaText;
         private Text descartesText;
-        private Text envitesText;
         private Text turnText;
         public GameObject descartesTextGO;
         public GameObject turnTextGO;
-        public GameObject enviteGO;
+        public GameObject[] apuestasGO = new GameObject[4];
+        private Text[] apuestasTexts = new Text[4];
         private Fase _actualFase = Fase.Mus;
         public Fase GetActualFase() { return _actualFase; }
         private int actualTurn = 0; //0,1,2, o 3 segun el jugador que le toque
+        private Action lastAction = Action.Inicial;
         private List<Player> _players = new List<Player>(4); //se meten los jugadores en orden, los dos primeros son el primer equipo y los dos ultimos el segundo equipo
         private void Awake()
         {
@@ -102,7 +109,10 @@ namespace IAV.G07.MUS
             barajaText = barajaTextGO.GetComponent<Text>();
             descartesText = descartesTextGO.GetComponent<Text>();
             turnText = turnTextGO.GetComponent<Text>();
-            envitesText = enviteGO.GetComponent<Text>();
+            for(int i = 0; i < 4; i++)
+            {
+                apuestasTexts[i] = apuestasGO[i].GetComponent<Text>();
+            }
             inputField = inputFieldGO.GetComponent<InputField>();
             Iniciar();
         }
@@ -176,6 +186,7 @@ namespace IAV.G07.MUS
 
             if (_actualFase == Fase.Mus)
             {
+                turnText.text = "Turno: J" + (actualTurn + 1)+". Mus? S/N";
                 int mus;
                 //Esto no es exactamente en este orden, hay que tener en cuenta la mano
                 mus = _players[actualTurn].getMus();
@@ -205,7 +216,7 @@ namespace IAV.G07.MUS
 
             else if (_actualFase == Fase.Descartar)
             {
-                Debug.Log("Descartando jugador " + actualTurn + "...");
+                turnText.text = "Turno: J" + (actualTurn + 1) + ".Elige descartes (1-4)";
                 if (_players[actualTurn].getEnd()) //si el jugador ha acabado de decidirse, se descartan sus cartas
                 {
                     Descartar();
@@ -226,15 +237,18 @@ namespace IAV.G07.MUS
             {
 
             }
-            Debug.Log("Turno actual: " + actualTurn + ", Fase actual: " + _actualFase);
             setUI();
         }
         private void Game()
         {
-            Debug.Log("Jugadr " + actualTurn + ", envidas o pasas?...");
-
+            if(lastAction == Action.Envidar)
+                turnText.text = "Turno: J" + (actualTurn + 1) + "/"+_actualFase.ToString()+".La subes, la ves o pasas? S/V/P";
+            else
+                turnText.text = "Turno: J" + (actualTurn + 1) + "/" + _actualFase.ToString() + ". Envidas o pasas? E/P";
             Action playerAction = _players[actualTurn].actual;
-
+            int team = 0;
+            if (actualTurn < 2) team = 1;
+            else team = 2;
             switch (playerAction)
             {
                 case (Action.Envidar):
@@ -243,15 +257,16 @@ namespace IAV.G07.MUS
                             inputFieldGO.SetActive(true);
                         if (_players[actualTurn].getEnd())
                         {
+                            lastAction = Action.Envidar;
                             inputFieldGO.SetActive(false);
                             inputField.text = "Escribe apuesta, ESC para salir";
-                            _envites.Push(_players[actualTurn].getApuesta());
-                            Debug.Log("AÑADIDA APUESTA DE " + _players[actualTurn].getApuesta());
+                            
+                            _envites.Add(new Apuesta(team,_players[actualTurn].getApuesta()));
+                            setApuestasUI();
                             _players[actualTurn].resetAction();
 
-                            if (actualTurn < 2) actualTurn = 2;
+                            if (team==1) actualTurn = 2;
                             else actualTurn = 0;
-                            //_actualFase = Fase.Chica;
 
                         }
                         break;
@@ -260,14 +275,41 @@ namespace IAV.G07.MUS
                     {
                         if (_players[actualTurn].getEnd())
                         {
-                            _players[actualTurn].resetAction();
-                            changeTurn();
-                            if (actualTurn == 0) //si al cambiar de turno le toca al primero otra vez, ha dado la vuelta y todos pasan
+                            if(lastAction == Action.Envidar)
                             {
-                                _envites.Push(1);
-                                Debug.Log("AÑADIDA APUESTA DE " + 1);
-                                _actualFase++;
+                                if(_envites[_envites.Count - 1].team == 1 && actualTurn==3) 
+                                {
+                                    //si está en el jugador 4 y la apuesta es del equipo 1, quiere decir que ambos jugadores del equipo 2 han decidido pasar de la apuesta.
+                                    actualTurn = 0;
+                                    _actualFase++;
+                                    lastAction = Action.Inicial;
+                                }
+                                else if(_envites[_envites.Count-1].team ==2 && actualTurn == 1)
+                                {
+                                    //si está en el jugador 2 y la apuesta es del equipo 2, quiere decir que ambos jugadores del equipo 1 han decidido pasar de la apuesta.
+                                    actualTurn = 2;
+                                    _actualFase++;
+                                    lastAction = Action.Inicial;
+                                }
+                                else
+                                {
+                                    _players[actualTurn].resetAction();
+                                    changeTurn();
+                                }
                             }
+                            else
+                            {
+                                _players[actualTurn].resetAction();
+                                changeTurn();
+                                if (actualTurn == 0) //si al cambiar de turno le toca al primero otra vez, ha dado la vuelta y todos pasan
+                                {
+                                    _envites.Add(new Apuesta(0, 1));
+                                    setApuestasUI();
+                                    _actualFase++;
+                                    lastAction = Action.Inicial;
+                                }
+                            }
+                           
                         }
                         
                         break;
@@ -280,14 +322,15 @@ namespace IAV.G07.MUS
                         {
                             inputFieldGO.SetActive(false);
                             inputField.text = "Escribe apuesta, ESC para salir";
-                            _envites.Pop();
-                            _envites.Push(_players[actualTurn].getApuesta());
-                            Debug.Log("AÑADIDA APUESTA DE " + _players[actualTurn].getApuesta());
+                            
+                            _envites.RemoveAt(_envites.Count - 1);
+                            _envites.Add(new Apuesta(team,_players[actualTurn].getApuesta()));
+                            setApuestasUI();
                             _players[actualTurn].resetAction();
 
                             if (actualTurn < 2) actualTurn = 2;
                             else actualTurn = 0;
-                            //_actualFase = Fase.Chica;
+                            
 
                         }
                         break;
@@ -296,11 +339,14 @@ namespace IAV.G07.MUS
                     {
                         if (_players[actualTurn].getEnd())
                         {
+                            _envites[_envites.Count-1].team = team;
+                            setApuestasUI();
                             _players[actualTurn].resetAction();
-                            if (actualTurn < 2) actualTurn = 2;
+                            if (team == 1) actualTurn = 2;
                             else actualTurn = 0;
 
                             _actualFase++;
+                            lastAction = Action.Inicial;
                         }
                         break;
                     }
@@ -357,9 +403,26 @@ namespace IAV.G07.MUS
         {
             barajaText.text = "BARAJA: " + _baraja.Count;
             descartesText.text = "DESCARTES: " + _descartes.Count;
-            if (_envites.Count == 0) envitesText.text = "Última apuesta: Ninguna";
-            else envitesText.text = "Última apuesta: " + _envites.Peek();
-            turnText.text = "Turno: J" + (actualTurn+1);
+        }
+        public void setApuestasUI()
+        {
+            switch (_actualFase)
+            {
+                case Fase.Grande:
+                    apuestasTexts[0].text = "Grande Equipo: " + _envites[0].team + "\nValor: "+_envites[0].apuesta;
+                    break;
+                case Fase.Chica:
+                    apuestasTexts[1].text = "Chica Equipo: " + _envites[1].team + "\nValor: " + _envites[1].apuesta;
+                    break;
+                case Fase.Pares:
+                    apuestasTexts[2].text = "Pares Equipo: " + _envites[2].team + "\nValor: " + _envites[2].apuesta;
+                    break;
+                case Fase.Juego:
+                    apuestasTexts[3].text = "Juego Equipo: " + _envites[3].team + "\nValor: " + _envites[3].apuesta;
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void setSign(SignEnum s, int p) 
