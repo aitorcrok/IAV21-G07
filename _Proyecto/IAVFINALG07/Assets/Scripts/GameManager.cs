@@ -159,6 +159,10 @@ namespace IAV.G07.MUS
                     _baraja.Pop();
                 }
             }
+            for (int i = 0; i < _players.Count; i++)
+            {
+                _players[i].OrdenarMano();
+            }
         }
 
         //Fisher-Yates shuffle
@@ -254,7 +258,7 @@ namespace IAV.G07.MUS
 
                 for (int i = 0; i < _players.Count; i++)
                 {
-                    _players[i].OrdernarMano();                    
+                    _players[i].OrdenarMano();                    
                 }
 
                 for (int i = 0; i < _envites.Count; i++)
@@ -414,7 +418,7 @@ namespace IAV.G07.MUS
                     {
                         lastAction = Action.Subir;
 
-                        if (_players[actualTurn].GetComponent</*UserPlayer*/Player>())
+                        if (_players[actualTurn].GetComponent<UserPlayer>())
                             inputFieldGO.SetActive(true);
                         if (_players[actualTurn].getEnd())
                         {
@@ -494,7 +498,9 @@ namespace IAV.G07.MUS
                     _baraja.Pop();
                 }
             }
-            _players[actualTurn].RenderCards();
+            _players[actualTurn].OrdenarMano();
+            if (_players[actualTurn].GetComponent<JoaquinPlayer>())
+                _players[actualTurn].GetComponent<JoaquinPlayer>().HandValues();
             if (actualTurn > 1) //jugadores 3 y 4, que juegan en los laterales, hay que rotar sus cartas para que se vean bien en la mesa
                 _players[actualTurn].RotateCards();
         }
@@ -551,8 +557,12 @@ namespace IAV.G07.MUS
 
         public void Apostar()
         {
-            if (_players[actualTurn].actual == Action.Envidar) _players[actualTurn].Envidar();
-            else _players[actualTurn].Subir();
+            UserPlayer u = _players[actualTurn].GetComponent<UserPlayer>();
+            if (u)
+            {
+                if (_players[actualTurn].actual == Action.Envidar) u.Envidar();
+                else u.Subir();
+            }
         }
 
         public int CompareHands(List<Card> first, List<Card> second, Envite e) //1 si la primera es mejor o igual, 0 si es la segunda
@@ -605,35 +615,44 @@ namespace IAV.G07.MUS
                     //Para evaluar los pares se usan dos variables auxiliares, una por mano, que 
                     int f_aux = 0;
                     int s_aux = 0;
+                    List<Card> first_aux = first;
+                    List<Card> second_aux = second;
+                    for (i = 0; i< 4; i++)
+                    {
+                        if (first_aux[i].num == 3) first_aux[i].num = 12;
+                        if (first_aux[i].num == 2) first_aux[i].num = 1;
+                        if (second_aux[i].num == 3) second_aux[i].num = 12;
+                        if (second_aux[i].num == 2) second_aux[i].num = 1;
+                    }
                     //Si tiene duples el valor de aux es 1(valor de la pareja mas alta)(valor de la pareja mas alta)
-                    if (first[0].num == first[1].num && first[2].num == first[3].num) f_aux = 10000 + 100 * first[0].num + first[3].num;
+                    if (first_aux[0].num == first_aux[1].num && first_aux[2].num == first_aux[3].num) f_aux = 10000 + 100 * first_aux[0].num + first_aux[3].num;
                     //Si tiene medias el valor de aux es 1(valor de la carta del trio)
-                    else if (first[0].num == first[1].num && first[1].num == first[2].num ||
-                             first[1].num == first[2].num && first[2].num == first[3].num) f_aux = 100 + first[2].num;
+                    else if (first_aux[0].num == first_aux[1].num && first_aux[1].num == first_aux[2].num ||
+                             first_aux[1].num == first_aux[2].num && first_aux[2].num == first_aux[3].num) f_aux = 100 + first_aux[2].num;
                     else
                     {
                         for (i = 0; i < 3; i++)
                         {
-                            if (first[i].num == first[i + 1].num)
+                            if (first_aux[i].num == first_aux[i + 1].num)
                             {
                                 //Si tiene una pareja aux es el valor de la carta
-                                f_aux = first[i].num;
+                                f_aux = first_aux[i].num;
                                 break;
                             }
                         }
                         //si no tiene pareja, pierde siempre
                         if (i == 3) return 0;
                     }
-                    if (second[0].num == second[1].num && second[2].num == second[3].num) s_aux = 10000 + 100 * second[0].num + second[3].num;
-                    else if (second[0].num == second[1].num && second[1].num == second[2].num ||
-                             second[1].num == second[2].num && second[2].num == second[3].num) s_aux = 100 + second[2].num;
+                    if (second_aux[0].num == second_aux[1].num && second_aux[2].num == second_aux[3].num) s_aux = 10000 + 100 * second_aux[0].num + second_aux[3].num;
+                    else if (second_aux[0].num == second_aux[1].num && second_aux[1].num == second_aux[2].num ||
+                             second_aux[1].num == second_aux[2].num && second_aux[2].num == second_aux[3].num) s_aux = 100 + second_aux[2].num;
                     else
                     {
                         for (i = 0; i < 3; i++)
                         {
-                            if (second[i].num == second[i + 1].num)
+                            if (second_aux[i].num == second_aux[i + 1].num)
                             {
-                                s_aux = second[i].num;
+                                s_aux = second_aux[i].num;
                                 break;
                             }
                         }
@@ -659,6 +678,7 @@ namespace IAV.G07.MUS
                         m += aux;
                     }
                     if (n < 31) return 0;
+                    if (m < 31) return 1;
                     if (n == 31) return 1;
                     if (n == 32 && m != 31) return 1;
 

@@ -49,11 +49,10 @@ namespace IAV.G07.MUS
         }
         private void Start()
         {
-            _mano.Sort(CompareCardsByNumber);
+            //OrdenarMano();
 
             InitAI();
 
-            RenderCards();
             if (player > 2) //jugadores 3 y 4, que juegan en los laterales, hay que rotar sus cartas para que se vean bien en la mesa
                 RotateCards();
         }
@@ -103,12 +102,46 @@ namespace IAV.G07.MUS
 
         private void InitAI()
         {
+            InitPossible();
+            HandValues();
+        }
+
+        private void InitPossible()
+        {
+            //crea la baraja ordenada
+            for (int i = 0; i < 4; i++)
+            {
+                CardType t = (CardType)i;
+                for (int j = 0; j < 7; j++)
+                {
+                    string path = t.ToString() + "_" + (j + 1);
+                    Card c = new Card(t, j + 1, Resources.Load<Sprite>(path));
+                    possibleCards.Add(c);
+                }
+                for (int j = 10; j < 13; j++)
+                {
+                    string path = t.ToString() + "_" + j;
+                    Card c = new Card(t, j, Resources.Load<Sprite>(path));
+                    possibleCards.Add(c);
+                }
+            }
+            for (int i = 0; i < possibleCards.Count; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if (possibleCards[i].num == _mano[j].num && possibleCards[i].palo == _mano[j].palo) { possibleCards.RemoveAt(i); i--; break; }
+                }
+            }
+        }
+
+        public void HandValues()
+        {
             int total, n;
 
             foreach (Envite e in System.Enum.GetValues(typeof(Envite)))
             {
-               n = EvaluateHand(e, out total);
-               handValue[(int)e] = (float)n / (float)total;
+                n = EvaluateHand(e, out total);
+                handValue[(int)e] = (float)n / (float)total;
             }
         }
 
@@ -117,9 +150,9 @@ namespace IAV.G07.MUS
             for (int i = 0; i < 4; i++)
             {
                 if (i == (int)Envite.Chica && !juegaChica) i++;
-                if (handValue[i] < goodHands[i]) return true;
+                if (handValue[i] >= goodHands[i]) return false;
             }
-            return false;
+            return true;
             //if (juegaChica)
             //    return (grandeValue < goodGrande || chicaValue < goodChica || paresValue < goodPares || juegoValue < goodJuego);
             //else
@@ -162,11 +195,11 @@ namespace IAV.G07.MUS
             int N = possibleCards.Count;
             for (int i = 0; i < N; i++)
             {
-                for (int j = i; j < N; j++)
+                for (int j = i + 1; j < N; j++)
                 {
-                    for (int k = j; k < N; k++)
+                    for (int k = j + 1; k < N; k++)
                     {
-                        for (int l = k; l < N; l++)
+                        for (int l = k + 1; l < N; l++)
                         {
                             List<Card> manoPosible = new List<Card>();
                             manoPosible.Add(possibleCards[i]);
@@ -189,11 +222,11 @@ namespace IAV.G07.MUS
             int N = possibleCards.Count;
             for (int i = 0; i < N; i++)
             {
-                for (int j = i; j < N; j++)
+                for (int j = i + 1; j < N; j++)
                 {
-                    for (int k = j; k < N; k++)
+                    for (int k = j + 1; k < N; k++)
                     {
-                        for (int l = k; l < N; l++)
+                        for (int l = k + 1; l < N; l++)
                         {
                             List<Card> manoPosible = new List<Card>();
                             manoPosible.Add(possibleCards[i]);
