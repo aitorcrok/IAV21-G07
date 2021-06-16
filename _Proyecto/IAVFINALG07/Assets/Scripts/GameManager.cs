@@ -293,11 +293,22 @@ namespace IAV.G07.MUS
                                     changeFase();
                                     lastAction = Action.Inicial;
                                 }
+                                else if(_envites[_envites.Count - 1].team == 1 && actualTurn == 2)
+                                {
+                                    //si está en el jugador 3 y la apuesta es del equipo 1, el jugador 2 no hace nada y se pasa al 4
+                                    actualTurn = 3;
+
+                                }
                                 else
                                 {
                                     _players[actualTurn].resetAction();
                                     changeTurn();
                                 }
+                            }
+                            else if(lastAction == Action.Subir)
+                            {
+                                //la pareja que ha subido se lleva los puntos de antes de subir
+                                
                             }
                             else
                             {
@@ -319,6 +330,8 @@ namespace IAV.G07.MUS
                     }
                 case (Action.Subir):
                     {
+                        lastAction = Action.Subir;
+
                         if (_players[actualTurn].GetComponent</*UserPlayer*/Player>())
                             inputFieldGO.SetActive(true);
                         if (_players[actualTurn].getEnd())
@@ -326,6 +339,7 @@ namespace IAV.G07.MUS
                             inputFieldGO.SetActive(false);
                             inputField.text = "Escribe apuesta, ESC para salir";
                             
+                            //Hay que guarda la apuesta anterior no podemos borrarla por si no la ven
                             _envites.RemoveAt(_envites.Count - 1);
                             _envites.Add(new Apuesta(_actualTeam,_players[actualTurn].getApuesta()));
                             setApuestasUI();
