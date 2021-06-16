@@ -76,12 +76,12 @@ namespace IAV.G07.MUS
                 else if ((GameManager.Instance.GetActualFase() == Fase.Grande || GameManager.Instance.GetActualFase() == Fase.Chica ||
                         GameManager.Instance.GetActualFase() == Fase.Pares || GameManager.Instance.GetActualFase() == Fase.Juego) && !endTurn)
                 {
-                    if (Input.GetKeyDown(KeyCode.P)) /*pasa turno*/ { endTurn = true; envidar = false; actual = Action.Pasar; Debug.Log("Pasar"); }
+                    if (Input.GetKeyDown(KeyCode.P)) /*pasa turno*/ { endTurn = true; envidar = false; actual = Action.Pasar; }
                     else if (GameManager.Instance.getEnvites() < (int)GameManager.Instance.GetActualFase() - 1 &&
                         actual == Action.Inicial && Input.GetKeyDown(KeyCode.E)) /*envida*/{ envidar = true; actual = Action.Envidar; }
                     else if (GameManager.Instance.getEnvites() == (int)GameManager.Instance.GetActualFase() - 1)
                     {
-                        if (Input.GetKeyDown(KeyCode.V))/*ver*/ { endTurn = true; actual = Action.Ver; Debug.Log("Ver"); }
+                        if (Input.GetKeyDown(KeyCode.V))/*ver*/ { endTurn = true; actual = Action.Ver; }
                         else if (Input.GetKeyDown(KeyCode.S)) /*subir*/ { actual = Action.Subir; }
                         envidar = false;
                     }

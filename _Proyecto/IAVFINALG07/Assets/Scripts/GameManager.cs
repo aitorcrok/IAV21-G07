@@ -90,6 +90,10 @@ namespace IAV.G07.MUS
         private int actualTurn = 0; //0,1,2, o 3 segun el jugador que le toque
         private int _actualTeam = 0;
         private Action lastAction = Action.Inicial;
+        private int lastEnvite = 0;
+        private int puntos0 =0;
+        private int puntos1 =0;
+
         private List<Player> _players = new List<Player>(4); //se meten los jugadores en orden, los dos primeros son el primer equipo y los dos ultimos el segundo equipo
         private void Awake()
         {
@@ -243,6 +247,8 @@ namespace IAV.G07.MUS
         }
         private void Game()
         {
+            Debug.Log("Ultima accion: " + lastAction);            
+
             if(lastAction == Action.Envidar)
                 turnText.text = "Turno: J" + (actualTurn + 1) + "/"+_actualFase.ToString()+".La subes, la ves o pasas? S/V/P";
             else
@@ -288,7 +294,7 @@ namespace IAV.G07.MUS
                                 else if(_envites[_envites.Count-1].team ==2 && actualTurn == 1)
                                 {
                                     //si está en el jugador 2 y la apuesta es del equipo 2, quiere decir que ambos jugadores del equipo 1 han decidido pasar de la apuesta.
-                                    actualTurn = 0;
+                                    //actualTurn = 0;
                                     //_actualFase++;
                                     changeFase();
                                     lastAction = Action.Inicial;
@@ -299,6 +305,11 @@ namespace IAV.G07.MUS
                                     actualTurn = 3;
 
                                 }
+                                else if(_envites[_envites.Count - 1].team == 2 && actualTurn == 0)
+                                {
+                                    //si está en el jugador 1 y la apuesta es del equipo 2, se pasa al jugador 2 para que pase tambien
+                                    actualTurn = 1;
+                                }
                                 else
                                 {
                                     _players[actualTurn].resetAction();
@@ -308,22 +319,52 @@ namespace IAV.G07.MUS
                             else if(lastAction == Action.Subir)
                             {
                                 //la pareja que ha subido se lleva los puntos de antes de subir
-                                
+                                if (_actualTeam == 0) puntos1 += lastEnvite;                                
+                                else puntos0 += lastEnvite;
+                                changeFase();                                
                             }
-                            else
+                            else if (lastAction == Action.Pasar)
                             {
-                                _players[actualTurn].resetAction();
-                                changeTurn();
-                                if (actualTurn == 0) //si al cambiar de turno le toca al primero otra vez, ha dado la vuelta y todos pasan
+                                Debug.Log(actualTurn);
+                                if (_envites[_envites.Count - 1].team == 2 && actualTurn == 1)
                                 {
+                                    changeFase();
+                                    //lastAction = Action.Inicial;
+                                }
+                                else if (actualTurn == 3)
+                                {
+                                    //puntos0 += envite 
+                                }
+                                else if (actualTurn == 2 )
+                                {
+                                    changeTurn();
+                                }
+
+                                else if (actualTurn == 0)
+                                {
+                                }
+
+                                else if (actualTurn == 0 && _envites.Count < (int)GameManager.Instance.GetActualFase() - 1)
+                                {
+                                    //si al es turno del primero otra vez, ha dado la vuelta y todos pasan y no hay envites
+
                                     _envites.Add(new Apuesta(0, 1));
                                     setApuestasUI();
-                                    //_actualFase++;
                                     changeFase();
                                     lastAction = Action.Inicial;
                                 }
+
+                                
                             }
-                           
+                            else if(lastAction == Action.Inicial)
+                            {
+                                                               
+                                 changeTurn();
+                                //_players[actualTurn].resetAction();                                
+
+                            }
+
+                            lastAction = Action.Pasar;                           
                         }
                         
                         break;
@@ -338,8 +379,9 @@ namespace IAV.G07.MUS
                         {
                             inputFieldGO.SetActive(false);
                             inputField.text = "Escribe apuesta, ESC para salir";
-                            
+
                             //Hay que guarda la apuesta anterior no podemos borrarla por si no la ven
+                            lastEnvite = _envites[_envites.Count - 1].apuesta;
                             _envites.RemoveAt(_envites.Count - 1);
                             _envites.Add(new Apuesta(_actualTeam,_players[actualTurn].getApuesta()));
                             setApuestasUI();
@@ -388,6 +430,7 @@ namespace IAV.G07.MUS
             actualTurn = 0;
             _actualTeam = 1;
             _actualFase++;
+            lastAction = Action.Inicial;
         }
 
         public void Descartar()
