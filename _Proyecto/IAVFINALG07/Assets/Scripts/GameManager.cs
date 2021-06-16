@@ -14,7 +14,8 @@ namespace IAV.G07.MUS
         Chica,
         Pares,
         Juego,
-        Final
+        Puntos,
+        Fin
     }
     public enum CardType
     {
@@ -72,7 +73,7 @@ namespace IAV.G07.MUS
         private Stack<Card> _descartes = new Stack<Card>();
         private List<Apuesta> _envites = new List<Apuesta>();
         public int getEnvites() { return _envites.Count; }
-        public Apuesta getLastEnvite() { return _envites[_envites.Count-1]; }
+        public Apuesta getLastEnvite() { return _envites[_envites.Count - 1]; }
         public GameObject cardPrefab;
         public GameObject barajaTextGO;
         public GameObject inputFieldGO;
@@ -93,8 +94,8 @@ namespace IAV.G07.MUS
         private int _actualTeam = 0;
         private Action lastAction = Action.Inicial;
         private int lastEnvite = 0;
-        private int puntosTeam1 =0;
-        private int puntosTeam2 =0;
+        private int puntosTeam1 = 0;
+        private int puntosTeam2 = 0;
 
         private List<Player> _players = new List<Player>(4); //se meten los jugadores en orden, los dos primeros son el primer equipo y los dos ultimos el segundo equipo
         private void Awake()
@@ -116,7 +117,7 @@ namespace IAV.G07.MUS
             barajaText = barajaTextGO.GetComponent<Text>();
             descartesText = descartesTextGO.GetComponent<Text>();
             turnText = turnTextGO.GetComponent<Text>();
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 apuestasTexts[i] = apuestasGO[i].GetComponent<Text>();
             }
@@ -198,7 +199,7 @@ namespace IAV.G07.MUS
             else _actualTeam = 2;
             if (_actualFase == Fase.Mus)
             {
-                turnText.text = "Turno: J" + (actualTurn + 1)+". Mus? S/N";
+                turnText.text = "Turno: J" + (actualTurn + 1) + ". Mus? S/N";
                 int mus;
                 //Esto no es exactamente en este orden, hay que tener en cuenta la mano
                 mus = _players[actualTurn].getMus();
@@ -245,13 +246,57 @@ namespace IAV.G07.MUS
             {
                 Game();
             }
-            else if (_actualFase == Fase.Final)
+            else if (_actualFase == Fase.Puntos)
             {
+                int ganador = -1;
+                int team1 = -1;
+                int team2 = -1;
 
+                for (int i = 0; i < _players.Count; i++)
+                {
+                    _players[i].OrdernarMano();                    
+                }
+
+                for (int i = 0; i < _envites.Count; i++)
+                {
+                    if (_envites[i].apuesta != 0)
+                    {
+                        team1 = CompareHands(_players[0].Mano(), _players[1].Mano(), (Envite)i);
+                        team2 = CompareHands(_players[2].Mano(), _players[3].Mano(), (Envite)i);
+
+                        if (team1 == 1)
+                        {
+                            if (team2 == 1) ganador = CompareHands(_players[0].Mano(), _players[2].Mano(), (Envite)i);
+                            else ganador = CompareHands(_players[0].Mano(), _players[3].Mano(), (Envite)i);
+                        }
+                        else
+                        {
+                            if (team2 == 1) ganador = CompareHands(_players[1].Mano(), _players[2].Mano(), (Envite)i);
+                            else ganador = CompareHands(_players[1].Mano(), _players[3].Mano(), (Envite)i);
+                        }
+
+                        if (ganador == 1) { 
+                            puntosTeam1 += _envites[i].apuesta; pointsTexts[0].text = "Puntos Equipo 1: " + puntosTeam1;
+                            Debug.Log(_envites[i].apuesta+" para T1");
+                        }
+                        else { 
+                            puntosTeam2 += _envites[i].apuesta; pointsTexts[1].text = "Puntos Equipo 2: " + puntosTeam2;
+                            Debug.Log(_envites[i].apuesta + " para T2");
+                        }
+
+                    }
+                }
+
+                _actualFase = Fase.Fin;
             }
+            else {
+                //Volver al menu
+                Debug.Log("Sacabo");
+            }
+
             setUI();
-            Debug.Log("Puntos Equipo 1: "+puntosTeam1);
-            Debug.Log("Puntos Equipo 2: "+puntosTeam2);
+            Debug.Log("Puntos Equipo 1: " + puntosTeam1);
+            Debug.Log("Puntos Equipo 2: " + puntosTeam2);
         }
         private void Game()
         {
@@ -261,7 +306,7 @@ namespace IAV.G07.MUS
             else
                 turnText.text = "Turno: J" + (actualTurn + 1) + "/" + _actualFase.ToString() + ". Envidas o pasas? E/P";
             Action playerAction = _players[actualTurn].actual;
-            
+
             switch (playerAction)
             {
                 case (Action.Envidar):
@@ -273,12 +318,12 @@ namespace IAV.G07.MUS
                             lastAction = Action.Envidar;
                             inputFieldGO.SetActive(false);
                             inputField.text = "Escribe apuesta, ESC para salir";
-                            
-                            _envites.Add(new Apuesta(_actualTeam,_players[actualTurn].getApuesta()));
+
+                            _envites.Add(new Apuesta(_actualTeam, _players[actualTurn].getApuesta()));
                             setApuestasUI();
                             _players[actualTurn].resetAction();
 
-                            if (_actualTeam==1) actualTurn = 2;
+                            if (_actualTeam == 1) actualTurn = 2;
                             else actualTurn = 0;
                         }
                         break;
@@ -287,9 +332,9 @@ namespace IAV.G07.MUS
                     {
                         if (_players[actualTurn].getEnd())
                         {
-                            if(lastAction == Action.Envidar)
+                            if (lastAction == Action.Envidar)
                             {
-                                if(_envites[_envites.Count-1].team == 1)
+                                if (_envites[_envites.Count - 1].team == 1)
                                 {
                                     if (actualTurn == 3)
                                     {
@@ -307,28 +352,28 @@ namespace IAV.G07.MUS
                                     {
                                         actualTurn = 1;
                                     }
-                                    else if(actualTurn == 1)
+                                    else if (actualTurn == 1)
                                     {
                                         changeFase();
-                                    } 
-                                }    
+                                    }
+                                }
                             }
-                            else if(lastAction == Action.Subir)
+                            else if (lastAction == Action.Subir)
                             {
                                 //la pareja que ha subido se lleva los puntos de antes de subir
                                 if (_actualTeam == 1) { puntosTeam2 += lastEnvite; pointsTexts[1].text = "Puntos Equipo 2: " + puntosTeam2; }
                                 else { puntosTeam1 += lastEnvite; pointsTexts[0].text = "Puntos Equipo 0: " + puntosTeam1; }
 
-                                changeFase();                                
+                                changeFase();
                             }
                             else if (lastAction == Action.Pasar)
                             {
                                 //Hay envite?
-                                if(_envites.Count == (int)GameManager.Instance.GetActualFase() - 1)
+                                if (_envites.Count == (int)GameManager.Instance.GetActualFase() - 1)
                                 {
                                     _envites[_envites.Count - 1].apuesta = 0;
                                     _envites[_envites.Count - 1].team = 0;
-                                    if(_actualTeam == 2)
+                                    if (_actualTeam == 2)
                                     {
                                         puntosTeam1++;
                                         pointsTexts[0].text = "Puntos Equipo 1: " + puntosTeam1;
@@ -338,12 +383,13 @@ namespace IAV.G07.MUS
                                         puntosTeam2++;
                                         pointsTexts[1].text = "Puntos Equipo 2: " + puntosTeam2;
                                     }
-                                    
+                                    setApuestasUI();
                                     changeFase();
                                 }
                                 else
                                 {
-                                    if(actualTurn != 3) {
+                                    if (actualTurn != 3)
+                                    {
                                         changeTurn();
                                     }
                                     else
@@ -354,14 +400,14 @@ namespace IAV.G07.MUS
                                     }
                                 }
                             }
-                            else if(lastAction == Action.Inicial)
-                            {                                      
-                                 changeTurn();                          
+                            else if (lastAction == Action.Inicial)
+                            {
+                                changeTurn();
                             }
 
-                            lastAction = Action.Pasar;                           
+                            lastAction = Action.Pasar;
                         }
-                        
+
                         break;
                     }
                 case (Action.Subir):
@@ -378,7 +424,7 @@ namespace IAV.G07.MUS
                             //Hay que guarda la apuesta anterior no podemos borrarla por si no la ven
                             lastEnvite = _envites[_envites.Count - 1].apuesta;
                             _envites.RemoveAt(_envites.Count - 1);
-                            _envites.Add(new Apuesta(_actualTeam,_players[actualTurn].getApuesta()));
+                            _envites.Add(new Apuesta(_actualTeam, _players[actualTurn].getApuesta()));
                             setApuestasUI();
 
                             if (actualTurn < 2) actualTurn = 2;
@@ -390,7 +436,7 @@ namespace IAV.G07.MUS
                     {
                         if (_players[actualTurn].getEnd())
                         {
-                            _envites[_envites.Count-1].team = _actualTeam;
+                            _envites[_envites.Count - 1].team = _actualTeam;
                             setApuestasUI();
                             _players[actualTurn].resetAction();
                             if (_actualTeam == 1) actualTurn = 2;
@@ -408,9 +454,9 @@ namespace IAV.G07.MUS
         {
             _players[actualTurn].resetAction();
             if (_actualTeam == 1) { actualTurn++; actualTurn++; }
-            if(_actualTeam == 2)
+            if (_actualTeam == 2)
             {
-                if(actualTurn == 2) { actualTurn--; }
+                if (actualTurn == 2) { actualTurn--; }
                 else actualTurn = 0;
             }
             if (actualTurn < 2) _actualTeam = 1;
@@ -419,7 +465,7 @@ namespace IAV.G07.MUS
 
         public void changeFase()
         {
-            foreach(Player p in _players)
+            foreach (Player p in _players)
             {
                 p.resetAction();
             }
@@ -477,7 +523,7 @@ namespace IAV.G07.MUS
             switch (_actualFase)
             {
                 case Fase.Grande:
-                    apuestasTexts[0].text = "Grande Equipo: " + _envites[0].team + "\nValor: "+_envites[0].apuesta;
+                    apuestasTexts[0].text = "Grande Equipo: " + _envites[0].team + "\nValor: " + _envites[0].apuesta;
                     break;
                 case Fase.Chica:
                     apuestasTexts[1].text = "Chica Equipo: " + _envites[1].team + "\nValor: " + _envites[1].apuesta;
@@ -493,9 +539,9 @@ namespace IAV.G07.MUS
             }
         }
 
-        public void setSign(SignEnum s, int p) 
+        public void setSign(SignEnum s, int p)
         {
-            for (int i = 0; i < _players.Count; i++) 
+            for (int i = 0; i < _players.Count; i++)
             {
                 _players[i].setSign(s, p);
             }
@@ -505,9 +551,125 @@ namespace IAV.G07.MUS
 
         public void Apostar()
         {
-            if(_players[actualTurn].actual == Action.Envidar) _players[actualTurn].Envidar();
+            if (_players[actualTurn].actual == Action.Envidar) _players[actualTurn].Envidar();
             else _players[actualTurn].Subir();
         }
+
+        public int CompareHands(List<Card> first, List<Card> second, Envite e) //1 si la primera es mejor o igual, 0 si es la segunda
+        {
+            //Faltaria tener en cuenta quien es mano en caso de manos iguales
+
+            int i;
+            switch (e)
+            {
+                case Envite.Grande:
+                    //Va comparando de carta mas alta a mas baja de ambas manos, cuando son distintas gana la que sea mayor
+                    i = -1;
+                    int aux, aux2;
+                    do
+                    {
+                        i++;
+                        aux = first[i].num;
+                        if (aux == 3) aux = 12;
+                        else if (aux == 2) aux = 1;
+
+                        aux2 = second[i].num;
+                        if (aux2 == 3) aux2 = 12;
+                        else if (aux2 == 2) aux2 = 1;
+                    }
+                    while (aux == aux2 && i < 3);
+
+                    if (aux >= aux2) return 1;
+                    else return 0;
+                case Envite.Chica:
+                    //Va comparando de carta mas baja a mas alta de ambas manos, cuando son distintas gana la que sea menor
+
+                    i = 4;
+                    do
+                    {
+                        i--;
+                        aux = first[i].num;
+                        if (aux == 3) aux = 12;
+                        else if (aux == 2) aux = 1;
+
+                        aux2 = second[i].num;
+                        if (aux2 == 3) aux2 = 12;
+                        else if (aux2 == 2) aux2 = 1;
+                    }
+                    while (aux == aux2 && i > 0);
+
+                    //Si i es menor de cero las manos son iguales
+                    if (aux <= aux2) return 1;
+                    else return 0;
+                case Envite.Pares:
+                    //Para evaluar los pares se usan dos variables auxiliares, una por mano, que 
+                    int f_aux = 0;
+                    int s_aux = 0;
+                    //Si tiene duples el valor de aux es 1(valor de la pareja mas alta)(valor de la pareja mas alta)
+                    if (first[0].num == first[1].num && first[2].num == first[3].num) f_aux = 10000 + 100 * first[0].num + first[3].num;
+                    //Si tiene medias el valor de aux es 1(valor de la carta del trio)
+                    else if (first[0].num == first[1].num && first[1].num == first[2].num ||
+                             first[1].num == first[2].num && first[2].num == first[3].num) f_aux = 100 + first[2].num;
+                    else
+                    {
+                        for (i = 0; i < 3; i++)
+                        {
+                            if (first[i].num == first[i + 1].num)
+                            {
+                                //Si tiene una pareja aux es el valor de la carta
+                                f_aux = first[i].num;
+                                break;
+                            }
+                        }
+                        //si no tiene pareja, pierde siempre
+                        if (i == 3) return 0;
+                    }
+                    if (second[0].num == second[1].num && second[2].num == second[3].num) s_aux = 10000 + 100 * second[0].num + second[3].num;
+                    else if (second[0].num == second[1].num && second[1].num == second[2].num ||
+                             second[1].num == second[2].num && second[2].num == second[3].num) s_aux = 100 + second[2].num;
+                    else
+                    {
+                        for (i = 0; i < 3; i++)
+                        {
+                            if (second[i].num == second[i + 1].num)
+                            {
+                                s_aux = second[i].num;
+                                break;
+                            }
+                        }
+                        if (i == 3) return 1;
+                    }
+
+                    //Compara los valores aux de las dos manos
+                    if (f_aux >= s_aux) return 1;
+                    else return 0;
+
+                case Envite.Juego:
+                    int n = 0, m = 0;
+
+                    for (i = 0; i < 4; i++)
+                    {
+                        aux = first[i].num;
+                        if (aux > 10 || aux == 3) aux = 10;
+                        else if (aux == 2) aux = 1;
+                        n += aux;
+                        aux = second[i].num;
+                        if (aux > 10 || aux == 3) aux = 10;
+                        else if (aux == 2) aux = 1;
+                        m += aux;
+                    }
+                    if (n < 31) return 0;
+                    if (n == 31) return 1;
+                    if (n == 32 && m != 31) return 1;
+
+                    if (m > 32 && n > m) return 1;
+                    else return 0;
+                default:
+                    return 0;
+            }
+        }
+
+
     }
 
 }

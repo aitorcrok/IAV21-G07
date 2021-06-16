@@ -40,7 +40,8 @@ namespace IAV.G07.MUS
             for (int j = 0; j < _mano.Count; j++)
             {
                 GameObject g = Instantiate<GameObject>(GameManager.Instance.cardPrefab, this.transform);
-                if (index == 0) g.GetComponent<Image>().sprite = _mano[j].sprite;
+                //if (index == 0) 
+                g.GetComponent<Image>().sprite = _mano[j].sprite;
             }
         }
 
@@ -127,6 +128,24 @@ namespace IAV.G07.MUS
             {
                 GameManager.Instance.resetInputField();
             }
+        }
+
+        protected static int CompareCardsByNumber(Card a, Card b)
+        {
+            int x, y;
+            x = b.num;
+            if (x == 3) x = 12;
+            else if (x == 2) x = 1;
+            y = a.num;
+            if (y == 3) y = 12;
+            else if (y == 2) y = 1;
+            return x.CompareTo(y);
+        }
+
+        public void OrdernarMano()
+        {
+            _mano.Sort(CompareCardsByNumber);
+            RenderCards();
         }
     }
 
