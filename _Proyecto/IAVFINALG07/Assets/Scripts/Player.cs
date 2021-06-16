@@ -30,7 +30,7 @@ namespace IAV.G07.MUS
         public void resetAction() { actual = Action.Inicial; }
 
         //Esto sólo lo usará el jugador 1 (depende del GameManager que solo lo use el jugador 1).
-        public void RenderCards()
+        public void RenderCards(bool b)
         {
             for (int i = transform.childCount; i > 0; i--)
                 Destroy(transform.GetChild(i - 1).gameObject);
@@ -40,8 +40,9 @@ namespace IAV.G07.MUS
             for (int j = 0; j < _mano.Count; j++)
             {
                 GameObject g = Instantiate<GameObject>(GameManager.Instance.cardPrefab, this.transform);
-                //if (index == 0) 
-                g.GetComponent<Image>().sprite = _mano[j].sprite;
+                if (index == 0 || b)
+                    g.GetComponent<Image>().sprite = _mano[j].sprite;
+
             }
         }
 
@@ -67,10 +68,10 @@ namespace IAV.G07.MUS
             return x.CompareTo(y);
         }
 
-        public void OrdenarMano()
+        public void OrdenarMano(bool b)
         {
             _mano.Sort(CompareCardsByNumber);
-            RenderCards();
+            RenderCards(b);
         }
     }
 

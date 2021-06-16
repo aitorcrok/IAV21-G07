@@ -299,6 +299,7 @@ MonoBehaviour:
   - 1
   juegaChica: 0
   thinkingTime: 3
+  farolChance: 10
   player: 2
   sign: {fileID: 559900253}
 --- !u!114 &293203514
@@ -1416,6 +1417,7 @@ MonoBehaviour:
   - 1
   juegaChica: 0
   thinkingTime: 3
+  farolChance: 10
   player: 4
   sign: {fileID: 453094723}
 --- !u!1 &1045730389
@@ -1665,6 +1667,7 @@ MonoBehaviour:
   - 1
   juegaChica: 0
   thinkingTime: 3
+  farolChance: 10
   player: 3
   sign: {fileID: 1806591115}
 --- !u!1 &1133877072
@@ -2515,6 +2518,7 @@ MonoBehaviour:
   cardPrefab: {fileID: 4920838571794602342, guid: b7f0f097725c261458e32109aa7e74f3, type: 3}
   barajaTextGO: {fileID: 1045730389}
   inputFieldGO: {fileID: 724612650}
+  apuestasTextGO: {fileID: 1924954075}
   descartesTextGO: {fileID: 444769385}
   turnTextGO: {fileID: 932813584}
   apuestasGO:
@@ -2577,8 +2581,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 16.8, y: 95.6}
-  m_SizeDelta: {x: 427, y: 73.8595}
+  m_AnchoredPosition: {x: 2.2214, y: 95.6}
+  m_SizeDelta: {x: 1150, y: 73.8595}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1924954077
 MonoBehaviour:
@@ -2607,7 +2611,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 300
-    m_Alignment: 0
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0

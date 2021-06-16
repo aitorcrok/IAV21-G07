@@ -432,8 +432,9 @@ MonoBehaviour:
   - 1
   juegaChica: 0
   thinkingTime: 3
+  farolChance: 10
   player: 2
-  sign: {fileID: 0}
+  sign: {fileID: 1900314107}
 --- !u!114 &293203514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1488,8 +1489,20 @@ MonoBehaviour:
   - 1
   juegaChica: 0
   thinkingTime: 3
+  farolChance: 10
   player: 4
-  sign: {fileID: 0}
+  sign: {fileID: 2056424515}
+--- !u!114 &1013529002 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+  m_PrefabInstance: {fileID: 1438308151}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27111c4704db1d4cad594283857a25f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1045730389
 GameObject:
   m_ObjectHideFlags: 0
@@ -1737,8 +1750,9 @@ MonoBehaviour:
   - 1
   juegaChica: 0
   thinkingTime: 3
+  farolChance: 10
   player: 3
-  sign: {fileID: 0}
+  sign: {fileID: 1013529002}
 --- !u!1 &1133877072
 GameObject:
   m_ObjectHideFlags: 0
@@ -1912,8 +1926,9 @@ MonoBehaviour:
   - 1
   juegaChica: 0
   thinkingTime: 3
+  farolChance: 10
   player: 1
-  sign: {fileID: 0}
+  sign: {fileID: 1246292412}
 --- !u!1 &1191653865
 GameObject:
   m_ObjectHideFlags: 0
@@ -1980,6 +1995,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1246292412 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+  m_PrefabInstance: {fileID: 611900713}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27111c4704db1d4cad594283857a25f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1264896426 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7248872126623812808, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
@@ -2484,6 +2510,7 @@ MonoBehaviour:
   cardPrefab: {fileID: 4920838571794602342, guid: b7f0f097725c261458e32109aa7e74f3, type: 3}
   barajaTextGO: {fileID: 1045730389}
   inputFieldGO: {fileID: 724612650}
+  apuestasTextGO: {fileID: 1924954075}
   descartesTextGO: {fileID: 444769385}
   turnTextGO: {fileID: 932813584}
   apuestasGO:
@@ -2508,6 +2535,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1900314107 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+  m_PrefabInstance: {fileID: 437478513}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27111c4704db1d4cad594283857a25f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1924954075
 GameObject:
   m_ObjectHideFlags: 0
@@ -2546,8 +2584,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 16.8, y: 95.6}
-  m_SizeDelta: {x: 427, y: 73.8595}
+  m_AnchoredPosition: {x: 2.2214, y: 95.6}
+  m_SizeDelta: {x: 1150, y: 73.8595}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1924954077
 MonoBehaviour:
@@ -2576,7 +2614,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 300
-    m_Alignment: 0
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2670,3 +2708,14 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2044159950}
   m_CullTransparentMesh: 1
+--- !u!114 &2056424515 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+  m_PrefabInstance: {fileID: 51380188}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27111c4704db1d4cad594283857a25f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -95,6 +95,8 @@ namespace IAV.G07.MUS
         public GameObject barajaTextGO;
         public GameObject inputFieldGO;
         private InputField inputField;
+        public GameObject apuestasTextGO;
+
         public string GetInputFieldText() { return inputField.text; }
         private Text barajaText;
         private Text descartesText;
@@ -178,7 +180,7 @@ namespace IAV.G07.MUS
             }
             for (int i = 0; i < _players.Count; i++)
             {
-                _players[i].OrdenarMano();
+                _players[i].OrdenarMano(false);
             }
         }
 
@@ -275,7 +277,7 @@ namespace IAV.G07.MUS
 
                 for (int i = 0; i < _players.Count; i++)
                 {
-                    _players[i].OrdenarMano();                    
+                    _players[i].OrdenarMano(false);                    
                 }
 
                 for (int i = 0; i < _envites.Count; i++)
@@ -312,6 +314,30 @@ namespace IAV.G07.MUS
             }
             else {
                 //Volver al menu
+                for (int i = 0; i < 4; i++)
+                {
+                    apuestasGO[i].SetActive(false);
+                }
+
+                barajaTextGO.SetActive(false);
+                descartesTextGO.SetActive(false);
+                turnTextGO.SetActive(false);
+                inputFieldGO.SetActive(false);
+
+                if (puntosTeam1 > puntosTeam2)
+                {
+                    apuestasTextGO.GetComponent<Text>().text = "Fin de Juego : Gana Team1";
+
+                }
+                else if (puntosTeam2 > puntosTeam1)
+                {
+                    apuestasTextGO.GetComponent<Text>().text = "Fin de Juego: Gana Team2";
+
+                }
+                else
+                {
+                    apuestasTextGO.GetComponent<Text>().text = "Fin de Juego: Empate";
+                }
                 Debug.Log("Sacabo");
             }
 
@@ -521,7 +547,7 @@ namespace IAV.G07.MUS
                     _baraja.Pop();
                 }
             }
-            _players[actualTurn].OrdenarMano();
+            _players[actualTurn].OrdenarMano(false);
             if (_players[actualTurn].GetComponent<JoaquinPlayer>())
             {
                 _players[actualTurn].GetComponent<JoaquinPlayer>().HandValues();
