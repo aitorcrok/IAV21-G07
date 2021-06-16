@@ -177,14 +177,17 @@ namespace IAV.G07.MUS
             if (handValue[env] >= greatHands[env]) apuesta = 5;
             else if (handValue[env] >= goodHands[env]) apuesta = 2;
             else return false;
+            endTurn = true;
             return true;
         }
         private bool Ver()
         {
             int env = (int)GameManager.Instance.GetActualFase() - 2;
-            if (handValue[env] >= goodHands[env])/*ver*/ { endTurn = true; actual = Action.Ver; }
+            int apuesta = GameManager.Instance.getLastEnvite().apuesta;
+            if ((handValue[env] >= goodHands[env] && apuesta < 5) || (handValue[env] >= greatHands[env] && apuesta >= 5))/*ver*/ { endTurn = true; actual = Action.Ver; }
             else if (handValue[env] >= greatHands[env]) /*subir*/ { actual = Action.Subir; apuesta = 5; }
             else return false;
+            endTurn = true;
             return true;
         }
 
