@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace IAV.G07.MUS
 {
@@ -552,6 +553,11 @@ namespace IAV.G07.MUS
             {
                 _players[i].setSign(s, p);
             }
+        }
+
+        public void changeScene(string scene)
+        {
+            SceneManager.LoadScene(scene);
         }
 
         public void resetInputField() { inputField.text = "Inválido"; }
