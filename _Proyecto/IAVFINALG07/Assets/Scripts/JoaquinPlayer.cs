@@ -18,27 +18,13 @@ namespace IAV.G07.MUS
 
         public float[] goodHands = { 0.84f, 0.84f, 0.95f, 1};
         public float[] greatHands = { 0.88f, 0.88f, 0.96f, 1 };
-        //public float goodGrande = 0.84f;
-        //public float greatGrande = 0.88f;
-
-        //public float goodChica = 0.84f;
-        //public float greatChica = 0.88f;
-
-        //public float goodPares = 0.95f;
-        //public float greatPares = 0.96f;
-
-        //public float goodJuego = 1;
-        //public float greatJuego = 1;
 
         private float[] handValue = { 0, 0, 0, 0 };
-        //private float grandeValue = 0;
-        //private float chicaValue = 0;
-        //private float paresValue = 0;
-        //private float juegoValue = 0;
 
         public bool juegaChica = false;
 
         public float thinkingTime = 3;
+        public int farolChance = 10;
 
         private float time = 0;
 
@@ -102,6 +88,7 @@ namespace IAV.G07.MUS
             else time = Time.time;
         }
 
+
         private void InitAI()
         {
             InitPossible();
@@ -127,14 +114,17 @@ namespace IAV.G07.MUS
                     possibleCards.Add(c);
                 }
             }
-            for (int i = 0; i < possibleCards.Count; i++)
+            for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < 4; j++)
-                {
-                    if (possibleCards[i].num == _mano[j].num && possibleCards[i].palo == _mano[j].palo) { possibleCards.RemoveAt(i); i--; break; }
-                }
+                NotPossible(_mano[i]); 
             }
         }
+
+        public void NotPossible(Card c)
+        {
+            possibleCards.Remove(c);
+        }
+
 
         public void HandValues()
         {
@@ -177,7 +167,7 @@ namespace IAV.G07.MUS
         {
             int env = (int)GameManager.Instance.GetActualFase() - 2;
             if (handValue[env] >= greatHands[env]) apuesta = 5;
-            else if (handValue[env] >= goodHands[env]) apuesta = 2;
+            else if (handValue[env] >= goodHands[env] || Random.Range(1, 100) <= farolChance) apuesta = 2;
             else return false;
             endTurn = true;
             return true;

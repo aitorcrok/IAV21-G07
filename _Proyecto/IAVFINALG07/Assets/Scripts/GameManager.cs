@@ -57,7 +57,22 @@ namespace IAV.G07.MUS
             descarte = !descarte;
         }
 
-
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            Card objAsCard = obj as Card;
+            if (objAsCard == null) return false;
+            else return Equals(objAsCard);
+        }
+        public override int GetHashCode()
+        {
+            return 10 * num + (int)palo;
+        }
+        public bool Equals(Card other)
+        {
+            if (other == null) return false;
+            return (num.Equals(other.num) && palo.Equals(other.palo));
+        }
     };
     public enum Action
     {
@@ -348,7 +363,7 @@ namespace IAV.G07.MUS
                                     }
                                     else if (actualTurn == 2)
                                     {
-                                        //Si está en el 3, se salta al jugador 4 sin pasar por el 2
+                                        //Si estï¿½ en el 3, se salta al jugador 4 sin pasar por el 2
                                         actualTurn = 3;
                                     }
                                 }
@@ -493,8 +508,14 @@ namespace IAV.G07.MUS
                     _descartes.Push(c);
                     _players[actualTurn].Mano().RemoveAt(i);
 
-                    //se le añade otra
-                    if (_baraja.Count == 0)//si no quedan cartas en la baraja para añadir, rebaraja con la baraja de descartes
+                    //Elimina las cartas descartadas de las cartas posibles para la IA
+                    for (int j = 0; j < _players.Count; j++)
+                    {
+                        if (_players[actualTurn].GetComponent<JoaquinPlayer>()) _players[actualTurn].GetComponent<JoaquinPlayer>().NotPossible(c);
+                    }
+
+                    //se le aï¿½ade otra
+                    if (_baraja.Count == 0)//si no quedan cartas en la baraja para aï¿½adir, rebaraja con la baraja de descartes
                         reBarajar();
                     _players[actualTurn].Mano().Add(_baraja.Peek());
                     _baraja.Pop();
@@ -560,7 +581,7 @@ namespace IAV.G07.MUS
             SceneManager.LoadScene(scene);
         }
 
-        public void resetInputField() { inputField.text = "Inválido"; }
+        public void resetInputField() { inputField.text = "Invï¿½lido"; }
 
         public void Apostar()
         {
