@@ -84,6 +84,8 @@ namespace IAV.G07.MUS
         public GameObject descartesTextGO;
         public GameObject turnTextGO;
         public GameObject[] apuestasGO = new GameObject[4];
+        public GameObject[] pointsGO = new GameObject[2];
+        private Text[] pointsTexts = new Text[2];
         private Text[] apuestasTexts = new Text[4];
         private Fase _actualFase = Fase.Mus;
         public Fase GetActualFase() { return _actualFase; }
@@ -91,8 +93,8 @@ namespace IAV.G07.MUS
         private int _actualTeam = 0;
         private Action lastAction = Action.Inicial;
         private int lastEnvite = 0;
-        private int puntos0 =0;
-        private int puntos1 =0;
+        private int puntosTeam1 =0;
+        private int puntosTeam2 =0;
 
         private List<Player> _players = new List<Player>(4); //se meten los jugadores en orden, los dos primeros son el primer equipo y los dos ultimos el segundo equipo
         private void Awake()
@@ -117,6 +119,10 @@ namespace IAV.G07.MUS
             for(int i = 0; i < 4; i++)
             {
                 apuestasTexts[i] = apuestasGO[i].GetComponent<Text>();
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                pointsTexts[i] = pointsGO[i].GetComponent<Text>();
             }
             inputField = inputFieldGO.GetComponent<InputField>();
             Iniciar();
@@ -244,13 +250,14 @@ namespace IAV.G07.MUS
 
             }
             setUI();
+            Debug.Log("Puntos Equipo 1: "+puntosTeam1);
+            Debug.Log("Puntos Equipo 2: "+puntosTeam2);
         }
         private void Game()
         {
-            Debug.Log("Ultima accion: " + lastAction);            
-
-            if(lastAction == Action.Envidar)
-                turnText.text = "Turno: J" + (actualTurn + 1) + "/"+_actualFase.ToString()+".La subes, la ves o pasas? S/V/P";
+            Debug.Log("Ultima accion: " + lastAction);
+            if (_envites.Count == (int)GameManager.Instance.GetActualFase() - 1)
+                turnText.text = "Turno: J" + (actualTurn + 1) + "/" + _actualFase.ToString() + ".La subes, la ves o pasas? S/V/P";
             else
                 turnText.text = "Turno: J" + (actualTurn + 1) + "/" + _actualFase.ToString() + ". Envidas o pasas? E/P";
             Action playerAction = _players[actualTurn].actual;
@@ -273,7 +280,6 @@ namespace IAV.G07.MUS
 
                             if (_actualTeam==1) actualTurn = 2;
                             else actualTurn = 0;
-
                         }
                         break;
                     }
@@ -283,85 +289,74 @@ namespace IAV.G07.MUS
                         {
                             if(lastAction == Action.Envidar)
                             {
-                                if(_envites[_envites.Count - 1].team == 1 && actualTurn==3) 
+                                if(_envites[_envites.Count-1].team == 1)
                                 {
-                                    //si está en el jugador 4 y la apuesta es del equipo 1, quiere decir que ambos jugadores del equipo 2 han decidido pasar de la apuesta.
-                                    actualTurn = 0;
-                                    //_actualFase++;
-                                    changeFase();
-                                    lastAction = Action.Inicial;
-                                }
-                                else if(_envites[_envites.Count-1].team ==2 && actualTurn == 1)
-                                {
-                                    //si está en el jugador 2 y la apuesta es del equipo 2, quiere decir que ambos jugadores del equipo 1 han decidido pasar de la apuesta.
-                                    //actualTurn = 0;
-                                    //_actualFase++;
-                                    changeFase();
-                                    lastAction = Action.Inicial;
-                                }
-                                else if(_envites[_envites.Count - 1].team == 1 && actualTurn == 2)
-                                {
-                                    //si está en el jugador 3 y la apuesta es del equipo 1, el jugador 2 no hace nada y se pasa al 4
-                                    actualTurn = 3;
-
-                                }
-                                else if(_envites[_envites.Count - 1].team == 2 && actualTurn == 0)
-                                {
-                                    //si está en el jugador 1 y la apuesta es del equipo 2, se pasa al jugador 2 para que pase tambien
-                                    actualTurn = 1;
+                                    if (actualTurn == 3)
+                                    {
+                                        changeFase();
+                                    }
+                                    else if (actualTurn == 2)
+                                    {
+                                        //Si está en el 3, se salta al jugador 4 sin pasar por el 2
+                                        actualTurn = 3;
+                                    }
                                 }
                                 else
                                 {
-                                    _players[actualTurn].resetAction();
-                                    changeTurn();
-                                }
+                                    if (actualTurn == 0)
+                                    {
+                                        actualTurn = 1;
+                                    }
+                                    else if(actualTurn == 1)
+                                    {
+                                        changeFase();
+                                    } 
+                                }    
                             }
                             else if(lastAction == Action.Subir)
                             {
                                 //la pareja que ha subido se lleva los puntos de antes de subir
-                                if (_actualTeam == 0) puntos1 += lastEnvite;                                
-                                else puntos0 += lastEnvite;
+                                if (_actualTeam == 1) { puntosTeam2 += lastEnvite; pointsTexts[1].text = "Puntos Equipo 2: " + puntosTeam2; }
+                                else { puntosTeam1 += lastEnvite; pointsTexts[0].text = "Puntos Equipo 0: " + puntosTeam1; }
+
                                 changeFase();                                
                             }
                             else if (lastAction == Action.Pasar)
                             {
-                                Debug.Log(actualTurn);
-                                if (_envites[_envites.Count - 1].team == 2 && actualTurn == 1)
+                                //Hay envite?
+                                if(_envites.Count == (int)GameManager.Instance.GetActualFase() - 1)
                                 {
+                                    _envites[_envites.Count - 1].apuesta = 0;
+                                    _envites[_envites.Count - 1].team = 0;
+                                    if(_actualTeam == 2)
+                                    {
+                                        puntosTeam1++;
+                                        pointsTexts[0].text = "Puntos Equipo 1: " + puntosTeam1;
+                                    }
+                                    else
+                                    {
+                                        puntosTeam2++;
+                                        pointsTexts[1].text = "Puntos Equipo 2: " + puntosTeam2;
+                                    }
+                                    
                                     changeFase();
-                                    //lastAction = Action.Inicial;
                                 }
-                                else if (actualTurn == 3)
+                                else
                                 {
-                                    //puntos0 += envite 
+                                    if(actualTurn != 3) {
+                                        changeTurn();
+                                    }
+                                    else
+                                    {
+                                        _envites.Add(new Apuesta(0, 1));
+                                        setApuestasUI();
+                                        changeFase();
+                                    }
                                 }
-                                else if (actualTurn == 2 )
-                                {
-                                    changeTurn();
-                                }
-
-                                else if (actualTurn == 0)
-                                {
-                                }
-
-                                else if (actualTurn == 0 && _envites.Count < (int)GameManager.Instance.GetActualFase() - 1)
-                                {
-                                    //si al es turno del primero otra vez, ha dado la vuelta y todos pasan y no hay envites
-
-                                    _envites.Add(new Apuesta(0, 1));
-                                    setApuestasUI();
-                                    changeFase();
-                                    lastAction = Action.Inicial;
-                                }
-
-                                
                             }
                             else if(lastAction == Action.Inicial)
-                            {
-                                                               
-                                 changeTurn();
-                                //_players[actualTurn].resetAction();                                
-
+                            {                                      
+                                 changeTurn();                          
                             }
 
                             lastAction = Action.Pasar;                           
@@ -385,12 +380,9 @@ namespace IAV.G07.MUS
                             _envites.RemoveAt(_envites.Count - 1);
                             _envites.Add(new Apuesta(_actualTeam,_players[actualTurn].getApuesta()));
                             setApuestasUI();
-                            _players[actualTurn].resetAction();
 
                             if (actualTurn < 2) actualTurn = 2;
                             else actualTurn = 0;
-                            
-
                         }
                         break;
                     }
@@ -403,10 +395,7 @@ namespace IAV.G07.MUS
                             _players[actualTurn].resetAction();
                             if (_actualTeam == 1) actualTurn = 2;
                             else actualTurn = 0;
-
-                            //_actualFase++;
                             changeFase();
-                            lastAction = Action.Inicial;
                         }
                         break;
                     }
@@ -417,16 +406,23 @@ namespace IAV.G07.MUS
         public bool checkTurn(Player p) { return GetIndexPlayer(p) == actualTurn; }
         public void changeTurn()
         {
-            if(_actualTeam == 1) { actualTurn++; actualTurn++; }
+            _players[actualTurn].resetAction();
+            if (_actualTeam == 1) { actualTurn++; actualTurn++; }
             if(_actualTeam == 2)
             {
                 if(actualTurn == 2) { actualTurn--; }
                 else actualTurn = 0;
             }
+            if (actualTurn < 2) _actualTeam = 1;
+            else _actualTeam = 2;
         }
 
         public void changeFase()
         {
+            foreach(Player p in _players)
+            {
+                p.resetAction();
+            }
             actualTurn = 0;
             _actualTeam = 1;
             _actualFase++;
