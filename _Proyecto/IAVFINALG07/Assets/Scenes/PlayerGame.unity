@@ -224,8 +224,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7248872126623812809, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
       propertyPath: m_Name
-      value: SignAI1
+      value: SignAI3
       objectReference: {fileID: 0}
+    - target: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+      propertyPath: playerID
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1857691057}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
 --- !u!1 &293203511
@@ -279,7 +287,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "se\xF1as": 00000000000000000000000000000000
   actual: 0
+  goodHands:
+  - 0.84
+  - 0.84
+  - 0.95
+  - 1
+  greatHands:
+  - 0.88
+  - 0.88
+  - 0.96
+  - 1
+  juegaChica: 0
+  thinkingTime: 3
   player: 2
+  sign: {fileID: 559900253}
 --- !u!114 &293203514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,8 +438,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7248872126623812809, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
       propertyPath: m_Name
-      value: SignAI3
+      value: SignAI1
       objectReference: {fileID: 0}
+    - target: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+      propertyPath: playerID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1857691057}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
 --- !u!1 &444769385
@@ -500,6 +529,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444769385}
   m_CullTransparentMesh: 1
+--- !u!114 &453094723 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+  m_PrefabInstance: {fileID: 51380188}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27111c4704db1d4cad594283857a25f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &483561137 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1634071348870620279, guid: 54ddb10eef979f947a297c35ec481f46, type: 3}
@@ -593,6 +633,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &559900253 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+  m_PrefabInstance: {fileID: 437478513}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27111c4704db1d4cad594283857a25f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &694084788
 GameObject:
   m_ObjectHideFlags: 0
@@ -1155,7 +1206,7 @@ GameObject:
   - component: {fileID: 976458987}
   - component: {fileID: 976458988}
   m_Layer: 5
-  m_Name: Player3
+  m_Name: Player4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1220,7 +1271,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "se\xF1as": 00000000000000000000000000000000
   actual: 0
-  player: 3
+  goodHands:
+  - 0.84
+  - 0.84
+  - 0.95
+  - 1
+  greatHands:
+  - 0.88
+  - 0.88
+  - 0.96
+  - 1
+  juegaChica: 0
+  thinkingTime: 3
+  player: 4
+  sign: {fileID: 453094723}
 --- !u!1 &1045730389
 GameObject:
   m_ObjectHideFlags: 0
@@ -1391,7 +1455,7 @@ GameObject:
   - component: {fileID: 1126970072}
   - component: {fileID: 1126970073}
   m_Layer: 5
-  m_Name: Player4
+  m_Name: Player3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1456,7 +1520,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "se\xF1as": 00000000000000000000000000000000
   actual: 0
-  player: 4
+  goodHands:
+  - 0.84
+  - 0.84
+  - 0.95
+  - 1
+  greatHands:
+  - 0.88
+  - 0.88
+  - 0.96
+  - 1
+  juegaChica: 0
+  thinkingTime: 3
+  player: 3
+  sign: {fileID: 1806591115}
 --- !u!1 &1133877072
 GameObject:
   m_ObjectHideFlags: 0
@@ -1794,11 +1871,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1de0153337a3e00459a727ad134cf6cb, type: 3}
---- !u!1 &1424620853 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1634071347338284248, guid: 54ddb10eef979f947a297c35ec481f46, type: 3}
-  m_PrefabInstance: {fileID: 2089627250}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1438308151
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1902,6 +1974,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SignAI2
       objectReference: {fileID: 0}
+    - target: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+      propertyPath: playerID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1857691057}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
 --- !u!224 &1473742378 stripped
@@ -2100,6 +2180,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1723632388}
   m_CullTransparentMesh: 1
+--- !u!114 &1806591115 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7248872126623812815, guid: f7de94e93f0e6274a86919999e4b3810, type: 3}
+  m_PrefabInstance: {fileID: 1438308151}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27111c4704db1d4cad594283857a25f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1850986960
 GameObject:
   m_ObjectHideFlags: 0
@@ -2411,7 +2502,7 @@ PrefabInstance:
     - target: {fileID: 1634071347236783464, guid: 54ddb10eef979f947a297c35ec481f46, type: 3}
       propertyPath: signController
       value: 
-      objectReference: {fileID: 483561137}
+      objectReference: {fileID: 397474739}
     - target: {fileID: 1634071347236783467, guid: 54ddb10eef979f947a297c35ec481f46, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2459,7 +2550,7 @@ PrefabInstance:
     - target: {fileID: 1634071347338284252, guid: 54ddb10eef979f947a297c35ec481f46, type: 3}
       propertyPath: signController
       value: 
-      objectReference: {fileID: 1424620853}
+      objectReference: {fileID: 397474739}
     - target: {fileID: 1634071347338284255, guid: 54ddb10eef979f947a297c35ec481f46, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2507,7 +2598,7 @@ PrefabInstance:
     - target: {fileID: 1634071347551523848, guid: 54ddb10eef979f947a297c35ec481f46, type: 3}
       propertyPath: signController
       value: 
-      objectReference: {fileID: 483561137}
+      objectReference: {fileID: 397474739}
     - target: {fileID: 1634071347551523851, guid: 54ddb10eef979f947a297c35ec481f46, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2547,7 +2638,7 @@ PrefabInstance:
     - target: {fileID: 1634071347709160894, guid: 54ddb10eef979f947a297c35ec481f46, type: 3}
       propertyPath: signController
       value: 
-      objectReference: {fileID: 483561137}
+      objectReference: {fileID: 397474739}
     - target: {fileID: 1634071348040375123, guid: 54ddb10eef979f947a297c35ec481f46, type: 3}
       propertyPath: ID
       value: 1
@@ -2579,7 +2670,7 @@ PrefabInstance:
     - target: {fileID: 1634071348751006387, guid: 54ddb10eef979f947a297c35ec481f46, type: 3}
       propertyPath: signController
       value: 
-      objectReference: {fileID: 483561137}
+      objectReference: {fileID: 397474739}
     - target: {fileID: 1634071348751006398, guid: 54ddb10eef979f947a297c35ec481f46, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

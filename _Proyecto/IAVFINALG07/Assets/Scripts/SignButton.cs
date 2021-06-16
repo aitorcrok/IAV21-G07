@@ -54,7 +54,6 @@ namespace IAV.G07.MUS
             if (isEnabled)
             {
                 text.enabled = false;
-                sign.setSprite(image.sprite);
                 sign.setSign(ID);
                 sign.toggleMenu();
             }

@@ -36,6 +36,7 @@ namespace IAV.G07.MUS
         TresReyesAs,
         Ciego
     };
+
     public class Apuesta
     {
         public Apuesta(int t, int a) { team = t; apuesta = a; }

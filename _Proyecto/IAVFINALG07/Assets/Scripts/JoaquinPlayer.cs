@@ -43,6 +43,8 @@ namespace IAV.G07.MUS
         private float time = 0;
 
         public int player; // jugador 2,3 o 4.
+
+        public Signs sign;
         private void Awake()
         {
             GameManager.Instance.AddPlayer(this, player-1);
