@@ -311,7 +311,7 @@ namespace IAV.G07.MUS
             {
                 case (Action.Envidar):
                     {
-                        if (_players[actualTurn].GetComponent</*UserPlayer*/Player>())
+                        if (_players[actualTurn].GetComponent<UserPlayer>())
                             inputFieldGO.SetActive(true);
                         if (_players[actualTurn].getEnd())
                         {

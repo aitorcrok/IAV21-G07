@@ -18,7 +18,7 @@ namespace IAV.G07.MUS
         protected bool endTurn = false;
         protected int apuesta = 0;
         public int getApuesta() { return apuesta; }
-        bool envidar = false;
+        protected bool envidar = false;
         public bool getEnvite() { return envidar; }
         public bool getEnd() { return endTurn; }
         public void setEnd() { endTurn = false; }
